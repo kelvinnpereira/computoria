@@ -1,21 +1,24 @@
 const express = require('express');
-const app = express();
+const server = express();
+const next = require('next');
 const path = require('path');
 const logger = require('morgan');
-const server = require('http').createServer(app);
-const io = require('socket.io')(server);
-const port = process.env.PORT || 4567;
+const port = process.env.PORT || 3000;
 const router = require('./config/routes');
 const cookieParser = require('cookie-parser');
 const csurf = require('csurf');
 const uuid = require('uuid').v4;
 const session = require('express-session');
 
-app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
-app.use(csurf({ cookie: true }));
-app.use(logger('short'));
-app.use(session({
+const dev = false;
+const app = next({dev});
+const handle = app.getRequestHandler();
+
+server.use(express.urlencoded({ extended: false }));
+server.use(cookieParser());
+server.use(csurf({ cookie: true }));
+server.use(logger('short'));
+server.use(session({
 	genid: (req) => {
 		return uuid()
 	},
@@ -24,27 +27,58 @@ app.use(session({
 	saveUninitialized: true,
 }));
 
-app.use('/css', [
+server.use('/css', [
 	express.static(__dirname + '/public/css')
 ]);
 
-app.use('/img', [
+server.use('/icons', [
+	express.static(__dirname + '/public/icons')
+]);
+
+server.use('/images', [
+	express.static(__dirname + '/public/images')
+]);
+
+server.use('/img', [
 	express.static(__dirname + '/public/img')
 ]);
 
-app.use('/js', [
+server.use('/js', [
 	express.static(__dirname + '/public/js')
 ]);
 
-app.use(express.static(path.join(__dirname, 'dist')));
+server.use('/logos', [
+	express.static(__dirname + '/public/logos')
+]);
 
-app.use('/', (req, res, next) => {
+server.use('/screenshots', [
+	express.static(__dirname + '/public/screenshots')
+]);
+
+server.use('/', [
+	express.static(__dirname + '/public/')
+]);
+
+server.use('/_next', [
+	express.static(__dirname + '/out/_next/')
+]);
+
+server.use(express.static(path.join(__dirname, 'dist')));
+
+server.use('/', (req, res, next) => {
 	res.locals.session = req.session;
 	next();
 });
 
-app.use(router);
-
-server.listen(port, () => {
-	console.log('Servidor rodando na porta ' + port);
+app.prepare().then(() => {
+	server.use(router)
+    
+	server.listen(port, (err) => {
+		if (err) throw err;
+		console.log('> Ready on http://localhost:' + port);
+	})
+})
+.catch((ex) => {
+  console.error(ex.stack);
+  process.exit(1);
 });

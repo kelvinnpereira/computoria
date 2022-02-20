@@ -11,7 +11,6 @@ module.exports = (sequelize, DataTypes) => {
         }
       }
     },
-    descricao: DataTypes.TEXT,
     id_area: DataTypes.INTEGER
   }, {
     underscored: true,
