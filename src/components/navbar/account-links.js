@@ -25,13 +25,12 @@ const AccountLinks = ({ emailCount }) => {
     },
     {
       onClick: () => popupCenter({
-        url: `${HOST}/checklist/map_developer/form?${auth.token.replace(
-          " ", "=")}`,
+        url: `${HOST}/perfil`,
         w: 800,
         h: 700
       }),
       icon: <FiUser size={18} className="stroke-current"/>,
-      name: "Map Developer",
+      name: "Perfil",
       badge: null
     },
     {
@@ -44,11 +43,6 @@ const AccountLinks = ({ emailCount }) => {
         className="stroke-current"/>,
       name: "Admin",
       badge: null
-    },
-    {
-      url: `${BASE_HOST}/media/run_ui.exe`,
-      icon: <BiCloudDownload size={18} className="stroke-current"/>,
-      name: "Download run_ui.exe"
     },
     {
       url: "/logout",

@@ -26,9 +26,9 @@ module.exports = {
         allowNull: false,
         type: Sequelize.STRING
       },
-      id_curso: {
+      sigla_curso: {
         allowNull: false,
-        type: Sequelize.INTEGER
+        type: Sequelize.STRING
       },
       created_at: {
         allowNull: false,

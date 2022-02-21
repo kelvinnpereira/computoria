@@ -1,18 +1,18 @@
 const getStoragePage = () => typeof window !== "undefined" &&
 localStorage.getItem("palette") ? JSON.parse(
   localStorage.getItem("palette")) : {
-  background: "light",
-  leftSidebar: "light",
-  navbar: "light",
-  rightSidebar: "light"
+  background: "dark",
+  leftSidebar: "dark",
+  navbar: "dark",
+  rightSidebar: "dark"
 };
 
 export default function palettes (
   state = {
-    background: "light",
-    leftSidebar: "light",
-    navbar: "light",
-    rightSidebar: "light"
+    background: "dark",
+    leftSidebar: "dark",
+    navbar: "dark",
+    rightSidebar: "dark"
   },
   action
 ) {
@@ -31,10 +31,10 @@ export default function palettes (
     }
     case "RESET_PALETTES": {
       let stateToStore = {
-        background: "light",
-        leftSidebar: "light",
-        navbar: "light",
-        rightSidebar: "light"
+        background: "dark",
+        leftSidebar: "dark",
+        navbar: "dark",
+        rightSidebar: "dark"
       };
       localStorage.setItem("palette", JSON.stringify(stateToStore));
       return stateToStore;

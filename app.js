@@ -15,6 +15,7 @@ const app = next({dev});
 const handle = app.getRequestHandler();
 
 server.use(express.urlencoded({ extended: false }));
+server.use(express.json());
 server.use(cookieParser());
 server.use(csurf({ cookie: true }));
 server.use(logger('short'));

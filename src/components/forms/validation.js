@@ -1,19 +1,25 @@
 import { useForm } from "react-hook-form";
 import Alert from "../alerts";
 import { FaSpinner } from "react-icons/fa";
-import { FiStar } from "react-icons/fi";
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
+import { useCsrf } from "../../hooks/auth";
 
-const FormValidation = ({ items, onSubmit, alerts, isLoading = false , csrf}) => {
-  const { handleSubmit, errors, register } = useForm();
+const FormValidation = ({ items, onSubmit, alerts, isLoading = false }) => {
+  const { handleSubmit, errors, register , watch} = useForm();
+  const senha = useRef({});
+  senha.current = watch("senha", "");
   const onSubmitFn = data => {
+    console.log('onSubmitFn');
+    console.log(onSubmit);
     if (onSubmit) {
       onSubmit(data);
     }
   };
 
   const [url, setUrl] = useState(0);
+  const [csrf, setCsrf] = useCsrf(null);
   React.useEffect(() => {
+    setCsrf();
     setUrl(window.location.pathname);
   });
 
@@ -148,6 +154,28 @@ const FormValidation = ({ items, onSubmit, alerts, isLoading = false , csrf}) =>
               </div>
             );
           }
+          if (item.name === 'confirmar_senha') {
+            return (
+              <div className="form-element" key={`container-${i}`}>
+                {item.label && <div className="form-label">{item.label}</div>}
+                <input
+                  ref={register({
+                    validate: value =>
+                      value === senha.current || "As senhas não combinam"
+                  })}
+                  name={item.name}
+                  type={item.type}
+                  className={`form-input ${
+                    errors[item.name] ? "border-red-500" : ""
+                  }`}
+                  placeholder={item.placeholder}
+                />
+                {!alerts && errors[item.name] && (
+                  <div className="form-error">{errors[item.name].message}</div>
+                )}
+              </div>
+            );
+          }
           return (
             <div className="form-element" key={`container-${i}`}>
               {item.label && <div className="form-label">{item.label}</div>}
@@ -165,6 +193,7 @@ const FormValidation = ({ items, onSubmit, alerts, isLoading = false , csrf}) =>
               )}
             </div>
           );
+
         })}
       </div>
       <input type="hidden" name="_csrf" value={`${csrf}`}></input>

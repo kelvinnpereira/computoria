@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Validation from "../forms/validation";
 import Alert from "../alerts";
 
-const Form = ({ message = null, setSignup, isLoading , cursos, csrf}) => {
+const Form = ({ message = null, setSignup, isLoading , cursos}) => {
   const [data, onSubmit] = useState(null);
   let items = [
     {
@@ -55,7 +55,7 @@ const Form = ({ message = null, setSignup, isLoading , cursos, csrf}) => {
           message: "Sua matricula deve ter pelo 8 caracteres"
         }
       },
-      name: "Matricula",
+      name: "matricula",
       type: "text",
       placeholder: "Insira sua matricula"
     },
@@ -68,7 +68,7 @@ const Form = ({ message = null, setSignup, isLoading , cursos, csrf}) => {
           message: "Sua senha deve ter pelo menos 8 caracteres"
         }
       },
-      name: "password",
+      name: "senha",
       type: "password",
       placeholder: "Insira sua senha"
     },
@@ -79,9 +79,10 @@ const Form = ({ message = null, setSignup, isLoading , cursos, csrf}) => {
         minLength: {
           value: 8,
           message: "Sua senha deve ter pelo menos 8 caracteres"
-        }
+        },
+        validate: value => value === senha.current || "As senhas não combinam"
       },
-      name: "password",
+      name: "confirmar_senha",
       type: "password",
       placeholder: "Confirme sua Senha"
     }
@@ -99,7 +100,7 @@ const Form = ({ message = null, setSignup, isLoading , cursos, csrf}) => {
             </Alert>
           </div>
         )}
-        <Validation items={items} isLoading={isLoading} csrf={csrf} onSubmit={(e) => {
+        <Validation items={items} isLoading={isLoading} onSubmit={(e) => {
           onSubmit(e);
           setSignup(e);
         }}/>

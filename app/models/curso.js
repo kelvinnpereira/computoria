@@ -1,7 +1,10 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
   const curso = sequelize.define('curso', {
-    sigla: DataTypes.STRING,
+    sigla: {
+      type: DataTypes.STRING,
+      primaryKey: true,
+    }, 
     nome: {
       type: DataTypes.STRING,
       validate: {
@@ -18,7 +21,7 @@ module.exports = (sequelize, DataTypes) => {
   });
   curso.associate = function(models) {
     curso.belongsTo(models.area, {foreignKey: 'id_area'});
-    curso.hasMany(models.user, {foreignKey: 'id_curso'});
+    curso.hasMany(models.usuario, {foreignKey: 'sigla_curso'});
   };
   return curso;
 };

@@ -1,9 +1,8 @@
 import { useSelector, shallowEqual, useDispatch } from "react-redux";
 import Link from "next/link";
 import { useState } from "react";
-import {Router, useRouter} from "next/router";
+import Router, { useRouter} from "next/router";
 import Head from "next/head";
-import absoluteUrl from 'next-absolute-url'
 
 import Logo from "../../components/login/logo";
 import Text from "../../components/login/text";
@@ -29,10 +28,7 @@ const LogIn = () => {
     dispatch({
       type: "LOGIN",
       auth: {
-        username: data.user.username,
-        token: data.token,
-        permissions: data.permissions.join(","),
-        team: data.team
+        username: data.username,
       }
     });
 
@@ -49,7 +45,11 @@ const LogIn = () => {
 
   const onError = (err) => {
     console.error(err);
-    setErrorMessage("User or password incorrect");
+    if (typeof err !== "undefined" && err.error) {
+      setErrorMessage(err.error)
+    } else {
+      setErrorMessage("User or password incorrect");
+    }
   };
 
   const [isLoading, setLogin] = useLogin(onLogin, onError);

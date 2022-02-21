@@ -19,25 +19,21 @@ const getStorageLevel = () => typeof window !== "undefined" &&
 localStorage.getItem("level") ? JSON.parse(
   localStorage.getItem("level")) : {
   tasks: [],
-  reviews: [],
-  tgrms: [],
-  propagations: [],
-  pre_releases: []
 };
 
 const menuLevels = getStorageLevel();
 
 const initialState = [
   {
-    title: "Checklist",
+    title: "Computoria",
     items: [
       {
-        url: "/dashboard/tasks",
+        url: "/home",
         icon: <FiCompass size={20}/>,
-        title: "Task",
+        title: "Computoria",
         items: [
           {
-            url: "/dashboard/tasks",
+            url: "/home",
             title: "Dashboard",
             items: menuLevels.tasks,
             onlyChildren: true
@@ -45,12 +41,12 @@ const initialState = [
         ]
       },
       {
-        url: "/dashboard/reviews",
+        url: "/home",
         icon: <HiOutlineDocumentSearch size={20}/>,
-        title: "Review",
+        title: "Computoria",
         items: [
           {
-            url: "/dashboard/reviews",
+            url: "/home",
             title: "Dashboard",
             items: menuLevels.reviews,
             onlyChildren: true
@@ -58,12 +54,12 @@ const initialState = [
         ]
       },
       {
-        url: "/dashboard/propagations",
+        url: "/home",
         icon: <CgListTree size={20}/>,
-        title: "Propagation",
+        title: "Computoria",
         items: [
           {
-            url: "/dashboard/propagations",
+            url: "/home",
             title: "Dashboard",
             items: menuLevels.propagations,
             onlyChildren: true
@@ -71,60 +67,17 @@ const initialState = [
         ]
       },
       {
-        url: "/dashboard/pre-releases",
+        url: "/home",
         icon: <FaRocket size={20}/>,
-        title: "Pre Release",
+        title: "Computoria",
         items: [
           {
-            url: "/dashboard/pre-releases",
+            url: "/home",
             title: "Dashboard",
             items: menuLevels.pre_releases,
             onlyChildren: true
           }
         ]
-      }
-    ]
-  },
-  {
-    title: "Business Intelligence",
-    items: [
-      {
-        url: "/dashboard/status",
-        icon: <MdShowChart size={20}/>,
-        title: "Status"
-      }
-    ]
-  },
-  {
-    title: "Requirement Manager",
-    items: [
-      {
-        url: "/dashboard/tgrms",
-        icon: <MdBusiness size={20}/>,
-        title: "TGRM",
-        items: [
-          {
-            url: "/dashboard/tgrms",
-            title: "Dashboard",
-            items: menuLevels.tgrms,
-            onlyChildren: true
-          }
-        ]
-      },
-      {
-        url: "/dashboard/matches",
-        icon: <CgTemplate size={20}/>,
-        title: "Match"
-      },
-      {
-        url: "/dashboard/templates",
-        icon: <ImInsertTemplate size={20}/>,
-        title: "Template"
-      },
-      {
-        url: "/dashboard/questions",
-        icon: <BsQuestionCircle size={20}/>,
-        title: "Question"
       }
     ]
   }

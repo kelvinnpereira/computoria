@@ -24,34 +24,6 @@ const Navbar = () => {
 
   const dispatch = useDispatch();
 
-  const {
-    data,
-    reValidate
-  } = useFetch(
-    `/auth/notification`, { refreshInterval: 120000 });
-
-  const {
-    data: dataDevices,
-    reValidate: reValidateDevices
-  } = useFetch(
-    `/tasks/device-connected`);
-
-  const {
-    pushData: clearMessages
-  } = usePush(
-    `/auth/notification`);
-
-  const { socketData } = useRequirementWebsocket(
-    `/ws/mapdeveloper/${auth?.username}`, false);
-
-  useEffect(() => {
-    if (!socketData?.message) {
-      return;
-    }
-
-    reValidate({ ...data, messages: socketData.message.message });
-  }, [socketData]);
-
   return (
     <div className="navbar navbar-1 border-b">
       <div className="navbar-inner w-full flex items-center justify-start">
@@ -68,21 +40,8 @@ const Navbar = () => {
         </button>
         <Search/>
         <span className="ml-auto"></span>
-        <DropdownDevices devices={dataDevices?.result}
-                         refresh={reValidateDevices}/>
         <DropdownApps/>
-        {data?.has_update || data?.has_required_update || data?.has_news ||
-        data?.messages?.length ? (
-          <DropdownNotification
-            clearMessages={async () => {
-              await clearMessages({ type: "error-messages" });
-              reValidate();
-            }}
-            hasUpdate={data?.has_update}
-            hasRequiredUpdate={data?.has_required_update}
-            hasNews={data?.has_news}
-            messages={data?.messages}/>) : null}
-        <DropdownAccount emailCount={data?.email_count}/>
+        <DropdownAccount />
         <button
           className="btn-transparent flex items-center justify-center h-16 w-8 mx-4"
           onClick={() =>

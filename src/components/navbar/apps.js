@@ -24,127 +24,118 @@ const Apps = () => {
     {
       onClick: () => {
         popupCenter({
-          url: `${HOST}/engineering/p4?${auth.token.replace(" ", "=")}&type=cl`,
+          url: '/',
           w: 1000,
           h: 800
         });
       },
-      title: "CL",
+      title: 'Computoria',
       icon: <FiCode
         className="stroke-current text-xl text-blue-700"/>
     },
     {
       onClick: () => {
         popupCenter({
-          url: `${HOST}/engineering/p4?${auth.token.replace(" ",
-            "=")}&type=workspace`,
+          url: '/',
           w: 1000,
           h: 800
         });
       },
-      title: "Workspace",
+      title: "Computoria",
       icon: <FiList className="stroke-current text-xl text-blue-700"/>
     },
     {
       onClick: () => {
         popupCenter({
-          url: `${HOST}/engineering/p4?${auth.token.replace(" ",
-            "=")}&type=find`,
+          url: '',
           w: 1300,
           h: 600
         });
       },
-      title: "Find Files",
+      title: "Computoria",
       icon: <FiSearch
         className="stroke-current text-xl text-blue-700"/>
     },
     {
       onClick: () => {
         popupCenter({
-          url: `${HOST}/engineering/p4?${auth.token.replace(" ",
-            "=")}&type=extra`,
+          url: '/',
           w: 1000,
           h: 450
         });
       },
-      title: "P4 Extra",
+      title: "Computoria",
       icon: <FiPlus
         className="stroke-current text-xl text-blue-700"/>
     },
     {
       onClick: () => {
         popupCenter({
-          url: `${HOST}/engineering/utility/area?${auth.token.replace(" ",
-            "=")}`,
+          url: '',
           w: 1000,
           h: 800
         });
       },
-      title: "Utility",
+      title: "Computoria",
       icon: <BiWrench className="stroke-current text-xl text-red-500"/>
     },
     {
       onClick: () => {
         popupCenter({
-          url: `${HOST}/engineering/mps/area?${auth.token.replace(" ",
-            "=")}`,
+          url: '',
           w: 1400,
           h: 600
         });
       },
-      title: "MPS",
+      title: "Computoria",
       icon: <ImTable
         className="stroke-current text-xl text-red-500"/>
     },
     {
       onClick: () => {
         popupCenter({
-          url: `${HOST}/requirement/match/area?${auth.token.replace(" ",
-            "=")}`,
+          url: '',
           w: 1400,
           h: 600
         });
       },
-      title: "Match",
+      title: "Computoria",
       icon: <CgTemplate
         className="stroke-current text-xl text-green-500"/>
     },
     {
       onClick: () => {
         popupCenter({
-          url: `${HOST}/requirement/template/area?${auth.token.replace(" ",
-            "=")}`,
+          url: '/',
           w: 1400,
           h: 600
         });
       },
-      title: "Template",
+      title: "Computoria",
       icon: <ImInsertTemplate
         className="stroke-current text-xl text-green-500"/>
     },
     {
       onClick: () => {
         popupCenter({
-          url: `${HOST}/requirement/question/area?${auth.token.replace(" ",
-            "=")}`,
+          url: '/',
           w: 1300,
           h: 600
         });
       },
-      title: "Question",
+      title: "Computoria",
       icon: <BsQuestionCircle
         className="stroke-current text-xl text-green-500"/>
     },
     {
       onClick: () => {
         popupCenter({
-          url: `${HOST}/engineering/samsung?${auth.token.replace(" ",
-            "=")}&no_layout=True`,
+          url: '/',
           w: 1300,
           h: 600
         });
       },
-      title: "Services",
+      title: "Computoria",
       icon: <MdSettings
         className="stroke-current text-xl text-green-500"/>
     }

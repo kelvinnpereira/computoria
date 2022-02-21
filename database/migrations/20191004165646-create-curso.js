@@ -3,13 +3,8 @@
 module.exports = {
   up: (queryInterface, Sequelize) => {
     return queryInterface.createTable('curso', {
-      id: {
-        allowNull: false,
-        autoIncrement: true,
-        primaryKey: true,
-        type: Sequelize.INTEGER
-      },
       sigla: {
+        primaryKey: true,
         unique: true,
         allowNull: false,
         type: Sequelize.STRING
@@ -17,9 +12,6 @@ module.exports = {
       nome: {
         allowNull: false,
         type: Sequelize.STRING
-      },
-      descricao: {
-        type: Sequelize.TEXT
       },
       id_area: {
         allowNull: false,

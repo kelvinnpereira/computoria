@@ -5,7 +5,7 @@ export const useLogin = (success, error) => {
   const [isLoading, setIsLoading] = useState(false);
   const setLogin = async (data) => {
     setIsLoading(true);
-    const response = await post("/auth/login", data);
+    const response = await post("/api/auth/login", data);
     if (response.status === 200) {
       success(response.data);
     } else {
@@ -21,7 +21,7 @@ export const useSignup = (success, error) => {
   const [isLoading, setIsLoading] = useState(false);
   const setSignup = async (data) => {
     setIsLoading(true);
-    const response = await post("/auth/signup", data);
+    const response = await post("/api/auth/signup", data);
     if (response.status === 200) {
       success(response.data);
     } else {
@@ -32,3 +32,12 @@ export const useSignup = (success, error) => {
 
   return [isLoading, setSignup];
 };
+
+export const useCsrf = () => {
+  const [csrf, setCsrf] = useState(null);
+  const setCookie = () => {
+    const cookieValue = document.cookie.split('; ').find(row => row.startsWith('XSRF-TOKEN='))?.split('=')[1];
+    setCsrf(cookieValue);
+  }
+  return [csrf, setCookie];
+}

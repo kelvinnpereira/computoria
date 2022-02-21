@@ -4,7 +4,6 @@ module.exports = {
   up: (queryInterface, Sequelize) => {
     return queryInterface.bulkInsert('curso', [
       {
-        id: 1,
         sigla: 'IE08',
         nome: 'Ciência da Computação',
         id_area: 1,
@@ -12,7 +11,6 @@ module.exports = {
         updated_at: new Date(new Date()+"+0"),
       },
       {
-        id: 2,
         sigla: 'FT05',
         nome: 'Engenharia da Computação',
         id_area: 1,
@@ -20,7 +18,6 @@ module.exports = {
         updated_at: new Date(new Date()+"+0"),
       },
       {
-        id: 3,
         sigla: 'IE17',
         nome: 'Engenharia de Software',
         id_area: 1,

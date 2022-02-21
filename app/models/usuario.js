@@ -1,6 +1,6 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
-  const usuario = sequelize.define('user', {
+  const usuario = sequelize.define('usuario', {
     nome: {
       type: DataTypes.STRING,
       validate: {
@@ -12,6 +12,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     cpf: {
       type: DataTypes.STRING,
+      primaryKey: true,
       validate: {
         len: {
           args: [11],
@@ -38,13 +39,15 @@ module.exports = (sequelize, DataTypes) => {
         }
       }
     },
-    id_curso: DataTypes.INTEGER
+    sigla_curso: {
+      type: DataTypes.STRING
+    }
   }, {
     underscored: true,
     freezeTableName: true,
   });
   usuario.associate = function(models) {
-    usuario.belongsTo(models.curso,    {foreignKey: 'id_curso' , as: 'id_curso_fk'});
+    usuario.belongsTo(models.curso, {foreignKey: 'sigla_curso' , as: 'sigla_curso_fk'});
   };
   return usuario;
 };

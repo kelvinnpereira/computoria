@@ -1,4 +1,3 @@
-import { useDispatch } from "react-redux";
 import { useState } from "react";
 import Router from "next/router";
 import Head from "next/head";
@@ -13,16 +12,6 @@ const SignUp = ({data}) => {
   const [errorMessage, setErrorMessage] = useState("");
 
   const onSignup = (data) => {
-    /*dispatch({
-      type: "LOGIN",
-      auth: {
-        username: data.user.username,
-        token: data.token,
-        permissions: data.permissions.join(","),
-        team: data.team
-      }
-    });*/
-
     if (data.redirect) {
       Router.push(data.redirect);
     } else {
@@ -32,7 +21,12 @@ const SignUp = ({data}) => {
 
   const onError = (err) => {
     console.error(err);
-    setErrorMessage("User or password incorrect");
+    if (typeof err !== "undefined") {
+      console.error(err.error);
+      setErrorMessage('Erro ' + err.error);
+    } else {
+      setErrorMessage("Algo esta incorreto");
+    }
   };
 
   const [isLoading, setSignup] = useSignup(onSignup, onError);
@@ -57,7 +51,7 @@ const SignUp = ({data}) => {
           <div className="w-full mb-4">
           </div>
           <Form setSignup={setSignup} isLoading={isLoading}
-                message={errorMessage} cursos={data.cursos} csrf={data.csrfToken}/>
+                message={errorMessage} cursos={data.cursos}/>
         </div>
       </div>
     </>
