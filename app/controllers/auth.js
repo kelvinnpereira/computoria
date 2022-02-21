@@ -43,7 +43,7 @@ module.exports = {
             if (user) {
                 bcrypt.compare(req.body.password, user.senha, (err, ok) => {
                     if (ok) {
-                        req.session.user = user;
+                        req.session.user = user.email;
                         res.status(200).send({redirect: '/home'});
                     } else {
                         res.status(500).send({error: 'Senha incorreta'});
@@ -56,8 +56,21 @@ module.exports = {
     },
 
     logout: async function (req, res) {
-        console.log('logout');
-        return handle(req, res);
+        if (req.session.user) {
+            console.log('logout');
+            handle(req, res);
+        } else {
+            res.redirect('/');
+        }
+    },
+
+    api_logout: async function (req, res) {
+        if (req.session.user) {
+            req.session.user = '';
+            res.status(200);
+        } else {
+            res.redirect('/');
+        }
     },
 
     api_signup: async function (req, res) {

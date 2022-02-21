@@ -61,7 +61,7 @@ server.use('/', [
 ]);
 
 server.use('/_next', [
-	express.static(__dirname + '/out/_next/')
+	express.static(__dirname + '/.next/')
 ]);
 
 server.use(express.static(path.join(__dirname, 'dist')));

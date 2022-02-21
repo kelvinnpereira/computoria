@@ -10,7 +10,7 @@ import { BsQuestionCircle } from "react-icons/bs";
 import { CgTemplate } from "react-icons/cg";
 import { shallowEqual, useSelector } from "react-redux";
 import { HOST } from "../../lib/requirement";
-import popupCenter from "../../functions/popup";
+import Router from "next/router";
 
 const Apps = () => {
   const { auth } = useSelector(
@@ -23,11 +23,7 @@ const Apps = () => {
   const items = [
     {
       onClick: () => {
-        popupCenter({
-          url: '/',
-          w: 1000,
-          h: 800
-        });
+        Router.push("/home");
       },
       title: 'Computoria',
       icon: <FiCode
@@ -35,22 +31,14 @@ const Apps = () => {
     },
     {
       onClick: () => {
-        popupCenter({
-          url: '/',
-          w: 1000,
-          h: 800
-        });
+        Router.push("/home");
       },
       title: "Computoria",
       icon: <FiList className="stroke-current text-xl text-blue-700"/>
     },
     {
       onClick: () => {
-        popupCenter({
-          url: '',
-          w: 1300,
-          h: 600
-        });
+        Router.push("/home");
       },
       title: "Computoria",
       icon: <FiSearch
@@ -58,11 +46,7 @@ const Apps = () => {
     },
     {
       onClick: () => {
-        popupCenter({
-          url: '/',
-          w: 1000,
-          h: 450
-        });
+        Router.push("/home");
       },
       title: "Computoria",
       icon: <FiPlus
@@ -70,22 +54,14 @@ const Apps = () => {
     },
     {
       onClick: () => {
-        popupCenter({
-          url: '',
-          w: 1000,
-          h: 800
-        });
+        Router.push("/home");
       },
       title: "Computoria",
       icon: <BiWrench className="stroke-current text-xl text-red-500"/>
     },
     {
       onClick: () => {
-        popupCenter({
-          url: '',
-          w: 1400,
-          h: 600
-        });
+        Router.push("/home");
       },
       title: "Computoria",
       icon: <ImTable
@@ -93,11 +69,7 @@ const Apps = () => {
     },
     {
       onClick: () => {
-        popupCenter({
-          url: '',
-          w: 1400,
-          h: 600
-        });
+        Router.push("/home");
       },
       title: "Computoria",
       icon: <CgTemplate
@@ -105,11 +77,7 @@ const Apps = () => {
     },
     {
       onClick: () => {
-        popupCenter({
-          url: '/',
-          w: 1400,
-          h: 600
-        });
+        Router.push("/home");
       },
       title: "Computoria",
       icon: <ImInsertTemplate
@@ -117,11 +85,7 @@ const Apps = () => {
     },
     {
       onClick: () => {
-        popupCenter({
-          url: '/',
-          w: 1300,
-          h: 600
-        });
+        Router.push("/home");
       },
       title: "Computoria",
       icon: <BsQuestionCircle
@@ -129,11 +93,7 @@ const Apps = () => {
     },
     {
       onClick: () => {
-        popupCenter({
-          url: '/',
-          w: 1300,
-          h: 600
-        });
+        Router.push("/home");
       },
       title: "Computoria",
       icon: <MdSettings

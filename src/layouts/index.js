@@ -15,7 +15,7 @@ const Layouts = ({children}) => {
       '/contact-us-1',
       '/create-account',
       '/email-confirmation',
-      '/logout',
+      '/auth/logout',
       '/reset-password',
       '/forgot-password',
       '/lock-screen',

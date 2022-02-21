@@ -3,7 +3,7 @@ import { FiMail, FiUser, FiLogIn, FiSettings } from "react-icons/fi";
 import { BiCloudDownload } from "react-icons/bi";
 import Link from "next/link";
 
-import popupCenter from "../../functions/popup";
+import Router from "next/router";
 import { BASE_HOST, HOST } from "../../lib/requirement";
 
 const AccountLinks = ({ emailCount }) => {
@@ -15,7 +15,7 @@ const AccountLinks = ({ emailCount }) => {
   );
   const items = [
     {
-      url: "/",
+      url: "/home",
       icon: <FiMail size={18} className="stroke-current"/>,
       name: "Inbox",
       badge: emailCount ? ({
@@ -24,28 +24,20 @@ const AccountLinks = ({ emailCount }) => {
       }) : null
     },
     {
-      onClick: () => popupCenter({
-        url: `${HOST}/perfil`,
-        w: 800,
-        h: 700
-      }),
+      onClick: () => Router.push("/home"),
       icon: <FiUser size={18} className="stroke-current"/>,
       name: "Perfil",
       badge: null
     },
     {
-      onClick: () => popupCenter({
-        url: `${BASE_HOST}/admin`,
-        w: 1200,
-        h: 800
-      }),
+      url: "/home",
       icon: <FiSettings
         className="stroke-current"/>,
       name: "Admin",
       badge: null
     },
     {
-      url: "/logout",
+      onClick: () => Router.push("/auth/logout"),
       icon: <FiLogIn size={18} className="stroke-current"/>,
       name: "Logout",
       badge: null

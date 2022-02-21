@@ -38,7 +38,7 @@ const Index = () => {
     <>
       <Head>
         <title>
-          Task Dashboard
+          Computoria Home
         </title>
       </Head>
       <SectionTitle title="Task" subtitle="Kanban" actions={actions}/>

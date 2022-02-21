@@ -18,7 +18,7 @@ const Logo = () => {
       <div className="logo truncate">
         <Link href="/">
           <a className="flex flex-row items-center justify-start space-x-2">
-            <img src="/icons/tool.png" style={{ width: "30px" }}/>
+            <img src="/icons/favicon.png" style={{ width: "30px" }}/>
             <span style={{ fontSize: "10pt" }}>{name}</span>
           </a>
         </Link>
