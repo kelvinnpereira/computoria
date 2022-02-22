@@ -16,7 +16,6 @@ router.get ('/auth/login'     , authController.login);
 router.get ('/api/auth/login' , authController.api_login);
 router.post('/api/auth/login' , authController.api_login);
 router.get ('/auth/logout'    , authController.logout);
-router.get ('/api/auth/logout', authController.api_logout);
 router.get ('/api/auth/forgot', authController.forgot);
 router.get ('/404'            , errorController.not_found);
 router.get ('*'               , errorController.error);

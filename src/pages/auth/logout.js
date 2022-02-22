@@ -1,13 +1,11 @@
 import Link from "next/link";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { post } from "../../lib/api";
 
 const LogOut = () => {
   const dispatch = useDispatch();
-  useEffect(async () => {
+  useEffect(() => {
     dispatch({ type: "LOGOUT" });
-    const response = await post("/api/auth/logout", data);
   }, []);
   return (
     <div className="flex flex-col w-full max-w-xl text-center">

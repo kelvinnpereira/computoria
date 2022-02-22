@@ -24,7 +24,7 @@ const AccountLinks = ({ emailCount }) => {
       }) : null
     },
     {
-      onClick: () => Router.push("/home"),
+      url: "/home",
       icon: <FiUser size={18} className="stroke-current"/>,
       name: "Perfil",
       badge: null
@@ -37,35 +37,29 @@ const AccountLinks = ({ emailCount }) => {
       badge: null
     },
     {
-      onClick: () => Router.push("/auth/logout"),
+      url: "/auth/logout",
       icon: <FiLogIn size={18} className="stroke-current"/>,
       name: "Logout",
       badge: null
     }
   ];
 
-  const renderLink = (item) =>
-    <a onClick={item.onClick}
-       className="flex flex-row items-center justify-start h-10 w-full px-2">
-      {item.icon}
-      <span className="mx-2">{item.name}</span>
-      {item.badge && (
-        <span
-          className={`uppercase font-bold inline-flex text-center p-0 leading-none text-2xs h-4 w-4 inline-flex items-center justify-center rounded-full ${item.badge.color} ml-auto`}>
-                    {item.badge.number}
-                  </span>
-      )}
-    </a>;
   return (
     <div className="flex flex-col w-full">
       <ul className="list-none">
         {items.map((item, i) => (
           <li key={i} className="dropdown-item">
-            {item.url ? (
-              <Link href={item.url}>
-                {renderLink(item)}
-              </Link>
-            ) : renderLink(item)}
+            <a href={item.url}
+              className="flex flex-row items-center justify-start h-10 w-full px-2">
+                {item.icon}
+                <span className="mx-2">{item.name}</span>
+                {item.badge && (
+                  <span
+                    className={`uppercase font-bold inline-flex text-center p-0 leading-none text-2xs h-4 w-4 inline-flex items-center justify-center rounded-full ${item.badge.color} ml-auto`}>
+                              {item.badge.number}
+                            </span>
+                )}
+            </a>
           </li>
         ))}
       </ul>

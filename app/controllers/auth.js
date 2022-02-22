@@ -57,17 +57,8 @@ module.exports = {
 
     logout: async function (req, res) {
         if (req.session.user) {
-            console.log('logout');
+            req.session.destroy();
             handle(req, res);
-        } else {
-            res.redirect('/');
-        }
-    },
-
-    api_logout: async function (req, res) {
-        if (req.session.user) {
-            req.session.user = '';
-            res.status(200);
         } else {
             res.redirect('/');
         }
@@ -105,13 +96,13 @@ module.exports = {
                                     res.status(500).send({error: error.parent.sqlMessage});
                                 });
                             } else {
-                                console.log('-----------------------error in bcrypt:' + err);
+                                console.log('error in bcrypt:' + err);
                                 res.status(500).send({redirect: '/'});
                             }
                         });
                     });
                 } catch (error) {
-                    console.log('--------------------error after try catch:' + error);
+                    console.log('error after try catch:' + error);
                     res.status(500).send({redirect: '/'});
                 }
             }
@@ -124,8 +115,6 @@ module.exports = {
         } else {
             res.cookie('XSRF-TOKEN', req.csrfToken());
             const parsedUrl = url.parse(req.url, true);
-            //console.log('parsedUrl: ' + parsedUrl);
-            //console.log(parsedUrl);
             //console.log(req.headers, req.cookies, req.path, req.method, req.headers.cookies);
             handle(req, res, parsedUrl);
         }
