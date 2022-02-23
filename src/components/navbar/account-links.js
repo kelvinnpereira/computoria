@@ -1,5 +1,10 @@
 import { shallowEqual, useSelector } from "react-redux";
 import { FiMail, FiUser, FiLogIn, FiSettings } from "react-icons/fi";
+import { BiCloudDownload } from "react-icons/bi";
+import Link from "next/link";
+
+import Router from "next/router";
+import { BASE_HOST, HOST } from "../../lib/requirement";
 
 const AccountLinks = ({ emailCount }) => {
   const { auth } = useSelector(
