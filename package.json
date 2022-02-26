@@ -4,8 +4,8 @@
   "description": "Trabalho prático de PES",
   "main": "app.js",
   "scripts": {
-    "be": "next build && next export && nodemon app.js",
     "start": "nodemon app.js",
+    "startd": "set NODE_ENV=development && nodemon app.js",
     "next": "next start",
     "dev": "next dev",
     "build": "next build",

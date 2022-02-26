@@ -1,5 +1,5 @@
 const next = require('next');
-const dev = false;
+const dev = process.env.NODE_ENV?.trim() == 'development';
 const app = next({dev});
 const handle = app.getRequestHandler();
 

@@ -6,26 +6,23 @@ const Curso = models.curso;
 const bcrypt = require('bcryptjs');
 
 const next = require('next');
-const dev = false;
+const dev = process.env.NODE_ENV?.trim() == 'development';
 const app = next({dev});
 const handle = app.getRequestHandler();
 
 module.exports = {
 
     login: async function (req, res) {
-        if (req.session.user) {
-            res.redirect('/');
-        } else if (req.route.methods.get) {
+        if (!req.session.user && req.route.methods.get) {
             res.cookie('XSRF-TOKEN', req.csrfToken());
             handle(req, res);
+        } else {
+            res.redirect('/');
         }
     },
 
     api_login: async function (req, res) {
-        if (req.session.user) {
-            res.redirect('/');
-        } else if (req.route.methods.post) {
-            console.log('user');
+        if (req.route.methods.post) {
             let user = undefined;
             if (/^\d+$/.test(req.body.username)) {
                 user = await Usuario.findOne({
@@ -52,6 +49,8 @@ module.exports = {
             } else {
                 res.status(500).send({error: 'Usuario não encontrado'});
             }
+        } else {
+            res.status(404);
         }
     },
 
@@ -73,7 +72,7 @@ module.exports = {
                 res.status(200).send({
                     cursos: cursos,
                 });
-            } else {
+            } else if (req.route.methods.post){
                 try {
                     console.log(req.body);
                     bcrypt.genSalt(10, function (err, salt) {
@@ -110,13 +109,12 @@ module.exports = {
     },
 
     signup: async function (req, res) {
-        if (req.session.user) {
-            res.redirect('/');
-        } else {
+        if (!req.session.user && req.route.methods.get){
             res.cookie('XSRF-TOKEN', req.csrfToken());
-            const parsedUrl = url.parse(req.url, true);
             //console.log(req.headers, req.cookies, req.path, req.method, req.headers.cookies);
-            handle(req, res, parsedUrl);
+            handle(req, res);
+        } else {
+            res.redirect('/');
         }
     },
 

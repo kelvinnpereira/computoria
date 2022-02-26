@@ -7,20 +7,18 @@ import Text from "../../components/signup/text";
 import Footer from "../../components/signup/footer";
 import Form from "../../components/signup/form";
 import { useSignup } from "../../hooks/auth";
+import Modal from '../../components/modals';
 
 const SignUp = ({data}) => {
   const [errorMessage, setErrorMessage] = useState("");
+  const [showModal, setModal] = useState(false);
 
   const onSignup = (data) => {
-    if (data.redirect) {
-      Router.push(data.redirect);
-    } else {
-      Router.push("/");
-    }
+    setModal(true);
   };
 
   const onError = (err) => {
-    console.error(err);
+    setErrorMessage('');
     if (typeof err !== "undefined") {
       console.error(err.error);
       setErrorMessage('Erro ' + err.error);
@@ -28,6 +26,30 @@ const SignUp = ({data}) => {
       setErrorMessage("Algo esta incorreto");
     }
   };
+
+  const sucessBody = () => {
+    return (
+      <div class="relative p-4 w-full text-center">
+        <span class="h-12 w-12 mx-auto my-4 bg-green-100 text-white flex items-center justify-center rounded-full text-lg font-display font-bold">
+          <svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" class="stroke-current text-green-500" height="18" width="18" xmlns="http://www.w3.org/2000/svg">
+            <polyline points="20 6 9 17 4 12"></polyline>
+          </svg>
+        </span>
+        <div class="flex flex-col w-full mb-4">
+          <div class="text-lg mb-2 font-bold">O Cadastro foi realizado com sucesso</div>
+        </div>
+      </div>)
+  }
+
+  const onClick = (e) => {
+    Router.push('/auth/login');
+  }
+
+  const buttonModal = () => {
+    return (
+      <button onClick={onClick} class="btn btn-default btn-rounded bg-blue-500 text-white hover:bg-blue-600 w-full" type="button">Login</button>
+    );
+  }
 
   const [isLoading, setSignup] = useSignup(onSignup, onError);
 
@@ -44,7 +66,9 @@ const SignUp = ({data}) => {
           <Footer/>
         </div>
         <div
-          className="w-full lg:w-1/2 bg-white p-8 lg:p-24 flex flex-col items-start justify-center">
+          className="w-full lg:w-1/2 p-8 lg:p-24 flex flex-col items-start justify-center"
+          style={{background: "rgba(17,24,39)"}}>
+          <Modal title={'Computoria'} body={sucessBody()} open={showModal} setOpen={setModal} btns={buttonModal()}/>
           <p className="text-2xl font-bold text-blue-500 mb-4">
             Cadastre-se
           </p>

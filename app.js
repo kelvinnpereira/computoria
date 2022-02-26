@@ -10,7 +10,7 @@ const csurf = require('csurf');
 const uuid = require('uuid').v4;
 const session = require('express-session');
 
-const dev = false;
+const dev = process.env.NODE_ENV?.trim() == 'development';
 const app = next({dev});
 const handle = app.getRequestHandler();
 
