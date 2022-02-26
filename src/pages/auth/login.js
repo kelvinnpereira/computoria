@@ -1,5 +1,4 @@
 import { useSelector, shallowEqual, useDispatch } from "react-redux";
-import Link from "next/link";
 import { useState } from "react";
 import Router, { useRouter} from "next/router";
 import Head from "next/head";
@@ -45,8 +44,9 @@ const LogIn = () => {
 
   const onError = (err) => {
     console.error(err);
+    setErrorMessage("");
     if (typeof err !== "undefined" && err.error) {
-      setErrorMessage(err.error)
+      setErrorMessage(err.error);
     } else {
       setErrorMessage("User or password incorrect");
     }
@@ -57,7 +57,7 @@ const LogIn = () => {
   return (
     <>
       <Head>
-        <title>Computoria</title>
+        <title>Computoria Login</title>
       </Head>
       <div className="w-full flex flex-row h-screen overflow-hidden">
         <div
@@ -67,7 +67,8 @@ const LogIn = () => {
           <Footer/>
         </div>
         <div
-          className="w-full lg:w-1/2 bg-white p-8 lg:p-24 flex flex-col items-start justify-center">
+          className="w-full lg:w-1/2 p-8 lg:p-24 flex flex-col items-start justify-center"
+          style={{background: "rgba(17,24,39)"}}>
           <p className="text-2xl font-bold text-blue-500 mb-4">
             Login em {name} 
           </p>
@@ -77,18 +78,17 @@ const LogIn = () => {
                 message={errorMessage}/>
           <div className="pt-4 pb-4 flex flex-row">
             <span
-              className="text-secondary mr-1">Esqueceu sua senha?</span>
+              className="text-secondary text-white mr-1">Esqueceu sua senha?
+            </span>
             <span>
-              <Link href="/forgot">
-                <a className="link">Clique aqui</a>
-              </Link>
+              <a href="/auth/forgot" className="link">Clique aqui</a>
             </span>
           </div>
           <button
             className="btn btn-default bg-green-500 hover:bg-green-600 text-white btn-rounded btn-icon" 
             style={{ width: "250px"}} 
             onClick={onClick}>
-              Criar nova conta
+              <p >Criar nova conta</p>
           </button>
         </div>
       </div>

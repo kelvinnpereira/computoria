@@ -7,7 +7,8 @@ const Centered = ({ children }) => (
     </Head>
     <div
       data-layout="centered"
-      className="w-full h-screen flex items-center justify-center bg-gray-50">
+      className="w-full h-screen flex items-center justify-center"
+      style={{background: "rgba(17,24,39)"}}>
       {children}
     </div>
   </>

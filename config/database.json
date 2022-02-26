@@ -5,20 +5,23 @@
     "database": "computoria_db",
     "host": "127.0.0.1",
     "dialect": "mysql",
-    "timezone": "-04:00"
+    "timezone": "-04:00",
+    "use_env_variable": false
   },
   "test": {
     "username": "root",
     "password": null,
     "database": "database_test",
     "host": "127.0.0.1",
-    "dialect": "mysql"
+    "dialect": "mysql",
+    "use_env_variable": false
   },
   "production": {
     "username": "b983439326974c",
     "password": "be85c9fa",
     "database": "heroku_e66fac746b19c14",
     "host": "us-cdbr-iron-east-05.cleardb.net",
-    "dialect": "mysql"
+    "dialect": "mysql",
+    "use_env_variable": false
   }
 }
