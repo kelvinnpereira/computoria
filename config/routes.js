@@ -16,8 +16,11 @@ router.get ('/auth/login'     , authController.login);
 router.get ('/api/auth/login' , authController.api_login);
 router.post('/api/auth/login' , authController.api_login);
 router.get ('/auth/logout'    , authController.logout);
-router.get ('/api/auth/forgot', authController.forgot);
-router.get ('/404'            , errorController.not_found);
-router.get ('*'               , errorController.error);
+router.get ('/auth/forgot'    , authController.forgot);
+router.post('/api/auth/forgot', authController.api_forgot);
+
+//errorController
+router.get ('/404', errorController.not_found);
+router.get ('*'   , errorController.error);
 
 module.exports = router;
