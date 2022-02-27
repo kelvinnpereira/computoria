@@ -41,3 +41,20 @@ export const useCsrf = () => {
   }
   return [csrf, setCookie];
 }
+
+export const useForgot = (success, error) => {
+  const [isLoading, setIsLoading] = useState(false);
+  const setForgot = async (data) => {
+    setIsLoading(true);
+    //const response = await post("/api/auth/forgot", data);
+    const response = {status: 200}
+    if (response.status === 200) {
+      success(response.data);
+    } else {
+      setIsLoading(false);
+      error(response.data);
+    }
+  };
+
+  return [isLoading, setForgot];
+};
