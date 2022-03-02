@@ -17,10 +17,10 @@
     "use_env_variable": false
   },
   "production": {
-    "username": "b983439326974c",
-    "password": "be85c9fa",
-    "database": "heroku_e66fac746b19c14",
-    "host": "us-cdbr-iron-east-05.cleardb.net",
+    "username": "bb5fd89f247ca7",
+    "password": "e278721b",
+    "database": "heroku_050e75f0a65d31c",
+    "host": "us-cdbr-east-05.cleardb.net",
     "dialect": "mysql",
     "use_env_variable": false
   }

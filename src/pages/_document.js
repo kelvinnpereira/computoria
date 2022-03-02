@@ -11,7 +11,7 @@ class MyDocument extends Document {
       <Html lang="en">
         <Head>
           <meta charSet="utf-8" />
-          <meta name="description" content="A system responsible for performing and managing the customization of Requirement team." />
+          <meta name="description" content="Um sistema de tutoria e monitoria para alunos da Universidade Federal do Amazonas." />
           <link rel="icon" href="/favicon.png" />
           <link
             rel="icon"

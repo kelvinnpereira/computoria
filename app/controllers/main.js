@@ -13,22 +13,23 @@ const index = async function (req, res) {
 };
 
 const home = async (req, res) => {
-    if (req.session.user) {
+    if (req.session.user && req.route.methods.get) {
         handle(req, res);
     } else {
         res.redirect('/auth/login');
     }
 } 
 
-const sobre = (req, res) => {
-    const content = 'Página sobre a aplicação';
-    res.render('sobre', {
-        content: content
-    });
-};
+const invalid = async (req, res) => {
+    if (!req.session.user && req.route.methods.get){
+        handle(req, res);
+    } else {
+        res.redirect('/home');
+    }
+}
 
 module.exports = {
     index: index,
     home: home,
-    sobre: sobre,
+    invalid: invalid,
 }
