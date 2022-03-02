@@ -1,8 +1,8 @@
 export default function config(
   state = {
     name: 'Computoria',
-    description: 'This system is responsible for performing and managing the customization of Requirement team',
-    url: 'https://mobilerndhub.sec.samsung.net/wiki/display/SRBR/Automation+Tools+-+Requirement+TG',
+    description: 'Um sistema de tutoria e monitoria para alunos da Universidade Federal do Amazonas.',
+    url: 'https://github.com/kelvinnpereira/computoria',
     layout: 'layout-1',
     collapsed: false,
     rightSidebar: false,

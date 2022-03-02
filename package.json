@@ -11,7 +11,10 @@
     "build": "next build",
     "export": "next export",
     "migrate": "npx sequelize db:migrate",
-    "seed": "npx sequelize-cli db:seed:all"
+    "seed": "npx sequelize-cli db:seed:all",
+    "drop": "npx sequelize db:drop",
+    "create": "npx sequelize db:create",
+    "dball": "npm run drop && npm run create && npm run migrate && npm run seed"
   },
   "author": "kelvinnpereira",
   "license": "ISC",

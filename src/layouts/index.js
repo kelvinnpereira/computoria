@@ -6,7 +6,10 @@ import Layout1 from './layout-1'
 const Layouts = ({children}) => {
   const router = useRouter()
   let {pathname} = {...router}
-  if (['/404', '/500'].includes(pathname)) {
+  if (['/404', '/500', '/invalid'].includes(pathname)) {
+    return <Centered>{children}</Centered>
+  }
+  if (pathname.startsWith('/auth/restart/')) {
     return <Centered>{children}</Centered>
   }
   if (
@@ -26,7 +29,7 @@ const Layouts = ({children}) => {
   ) {
     return <Centered>{children}</Centered>
   } else if (
-    ['/landing', '/login-1', '/login-2', '/login-3', '/auth/login', '/auth/signup','/auth/forgot'].includes(pathname)
+    ['/landing', '/login-1', '/login-2', '/login-3', '/auth/login', '/auth/signup', '/auth/forgot'].includes(pathname)
   ) {
     return <Empty>{children}</Empty>
   } else {

@@ -7,7 +7,7 @@ import Logo from "../../components/forgot/logo";
 import Text from "../../components/forgot/text";
 import Footer from "../../components/forgot/footer";
 import Form from "../../components/forgot/form";
-import { useForgot } from "../../hooks/auth";
+import { useRequest } from "../../hooks/auth";
 import Modal from '../../components/modals';
 
 const Forgot = () => {
@@ -60,12 +60,12 @@ const Forgot = () => {
         );
     }
 
-    const [isLoading, setForgot] = useForgot(onForgot, onError);
+    const [isLoading, setRequest] = useRequest(onForgot, onError, '/api/auth/forgot');
 
     return (
         <>
             <Head>
-                <title>Esqueci minha senha</title>
+                <title>Computoria: Esqueci minha senha</title>
             </Head>
             <div className="w-full flex flex-row h-screen overflow-hidden">
                 <div
@@ -83,7 +83,7 @@ const Forgot = () => {
                     </p>
                     <div className="w-full mb-4">
                     </div>
-                    <Form setForgot={setForgot} isLoading={isLoading}
+                    <Form setForgot={setRequest} isLoading={isLoading}
                         message={errorMessage} />
 
 

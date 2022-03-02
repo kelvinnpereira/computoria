@@ -7,12 +7,6 @@ module.exports = (sequelize, DataTypes) => {
     },
     nome: {
       type: DataTypes.STRING,
-      validate: {
-        len: {
-          args: [5, 100],
-          msg: 'O nome precisa ter entre 6 e 100 caracteres.'
-        }
-      }
     },
   }, {
     underscored: true,

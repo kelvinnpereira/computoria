@@ -1,11 +1,11 @@
 import { useState } from "react";
 import { post } from "../lib/api";
 
-export const useLogin = (success, error) => {
+export const useRequest = (success, error, url) => {
   const [isLoading, setIsLoading] = useState(false);
-  const setLogin = async (data) => {
+  const setRequest = async (data) => {
     setIsLoading(true);
-    const response = await post("/api/auth/login", data);
+    const response = await post(url, data);
     if (response.status === 200) {
       success(response.data);
     } else {
@@ -14,23 +14,7 @@ export const useLogin = (success, error) => {
     }
   };
 
-  return [isLoading, setLogin];
-};
-
-export const useSignup = (success, error) => {
-  const [isLoading, setIsLoading] = useState(false);
-  const setSignup = async (data) => {
-    setIsLoading(true);
-    const response = await post("/api/auth/signup", data);
-    if (response.status === 200) {
-      success(response.data);
-    } else {
-      setIsLoading(false);
-      error(response.data);
-    }
-  };
-
-  return [isLoading, setSignup];
+  return [isLoading, setRequest];
 };
 
 export const useCsrf = () => {
@@ -41,20 +25,3 @@ export const useCsrf = () => {
   }
   return [csrf, setCookie];
 }
-
-export const useForgot = (success, error) => {
-  const [isLoading, setIsLoading] = useState(false);
-  const setForgot = async (data) => {
-    setIsLoading(true);
-    //const response = await post("/api/auth/forgot", data);
-    const response = {status: 200}
-    if (response.status === 200) {
-      success(response.data);
-    } else {
-      setIsLoading(false);
-      error(response.data);
-    }
-  };
-
-  return [isLoading, setForgot];
-};

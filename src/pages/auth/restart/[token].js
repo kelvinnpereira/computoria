@@ -1,19 +1,20 @@
 import { useState } from "react";
-import Router from "next/router";
+import Router, { useRouter } from "next/router";
 import Head from "next/head";
 
-import Logo from "../../components/signup/logo";
-import Text from "../../components/signup/text";
-import Footer from "../../components/signup/footer";
-import Form from "../../components/signup/form";
-import { useRequest } from "../../hooks/auth";
-import Modal from '../../components/modals';
+import Logo from "../../../components/signup/logo";
+import Text from "../../../components/signup/text";
+import Footer from "../../../components/signup/footer";
+import Form from "../../../components/restart/form";
+import { useRequest } from "../../../hooks/auth";
+import Modal from '../../../components/modals';
 
-const SignUp = ({data}) => {
+const Member = () => {
+  const { query } = useRouter();
   const [errorMessage, setErrorMessage] = useState("");
   const [showModal, setModal] = useState(false);
 
-  const onSignup = (data) => {
+  const onRestart = (data) => {
     setModal(true);
   };
 
@@ -36,7 +37,7 @@ const SignUp = ({data}) => {
           </svg>
         </span>
         <div class="flex flex-col w-full mb-4">
-          <div class="text-lg mb-2 font-bold">O Cadastro foi realizado com sucesso</div>
+          <div class="text-lg mb-2 font-bold">A senha foi alterada com sucesso</div>
         </div>
       </div>)
   }
@@ -51,43 +52,35 @@ const SignUp = ({data}) => {
     );
   }
 
-  const [isLoading, setRequest] = useRequest(onSignup, onError, '/api/auth/signup');
+  const [isLoading, setRequest] = useRequest(onRestart, onError, '/api/auth/restart/' + query.token);
 
   return (
     <>
       <Head>
-        <title>Computoria: Cadastre-se</title>
+        <title>Computoria: Restaurar senha</title>
       </Head>
       <div className="w-full flex flex-row h-screen overflow-hidden">
         <div
           className="hidden lg:flex lg:flex-col w-1/2 text-white p-8 items-start justify-between relative bg-login-2">
-          <Logo/>
-          <Text/>
-          <Footer/>
+          <Logo />
+          <Text />
+          <Footer />
         </div>
         <div
           className="w-full lg:w-1/2 p-8 lg:p-24 flex flex-col items-start justify-center"
-          style={{background: "rgba(17,24,39)"}}>
-          <Modal title={'Computoria'} body={sucessBody()} open={showModal} setOpen={setModal} btns={buttonModal()}/>
+          style={{ background: "rgba(17,24,39)" }}>
+          <Modal title={'Computoria'} body={sucessBody()} open={showModal} setOpen={setModal} btns={buttonModal()} />
           <p className="text-2xl font-bold text-blue-500 mb-4">
-            Cadastre-se
+            Restaurar senha
           </p>
           <div className="w-full mb-4">
           </div>
-          <Form setSignup={setRequest} isLoading={isLoading}
-                message={errorMessage} cursos={data.cursos}/>
+          <Form setRestart={setRequest} isLoading={isLoading}
+            message={errorMessage}/>
         </div>
       </div>
     </>
   );
-};
-
-export const getServerSideProps = async (context) => {
-  const response = await fetch('http://localhost:3000/api/auth/signup');
-  const data = await response.json();
-  return {
-    props: {data: data},
-  }
 }
 
-export default SignUp;
+export default Member;

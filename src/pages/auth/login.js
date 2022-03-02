@@ -7,7 +7,7 @@ import Logo from "../../components/login/logo";
 import Text from "../../components/login/text";
 import Footer from "../../components/login/footer";
 import Form from "../../components/login/form";
-import { useLogin } from "../../hooks/auth";
+import { useRequest } from "../../hooks/auth";
 
 const LogIn = () => {
   const { query } = useRouter();
@@ -52,12 +52,12 @@ const LogIn = () => {
     }
   };
 
-  const [isLoading, setLogin] = useLogin(onLogin, onError);
+  const [isLoading, setRequest] = useRequest(onLogin, onError, '/api/auth/login');
 
   return (
     <>
       <Head>
-        <title>Computoria Login</title>
+        <title>Computoria: Login</title>
       </Head>
       <div className="w-full flex flex-row h-screen overflow-hidden">
         <div
@@ -74,7 +74,7 @@ const LogIn = () => {
           </p>
           <div className="w-full mb-4">
           </div>
-          <Form setLogin={setLogin} isLoading={isLoading}
+          <Form setLogin={setRequest} isLoading={isLoading}
                 message={errorMessage}/>
           <div className="pt-4 pb-4 flex flex-row">
             <span

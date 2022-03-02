@@ -7,17 +7,21 @@ const errorController = require('../app/controllers/error');
 //mainController
 router.get('/', mainController.index);
 router.get('/home', mainController.home);
+router.get('/invalid', mainController.invalid);
 
 //authController
-router.get ('/auth/signup'    , authController.signup);
-router.get ('/api/auth/signup', authController.api_signup);
-router.post('/api/auth/signup', authController.api_signup);
-router.get ('/auth/login'     , authController.login);
-router.get ('/api/auth/login' , authController.api_login);
-router.post('/api/auth/login' , authController.api_login);
-router.get ('/auth/logout'    , authController.logout);
-router.get ('/auth/forgot'    , authController.forgot);
-router.post('/api/auth/forgot', authController.api_forgot);
+router.get ('/auth/signup'            , authController.signup);
+router.get ('/api/auth/signup'        , authController.api_signup);
+router.post('/api/auth/signup'        , authController.api_signup);
+router.get ('/auth/login'             , authController.login);
+router.get ('/api/auth/login'         , authController.api_login);
+router.post('/api/auth/login'         , authController.api_login);
+router.get ('/auth/logout'            , authController.logout);
+router.get ('/auth/forgot'            , authController.forgot);
+router.get ('/auth/restart/:token'    , authController.restart);
+router.post('/api/auth/restart/:token', authController.api_restart);
+router.post('/api/auth/forgot'        , authController.api_forgot);
+
 
 //errorController
 router.get ('/404', errorController.not_found);
