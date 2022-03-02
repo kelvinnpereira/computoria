@@ -1,8 +1,6 @@
 import axios from "axios";
 
-const HOST = `http://${(typeof window !== "undefined")
-  ? window.location.host
-  : "localhost:3000"}`;
+const HOST = 'http://' + (process.env?.URL ? process.env.URL : "localhost:3000");
 
 const server = axios.create({
   baseURL: HOST,
