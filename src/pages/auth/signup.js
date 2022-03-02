@@ -8,6 +8,7 @@ import Footer from "../../components/signup/footer";
 import Form from "../../components/signup/form";
 import { useRequest } from "../../hooks/auth";
 import Modal from '../../components/modals';
+import { get } from "../../lib/api";
 
 const SignUp = ({data}) => {
   const [errorMessage, setErrorMessage] = useState("");
@@ -83,8 +84,8 @@ const SignUp = ({data}) => {
 };
 
 export const getServerSideProps = async (context) => {
-  const response = await fetch('http://localhost:3000/api/auth/signup');
-  const data = await response.json();
+  const response = await get('/api/auth/signup');
+  const data = response.data;
   return {
     props: {data: data},
   }
