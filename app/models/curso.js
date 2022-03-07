@@ -16,6 +16,7 @@ module.exports = (sequelize, DataTypes) => {
   curso.associate = function(models) {
     curso.belongsTo(models.area, {foreignKey: 'id_area'});
     curso.hasMany(models.usuario, {foreignKey: 'sigla_curso'});
+    curso.belongsToMany(models.disciplina, {through: 'disciplina_curso'});
   };
   return curso;
 };

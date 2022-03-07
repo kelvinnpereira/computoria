@@ -27,10 +27,11 @@ module.exports = {
     api_login: async (req, res) => {
         if (req.route.methods.post) {
             let user = undefined;
-            if (/^\d+$/.test(req.body.username)) {
+            let username = req.body.username.replace(/[^\d]+/g, '');
+            if (/^\d+$/.test(username)) {
                 user = await Usuario.findOne({
                     where: {
-                        cpf: req.body.username,
+                        cpf: username,
                     }
                 });
             } else {
@@ -76,14 +77,13 @@ module.exports = {
             });
         } else if (req.route.methods.post){
             try {
-                console.log(req.body);
                 bcrypt.genSalt(10, function (err, salt) {
                     bcrypt.hash(req.body.senha, salt, async (err, hash) => {
                         if (!err) {
                             let curso = await Curso.findOne({where: {nome: req.body.curso}});
                             await Usuario.create({
                                 nome: req.body.nome,
-                                cpf: req.body.cpf,
+                                cpf: req.body.cpf.replace(/[^\d]+/g, ''),
                                 email: req.body.email,
                                 matricula: req.body.matricula,
                                 senha: hash,
@@ -161,7 +161,7 @@ module.exports = {
                     from: email.user,
                     to: user.email,
                     subject: 'Computoria: Recuperação de senha',
-                    text: 'http://localhost:3000/auth/restart/' + token
+                    text: 'http://' + (process.env?.URL ? process.env.URL : "localhost:3000") + '/auth/restart/' + token
                 };
                 await MudarSenha.create({
                     cpf: user.cpf,

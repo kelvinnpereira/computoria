@@ -3,6 +3,8 @@ import Alert from "../alerts";
 import { useForm } from "react-hook-form";
 import { FaSpinner } from "react-icons/fa";
 import { useCsrf } from "../../hooks/auth";
+import cpf from "cpf";
+import * as email from 'email-validator';
 
 const Form = ({ message = null, setSignup, isLoading , cursos}) => {
   const [csrf, setCsrf] = useCsrf(null);
@@ -64,7 +66,10 @@ const Form = ({ message = null, setSignup, isLoading , cursos}) => {
                   required: 'Insira seu CPF',
                   minLength: {
                     value: 11,
-                    message: 'Seu CPF deve ter 11 caracteres'
+                    message: 'Seu CPF deve ter 11 caracteres',
+                  },
+                  validate: (value) => {
+                    return cpf.isValid(value) || "CPF inválido"
                   }
                 })}
                 name="cpf"
@@ -87,6 +92,9 @@ const Form = ({ message = null, setSignup, isLoading , cursos}) => {
                   minLength: {
                     value: 10,
                     message: 'Seu E-mail deve ter pelo menos 10 caracteres'
+                  },
+                  validate: (value) => {
+                    return email.validate(value) || "E-mail inválido"
                   }
                 })}
                 name="email"

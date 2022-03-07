@@ -25,7 +25,7 @@ module.exports = (sequelize, DataTypes) => {
     freezeTableName: true,
   });
   usuario.associate = function(models) {
-    usuario.belongsTo(models.curso, {foreignKey: 'sigla_curso' , as: 'sigla_curso_fk'});
+    usuario.belongsTo(models.curso, {foreignKey: 'sigla_curso'});
   };
   return usuario;
 };

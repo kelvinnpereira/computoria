@@ -5,9 +5,12 @@ const authController = require('../app/controllers/auth');
 const errorController = require('../app/controllers/error');
 
 //mainController
-router.get('/', mainController.index);
-router.get('/home', mainController.home);
-router.get('/invalid', mainController.invalid);
+router.get('/'                   , mainController.index);
+router.get('/home'               , mainController.home);
+router.get('/invalid'            , mainController.invalid);
+router.get ('/cursos'            , mainController.cursos);
+router.get ('/disciplinas'       , mainController.disciplinas);
+router.get ('/disciplinas/:curso', mainController.disciplinas);
 
 //authController
 router.get ('/auth/signup'            , authController.signup);
@@ -21,7 +24,6 @@ router.get ('/auth/forgot'            , authController.forgot);
 router.get ('/auth/restart/:token'    , authController.restart);
 router.post('/api/auth/restart/:token', authController.api_restart);
 router.post('/api/auth/forgot'        , authController.api_forgot);
-
 
 //errorController
 router.get ('/404', errorController.not_found);
