@@ -4,6 +4,8 @@ const Op = Sequelize.Op
 const Curso = models.curso;
 const Disciplina = models.disciplina;
 const DisciplinaCurso = models.disciplina_curso;
+const Proficiencia = models.proficiencia;
+const Improficiencia = models.improficiencia;
 
 const next = require('next');
 const dev = process.env.NODE_ENV?.trim() == 'development';
@@ -78,10 +80,84 @@ const disciplinas = async (req, res) => {
     res.status(500);
 }
 
+const proficiencia = async (req, res) => {
+    if (req.session.user) {
+        if (req.route.methods.get) {
+            await Disciplina.findAll({
+                where: {
+                    sigla: {
+                        [Op.eq]: Sequelize.col('sigla_disciplina')
+                    }
+                },
+                include: {
+                    model: Proficiencia,
+                    attributes: [],
+                    where : {
+                        cpf: {
+                            [Op.eq]: req.session.user
+                        }
+                    }
+                }
+            })
+        } else if (req.route.methods.post) {
+            await Proficiencia.bulkCreate(
+                req.body.disciplinas.map((value) => {
+                    return {
+                        cpf: req.session.user,
+                        sigla_disciplina: value
+                    }
+                })
+            )
+        } else {
+            res.status(500);
+        }
+    } else {
+        res.status(500);
+    }
+}
+
+const improficiencia = async (req, res) => {
+    if (req.session.user) {
+        if (req.route.methods.get) {
+            await Disciplina.findAll({
+                where: {
+                    sigla: {
+                        [Op.eq]: Sequelize.col('sigla_disciplina')
+                    }
+                },
+                include: {
+                    model: Improficiencia,
+                    attributes: [],
+                    where : {
+                        cpf: {
+                            [Op.eq]: req.session.user
+                        }
+                    }
+                }
+            })
+        } else if (req.route.methods.post) {
+            await Improficiencia.bulkCreate(
+                req.body.disciplinas.map((value) => {
+                    return {
+                        cpf: req.session.user,
+                        sigla_disciplina: value
+                    }
+                })
+            )
+        } else {
+            res.status(500);
+        }
+    } else {
+        res.status(500);
+    }
+}
+
 module.exports = {
     index: index,
     home: home,
     invalid: invalid,
     cursos: cursos,
-    disciplinas: disciplinas
+    disciplinas: disciplinas,
+    proficiencia: proficiencia,
+    improficiencia: improficiencia
 }

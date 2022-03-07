@@ -5,12 +5,16 @@ const authController = require('../app/controllers/auth');
 const errorController = require('../app/controllers/error');
 
 //mainController
-router.get('/'                   , mainController.index);
-router.get('/home'               , mainController.home);
-router.get('/invalid'            , mainController.invalid);
+router.get ('/'                  , mainController.index);
+router.get ('/home'              , mainController.home);
+router.get ('/invalid'           , mainController.invalid);
 router.get ('/cursos'            , mainController.cursos);
 router.get ('/disciplinas'       , mainController.disciplinas);
 router.get ('/disciplinas/:curso', mainController.disciplinas);
+router.get ('/proficiencia'      , mainController.proficiencia);
+router.get ('/improficiencia'    , mainController.improficiencia);
+router.post('/proficiencia'      , mainController.proficiencia);
+router.post('/improficiencia'    , mainController.improficiencia);
 
 //authController
 router.get ('/auth/signup'            , authController.signup);

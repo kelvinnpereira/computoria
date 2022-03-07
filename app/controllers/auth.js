@@ -26,32 +26,45 @@ module.exports = {
 
     api_login: async (req, res) => {
         if (req.route.methods.post) {
-            let user = undefined;
             let username = req.body.username.replace(/[^\d]+/g, '');
             if (/^\d+$/.test(username)) {
-                user = await Usuario.findOne({
+                await Usuario.findOne({
                     where: {
                         cpf: username,
                     }
+                }).then(async (sucess) => {
+                    if (sucess) {
+                        bcrypt.compare(req.body.password, sucess.senha, (err, ok) => {
+                            if (ok) {
+                                req.session.user = sucess.cpf;
+                                res.status(200).send({redirect: '/home'});
+                            } else {
+                                res.status(500).send({error: 'Senha incorreta'});
+                            }
+                        });
+                    } else {
+                        res.status(500).send({error: 'Usuario não encontrado'});
+                    }
                 });
             } else {
-                user = await Usuario.findOne({
+                await Usuario.findOne({
                     where: {
                         email: req.body.username,
                     }
-                });
-            }
-            if (user) {
-                bcrypt.compare(req.body.password, user.senha, (err, ok) => {
-                    if (ok) {
-                        req.session.user = user.email;
-                        res.status(200).send({redirect: '/home'});
+                }).then(async (sucess) => {
+                    if (sucess) {
+                        bcrypt.compare(req.body.password, sucess.senha, (err, ok) => {
+                            if (ok) {
+                                req.session.user = sucess.cpf;
+                                res.status(200).send({redirect: '/home'});
+                            } else {
+                                res.status(500).send({error: 'Senha incorreta'});
+                            }
+                        });
                     } else {
-                        res.status(500).send({error: 'Senha incorreta'});
+                        res.status(500).send({error: 'Usuario não encontrado'});
                     }
-                });
-            } else {
-                res.status(500).send({error: 'Usuario não encontrado'});
+                });;
             }
         } else {
             res.status(404);
