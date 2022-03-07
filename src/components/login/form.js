@@ -3,6 +3,8 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import { FaSpinner } from "react-icons/fa";
 import { useCsrf } from "../../hooks/auth";
+import cpf from "cpf";
+import * as email from 'email-validator';
 
 const Form = ({ message = null, setLogin, isLoading }) => {
   const [csrf, setCsrf] = useCsrf(null);
@@ -37,6 +39,16 @@ const Form = ({ message = null, setLogin, isLoading }) => {
               <input
                 ref={register({
                   required: 'Insira seu CPF ou E-mail',
+                  validate: (value) => {
+                    let username = value.replace(/[^\d]+/g, '');
+                    if (/^\d+$/.test(username)) {
+                      return cpf.isValid(username) || "CPF inválido"
+                    } else if (value.includes('@')) {
+                      return email.validate(value) || "E-mail inválido"
+                    } else {
+                      return "Usuário inválido"
+                    } 
+                  }
                 })}
                 name="username"
                 type="text"

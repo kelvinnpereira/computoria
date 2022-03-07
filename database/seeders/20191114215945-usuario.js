@@ -5,8 +5,8 @@ module.exports = {
     return queryInterface.bulkInsert('usuario', [
       {
         nome: 'Kelvinn Pereira',
-        cpf: '12345678911',
-        matricula: '12345678',
+        cpf: '55381028075',
+        matricula: '87654321',
         email: 'kelvinn.nunes.p@gmail.com',
         senha: '$2a$10$JLDHsB3z1eFH.sRwJLGMEuqUwwHeTpAXDvRgNkCE3yDHxvWolrriK',
         sigla_curso: 'IE17',
@@ -15,9 +15,9 @@ module.exports = {
       },
       {
         nome: 'Pedro Souza',
-        cpf: '12345678910',
+        cpf: '28635138007',
         email: 'pedro@mail.com',
-        matricula: '12345679',
+        matricula: '87654329',
         senha: '$2a$10$6abk7e6RUOjUGxAqsr30IuLheDqAw47zCVShOQe0KrPA9CNsKdGZi',
         sigla_curso: 'IE17',
         created_at: new Date(new Date()+"+0"),

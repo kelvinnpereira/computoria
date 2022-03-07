@@ -33,7 +33,7 @@ const Form = ({ message = null, setForgot, isLoading }) => {
           <div className="w-full">
 
             <div className="form-element" key="container-0">
-              <div className="form-label text-white">Insira seu email ou CPF receber o e-mail de recuperação.</div>
+              <div className="form-label text-white">Insira seu email ou CPF para receber o e-mail de recuperação.</div>
               <input
                 ref={register({
                   required: 'Insira seu CPF ou E-mail',

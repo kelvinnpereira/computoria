@@ -2,13 +2,13 @@
 
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    return queryInterface.addConstraint('usuario', {
+    return queryInterface.addConstraint('mudar_senha', {
       type: 'foreign key',
-      fields: ['sigla_curso'],
-      name: 'cpf_sigla_fk',
+      fields: ['cpf'],
+      name: 'mudar_senha_cpf_fk',
       references: {
-        table: 'curso',
-        field: 'sigla'
+        table: 'usuario',
+        field: 'cpf'
       },
       onDelete: 'cascade',
       onUpdate: 'cascade'
@@ -17,8 +17,8 @@ module.exports = {
 
   down: (queryInterface, Sequelize) => {
     return queryInterface.removeConstraint(
-      'usuario',
-      'usuario_cpf_sigla_fk'
+      'mudar_senha',
+      'mudar_senha_cpf_fk'
     );
   }
 };
