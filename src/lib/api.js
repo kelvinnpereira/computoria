@@ -18,6 +18,10 @@ const put = (uri, data, config = {}) => {
 };
 
 const post = (uri, data, config = {}) => {
+  console.log('post url: ' + HOST);
+  console.log('post url: ' + process.env?.URL);
+  console.log('post url: ' + process.env?.HOST);
+  console.log('post url: ' + process.env?.host);
   return server.post(uri, data, config);
 };
 
