@@ -121,7 +121,7 @@ const Form = ({ message = null, setSignup, isLoading , cursos}) => {
                 }`}>
                 {cursos.map((option, i) => (
                   <option key={i} value={option.nome}>
-                    {option.nome}
+                    {option.sigla + ' - ' + option.nome}
                   </option>
                 ))}
               </select>

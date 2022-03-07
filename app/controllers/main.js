@@ -98,7 +98,9 @@ const proficiencia = async (req, res) => {
                         }
                     }
                 }
-            })
+            }).then((proficiencia) => {
+                res.status(200).send({proficiencia: proficiencia});
+            });
         } else if (req.route.methods.post) {
             await Proficiencia.bulkCreate(
                 req.body.disciplinas.map((value) => {
@@ -134,7 +136,9 @@ const improficiencia = async (req, res) => {
                         }
                     }
                 }
-            })
+            }).then((improficiencia) => {
+                res.status(200).send({improficiencia: improficiencia});
+            });
         } else if (req.route.methods.post) {
             await Improficiencia.bulkCreate(
                 req.body.disciplinas.map((value) => {

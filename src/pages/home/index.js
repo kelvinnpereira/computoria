@@ -32,8 +32,6 @@ const Index = () => {
     </>
   );
 
-  const data = [];
-
   return (
     <>
       <Head>
@@ -48,4 +46,5 @@ const Index = () => {
     </>
   );
 };
+
 export default Index;
