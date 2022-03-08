@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const HOST = 'http://' + (process.env?.URL ? process.env.URL : "localhost:3000");
+const HOST = 'http://' + (process.env?.NEXT_PUBLIC_URL ? process.env.NEXT_PUBLIC_URL : "localhost:3000");
 
 const server = axios.create({
   baseURL: HOST,
@@ -18,11 +18,7 @@ const put = (uri, data, config = {}) => {
 };
 
 const post = (uri, data, config = {}) => {
-  console.log('post url: ' + HOST);
-  console.log('post url: ' + process.env?.URL);
-  console.log('post url: ' + process.env?.HOST);
-  console.log('post url: ' + process.env?.host);
   return server.post(uri, data, config);
 };
 
-export { get, post, put, server };
+export { get, post, put, server, HOST};

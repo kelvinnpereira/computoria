@@ -9,7 +9,6 @@ import { BiWrench } from "react-icons/bi";
 import { BsQuestionCircle } from "react-icons/bs";
 import { CgTemplate } from "react-icons/cg";
 import { shallowEqual, useSelector } from "react-redux";
-import { HOST } from "../../lib/requirement";
 import Router from "next/router";
 
 const Apps = () => {

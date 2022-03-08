@@ -2,7 +2,7 @@ import { FiSearch } from "react-icons/fi";
 import { shallowEqual, useSelector } from "react-redux";
 import { useState } from "react";
 import popupCenter from "../../functions/popup";
-import { HOST } from "../../lib/requirement";
+import { HOST } from "../../lib/api";
 
 const Search = () => {
   const [text, setText] = useState("");
