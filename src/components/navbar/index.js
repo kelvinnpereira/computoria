@@ -4,12 +4,7 @@ import { FiSettings, FiMenu } from "react-icons/fi";
 
 import DropdownApps from "./dropdown-app";
 import DropdownAccount from "./dropdown-account";
-import DropdownNotification from "./dropdown-notification";
 import Search from "./search";
-import { usePush } from "../../hooks/push";
-import { useRequirementWebsocket } from "../../hooks/websocket";
-import { useFetch } from "../../hooks/fetch";
-import DropdownDevices from "./dropdown-device";
 
 const Navbar = () => {
   const { config, auth } = useSelector(

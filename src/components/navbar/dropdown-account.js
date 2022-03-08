@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import AccountLinks from "./account-links";
 import { shallowEqual, useSelector } from "react-redux";
-import { BASE_HOST } from "../../lib/requirement";
+import { HOST } from "../../lib/api";
 
 const DropdownAccount = ({ emailCount }) => {
   const [hidden, setHidden] = useState(true);
@@ -14,7 +14,7 @@ const DropdownAccount = ({ emailCount }) => {
   );
 
   const avatarImg = auth?.username
-    ? `${BASE_HOST}/media/avatar_${auth?.username.replace(".", "_")}.jpg`
+    ? `${HOST}/media/avatar_${auth?.username.replace(".", "_")}.jpg`
     : "/images/avatar_default.png";
 
   const buttonRef = useRef(null);
