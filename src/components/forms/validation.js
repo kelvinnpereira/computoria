@@ -9,8 +9,6 @@ const FormValidation = ({ items, onSubmit, alerts, isLoading = false }) => {
   const senha = useRef({});
   senha.current = watch("senha", "");
   const onSubmitFn = data => {
-    console.log('onSubmitFn');
-    console.log(onSubmit);
     if (onSubmit) {
       onSubmit(data);
     }
