@@ -4,8 +4,8 @@
   "description": "Trabalho prático de PES",
   "main": "app.js",
   "scripts": {
-    "start": "set APP_ENV=production && nodemon app.js",
-    "startd": "set APP_ENV=development && nodemon app.js",
+    "start": "nodemon app.js",
+    "startd": "set NODE_ENV=development && nodemon app.js",
     "next": "next start",
     "dev": "next dev",
     "build": "next build",
@@ -14,7 +14,7 @@
     "seed": "npx sequelize-cli db:seed:all",
     "drop": "npx sequelize db:drop",
     "create": "npx sequelize db:create",
-    "dball": "node ./database/generate.js && npm run drop && npm run create && npm run migrate && npm run seed"
+    "dball": "npm run drop && npm run create && npm run migrate && npm run seed"
   },
   "author": "kelvinnpereira",
   "license": "ISC",
@@ -38,7 +38,6 @@
     "color-string": "^1.9.0",
     "cookie-cutter": "^0.2.0",
     "cookie-parser": "^1.4.6",
-    "cookie-session": "^2.0.0",
     "core-js": "^3.21.1",
     "cpf": "^2.0.1",
     "csurf": "^1.11.0",
@@ -52,6 +51,7 @@
     "eslint-plugin-react": "^7.21.5",
     "eslint-plugin-react-hooks": "^4.2.0",
     "express": "^4.17.2",
+    "express-session": "^1.17.2",
     "faker": "^5.1.0",
     "glob-parent": "^5.1.2",
     "jquery": "^3.6.0",

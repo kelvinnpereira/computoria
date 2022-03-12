@@ -8,10 +8,10 @@ const router = require('./config/routes');
 const cookieParser = require('cookie-parser');
 const csurf = require('csurf');
 const uuid = require('uuid').v4;
-const session = require('cookie-session');
+const session = require('express-session');
 
-const dev = process.env.APP_ENV?.trim() != 'production';
-const app = next({ dev });
+const dev = process.env.NODE_ENV?.trim() == 'development';
+const app = next({dev});
 const handle = app.getRequestHandler();
 
 server.use(express.urlencoded({ extended: false }));
@@ -20,9 +20,12 @@ server.use(cookieParser());
 server.use(csurf({ cookie: true }));
 server.use(logger('short'));
 server.use(session({
-	name: 'session',
+	genid: (req) => {
+		return uuid()
+	},
 	secret: 'Hi9Cf#mK98',
-	maxAge: 24 * 60 * 60 * 1000
+	resave: false,
+	saveUninitialized: true,
 }));
 
 server.use('/css', [
@@ -69,13 +72,14 @@ server.use('/', (req, res, next) => {
 });
 
 app.prepare().then(() => {
-	server.use(router);
-
+	server.use(router)
+    
 	server.listen(port, (err) => {
 		if (err) throw err;
 		console.log('> Ready on http://localhost:' + port);
 	})
-}).catch((ex) => {
-	console.error(ex.stack);
-	process.exit(1);
+})
+.catch((ex) => {
+  console.error(ex.stack);
+  process.exit(1);
 });
