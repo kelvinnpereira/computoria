@@ -72,8 +72,8 @@ module.exports = {
     },
 
     logout: async (req, res) => {
-        if (req.session.user) {
-            req.session.destroy();
+        if (req.session.user && req.route.methods.get) {
+            req.session.user = null;
             handle(req, res);
         } else {
             res.redirect('/home');
@@ -106,8 +106,9 @@ module.exports = {
                                 res.status(200).send({redirect: '/auth/login'});
                             }).catch((error) => {
                                 console.log('erro em criar usuario');
-                                console.log(error.parent.sqlMessage);
-                                res.status(500).send({error: error.parent.sqlMessage});
+                                let msg = error?.errors[0]?.message.includes('PRIMARY must be unique') ? 'Este CPF já está sendo usado!': error?.errors[0]?.message;
+                                console.log(msg);
+                                res.status(500).send({error: msg});
                             });
                         } else {
                             console.log('error in bcrypt:' + err);
@@ -122,10 +123,10 @@ module.exports = {
         }
     },
 
+    //console.log(req.headers, req.cookies, req.path, req.method, req.headers.cookies);
     signup: async (req, res) => {
         if (!req.session.user && req.route.methods.get){
             res.cookie('XSRF-TOKEN', req.csrfToken());
-            //console.log(req.headers, req.cookies, req.path, req.method, req.headers.cookies);
             handle(req, res);
         } else {
             res.redirect('/home');
@@ -143,7 +144,6 @@ module.exports = {
 
     api_forgot: async (req, res) => {
         if (req.route.methods.post) {
-            console.log(req.body);
             let username = req.body.username;
             let user = undefined;
             if (/^\d+$/.test(username)) {
@@ -174,7 +174,7 @@ module.exports = {
                     from: email.user,
                     to: user.email,
                     subject: 'Computoria: Recuperação de senha',
-                    text: 'http://' + (process.env?.URL ? process.env.URL : "localhost:3000") + '/auth/restart/' + token
+                    text: (process.env?.URL ? 'https://' + process.env.URL : "http://localhost:3000") + '/auth/restart/' + token
                 };
                 await MudarSenha.create({
                     cpf: user.cpf,
@@ -210,9 +210,10 @@ module.exports = {
             });
             if(!request?.cpf || Date.now() - request.createdAt > 300000) {
                 return res.redirect('/invalid');
+            } else {
+                res.cookie('XSRF-TOKEN', req.csrfToken());
+                handle(req, res);
             }
-            res.cookie('XSRF-TOKEN', req.csrfToken());
-            handle(req, res);
         } else {
             res.redirect('/home');
         }

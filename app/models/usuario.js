@@ -10,9 +10,15 @@ module.exports = (sequelize, DataTypes) => {
     },
     matricula: {
       type: DataTypes.STRING,
+      unique: {
+        msg: 'Este número de matrícula já está em uso!'
+      },
     },
     email: {
       type: DataTypes.STRING,
+      unique: {
+        msg: 'Este E-mail já está em uso!'
+      },
     },
     senha: {
       type: DataTypes.STRING,

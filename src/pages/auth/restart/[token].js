@@ -76,7 +76,7 @@ const Member = () => {
           <div className="w-full mb-4">
           </div>
           <Form setRestart={setRequest} isLoading={isLoading}
-            message={errorMessage}/>
+            message={errorMessage} />
         </div>
       </div>
     </>
