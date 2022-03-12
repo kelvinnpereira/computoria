@@ -8,8 +8,7 @@ const Proficiencia = models.proficiencia;
 const Improficiencia = models.improficiencia;
 
 const next = require('next');
-const dev = process.env.NODE_ENV?.trim() == 'development';
-const app = next({dev});
+const app = next({dev: false});
 const handle = app.getRequestHandler();
 
 const index = async function (req, res) {

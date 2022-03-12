@@ -1,6 +1,5 @@
 const next = require('next');
-const dev = process.env.NODE_ENV?.trim() == 'development';
-const app = next({dev});
+const app = next({dev: false});
 const handle = app.getRequestHandler();
 
 const not_found = async (req, res) => {
