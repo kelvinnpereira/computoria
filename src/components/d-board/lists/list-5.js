@@ -1,7 +1,7 @@
-import {FaBox} from 'react-icons/fa'
-import {CircularBadge} from '../../badges'
+import { FaBox } from 'react-icons/fa'
+import { CircularBadge } from '../../badges'
 
-const List5 = ({items}) => (
+const List5 = ({ items }) => (
   <div className="w-full mb-4">
     {items.map((item, i) => (
       <div
@@ -24,7 +24,7 @@ const List5 = ({items}) => (
         </div>
         <div className="flex-shrink-0">
           <CircularBadge size="sm" color="bg-indigo-500 text-white">
-            1
+            {i + 1}
           </CircularBadge>
         </div>
       </div>

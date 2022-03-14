@@ -54,6 +54,19 @@ const initialState = [
         ]
       },
       {
+        url: "/proficiencia/listar",
+        icon: <CgTemplate size={20}/>,
+        title: "Listar Proficiencia",
+        items: [
+          {
+            url: "/home",
+            title: "Dashboard",
+            items: menuLevels.tasks,
+            onlyChildren: true
+          }
+        ]
+      },
+      {
         url: "/improficiencia/adicionar",
         icon: <CgListTree size={20}/>,
         title: "Adicionar Improficiencia",
@@ -70,6 +83,19 @@ const initialState = [
         url: "/improficiencia/remover",
         icon: <FaRocket size={20}/>,
         title: "Remover improficiencia",
+        items: [
+          {
+            url: "/home",
+            title: "Dashboard",
+            items: menuLevels.pre_releases,
+            onlyChildren: true
+          }
+        ]
+      },
+      {
+        url: "/improficiencia/listar",
+        icon: <MdBusiness size={20}/>,
+        title: "Listar improficiencia",
         items: [
           {
             url: "/home",

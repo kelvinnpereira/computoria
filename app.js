@@ -7,11 +7,8 @@ const port = process.env.PORT || 3000;
 const router = require('./config/routes');
 const cookieParser = require('cookie-parser');
 const csurf = require('csurf');
-const uuid = require('uuid').v4;
 const session = require('cookie-session');
-
 const app = next({ dev: false });
-const handle = app.getRequestHandler();
 
 server.use(express.urlencoded({ extended: false }));
 server.use(express.json());

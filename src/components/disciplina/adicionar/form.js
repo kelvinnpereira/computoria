@@ -49,7 +49,10 @@ const Form = ({ message = null, setAction, isLoading, cursos }) => {
                     setDisciplinas(response.data.disciplinas);
                   }
                 }}
-                >
+              >
+                <option disabled selected value>
+                  -- Selecione um curso --
+                </option>
                 {cursos.map((option, i) => (
                   <option key={i} value={option.sigla}>
                     {option.sigla + ' - ' + option.nome}
@@ -69,8 +72,8 @@ const Form = ({ message = null, setAction, isLoading, cursos }) => {
                   <label key={`checkbox-${j}`}
                     className="flex items-center justify-start space-x-2">
                     <input
-                      ref={register({ 
-                        required: true 
+                      ref={register({
+                        required: true
                       })}
                       type="checkbox"
                       value={`${option.sigla}`}

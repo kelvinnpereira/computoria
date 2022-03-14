@@ -96,7 +96,7 @@ const disciplinas = async (req, res) => {
 }
 
 const api_proficiencia = async (req, res) => {
-    if (req.session.user && req.route.methods.get) {
+    if (req.query.user && req.route.methods.get) {
         await Disciplina.findAll({
             where: {
                 sigla: {
@@ -108,7 +108,7 @@ const api_proficiencia = async (req, res) => {
                 attributes: [],
                 where: {
                     cpf: {
-                        [Op.eq]: req.session.user
+                        [Op.eq]: req.query.user
                     }
                 }
             }
@@ -119,7 +119,7 @@ const api_proficiencia = async (req, res) => {
             res.status(500).send({ error: error });
         });
     } else {
-        res.status(500);
+        res.status(500).send({error: 'Not loged in or not a get request'});
     }
 }
 
@@ -163,7 +163,7 @@ const api_proficiencia_remover = async (req, res) => {
 }
 
 const api_improficiencia = async (req, res) => {
-    if (req.session.user && req.route.methods.get) {
+    if (req.query.user && req.route.methods.get) {
         await Disciplina.findAll({
             where: {
                 sigla: {
@@ -175,7 +175,7 @@ const api_improficiencia = async (req, res) => {
                 attributes: [],
                 where: {
                     cpf: {
-                        [Op.eq]: req.session.user
+                        [Op.eq]: req.query.user
                     }
                 }
             }
@@ -183,7 +183,7 @@ const api_improficiencia = async (req, res) => {
             res.status(200).send({ disciplinas: disciplinas });
         });
     } else {
-        res.status(500);
+        res.status(500).send({error: 'Not loged in or not a get request'});
     }
 }
 
