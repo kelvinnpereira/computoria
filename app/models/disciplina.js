@@ -15,7 +15,10 @@ module.exports = (sequelize, DataTypes) => {
   });
   disciplina.associate = function(models) {
     disciplina.belongsTo(models.categoria, {foreignKey: 'id_categoria'});
-    disciplina.belongsToMany(models.curso, {through: 'disciplina_curso'});
+    disciplina.hasMany(models.disciplina_curso, {foreignKey: 'sigla_disciplina'});
+    disciplina.hasMany(models.proficiencia, {foreignKey: 'sigla_disciplina'});
+    disciplina.hasMany(models.improficiencia, {foreignKey: 'sigla_disciplina'});
+    disciplina.hasMany(models.monitor, {foreignKey: 'sigla_disciplina'});
   };
   return disciplina;
 };

@@ -5,16 +5,22 @@ const authController = require('../app/controllers/auth');
 const errorController = require('../app/controllers/error');
 
 //mainController
-router.get ('/'                  , mainController.index);
-router.get ('/home'              , mainController.home);
-router.get ('/invalid'           , mainController.invalid);
-router.get ('/cursos'            , mainController.cursos);
-router.get ('/disciplinas'       , mainController.disciplinas);
-router.get ('/disciplinas/:curso', mainController.disciplinas);
-router.get ('/proficiencia'      , mainController.proficiencia);
-router.get ('/improficiencia'    , mainController.improficiencia);
-router.post('/proficiencia'      , mainController.proficiencia);
-router.post('/improficiencia'    , mainController.improficiencia);
+router.get ('/'                      , mainController.index);
+router.get ('/home'                  , mainController.home);
+router.get ('/invalid'               , mainController.invalid);
+router.get ('/cursos'                , mainController.cursos);
+router.get ('/disciplinas'           , mainController.disciplinas);
+router.get ('/disciplinas/:curso'    , mainController.disciplinas);
+router.get ('/proficiencia/adicionar', mainController.proficiencia);
+router.get ('/proficiencia/remover'  , mainController.proficiencia);
+router.get ('/improficiencia/adicionar'    , mainController.improficiencia);
+router.get ('/improficiencia/remover'      , mainController.improficiencia);
+router.get ('/api/proficiencia/lista'      , mainController.api_proficiencia);
+router.get ('/api/improficiencia/lista'    , mainController.api_improficiencia);
+router.post('/api/proficiencia/adicionar'  , mainController.api_proficiencia_adicionar);
+router.post('/api/proficiencia/remover'    , mainController.api_proficiencia_remover);
+router.post('/api/improficiencia/adicionar', mainController.api_improficiencia_adicionar);
+router.post('/api/improficiencia/remover'  , mainController.api_improficiencia_remover);
 
 //authController
 router.get ('/auth/signup'            , authController.signup);

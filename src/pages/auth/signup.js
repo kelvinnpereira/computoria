@@ -5,10 +5,10 @@ import Head from "next/head";
 import Logo from "@src/components/signup/logo";
 import Text from "@src/components/signup/text";
 import Footer from "@src/components/signup/footer";
-import Form from "@src/components/signup/form";
+import Form from "../../components/signup/form";
 import { useRequest } from "@src/hooks/auth";
 import Modal from '@src/components/modals';
-import db from '@app/models/index';
+import { get } from '../../lib/api';
 
 const SignUp = ({ cursos }) => {
   const [errorMessage, setErrorMessage] = useState("");
@@ -85,9 +85,8 @@ const SignUp = ({ cursos }) => {
 export default SignUp;
 
 export const getServerSideProps = async (context) => {
-  const Curso = db.curso;
-  const data = await Curso.findAll();
+  const response = await get('/api/auth/signup');
   return {
-    props: { cursos: data}
+    props: { cursos: response.data.cursos },
   }
 }

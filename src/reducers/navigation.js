@@ -25,12 +25,12 @@ const menuLevels = getStorageLevel();
 
 const initialState = [
   {
-    title: "Computoria",
+    title: "Opções",
     items: [
       {
-        url: "/home",
+        url: "/proficiencia/adicionar",
         icon: <FiCompass size={20}/>,
-        title: "Computoria",
+        title: "Adicionar Proficiencia",
         items: [
           {
             url: "/home",
@@ -41,9 +41,9 @@ const initialState = [
         ]
       },
       {
-        url: "/home",
+        url: "/proficiencia/remover",
         icon: <HiOutlineDocumentSearch size={20}/>,
-        title: "Computoria",
+        title: "Remover Proficiencia",
         items: [
           {
             url: "/home",
@@ -54,9 +54,9 @@ const initialState = [
         ]
       },
       {
-        url: "/home",
+        url: "/improficiencia/adicionar",
         icon: <CgListTree size={20}/>,
-        title: "Computoria",
+        title: "Adicionar Improficiencia",
         items: [
           {
             url: "/home",
@@ -67,9 +67,9 @@ const initialState = [
         ]
       },
       {
-        url: "/home",
+        url: "/improficiencia/remover",
         icon: <FaRocket size={20}/>,
-        title: "Computoria",
+        title: "Remover improficiencia",
         items: [
           {
             url: "/home",

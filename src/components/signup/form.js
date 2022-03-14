@@ -120,7 +120,7 @@ const Form = ({ message = null, setSignup, isLoading , cursos}) => {
                   errors["curso"] ? "border border-red-500" : ""
                 }`}>
                 {cursos.map((option, i) => (
-                  <option key={i} value={option.nome}>
+                  <option key={i} value={option.sigla}>
                     {option.sigla + ' - ' + option.nome}
                   </option>
                 ))}

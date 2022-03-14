@@ -35,7 +35,7 @@ module.exports = {
                         bcrypt.compare(req.body.password, sucess.senha, (err, ok) => {
                             if (ok) {
                                 req.session.user = sucess.cpf;
-                                res.status(200).send({ redirect: '/home' });
+                                res.status(200).send({ username: sucess.cpf, redirect: '/home' });
                             } else {
                                 res.status(500).send({ error: 'Senha incorreta' });
                             }
@@ -54,7 +54,7 @@ module.exports = {
                         bcrypt.compare(req.body.password, sucess.senha, (err, ok) => {
                             if (ok) {
                                 req.session.user = sucess.cpf;
-                                res.status(200).send({ redirect: '/home' });
+                                res.status(200).send({ username: sucess.cpf, redirect: '/home' });
                             } else {
                                 res.status(500).send({ error: 'Senha incorreta' });
                             }
@@ -91,14 +91,13 @@ module.exports = {
                 bcrypt.genSalt(10, function (err, salt) {
                     bcrypt.hash(req.body.senha, salt, async (err, hash) => {
                         if (!err) {
-                            let curso = await Curso.findOne({ where: { nome: req.body.curso } });
                             await Usuario.create({
                                 nome: req.body.nome,
                                 cpf: req.body.cpf.replace(/[^\d]+/g, ''),
                                 email: req.body.email,
                                 matricula: req.body.matricula,
                                 senha: hash,
-                                sigla_curso: curso.sigla
+                                sigla_curso: req.body.curso
                             }).then((sucess) => {
                                 console.log('usuario criado com sucesso');
                                 res.status(200).send({ redirect: '/auth/login' });
