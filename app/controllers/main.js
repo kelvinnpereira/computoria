@@ -135,10 +135,10 @@ const api_proficiencia_adicionar = async (req, res) => {
         ).then(() => {
             res.status(200).send({ msg: 'ok' });
         }).catch(() => {
-            res.status(500).send({ error: 'Uma das disciplinas selecionadas já estão em sua lista de proficiencia' })
+            res.status(500).send({ error: 'Umas das disciplinas selecionadas já estão em sua lista de proficiência' })
         });
     } else {
-        res.status(500);
+        res.status(500).send({error: 'Nenhuma disciplina selecionada'});
     }
 }
 
@@ -155,10 +155,10 @@ const api_proficiencia_remover = async (req, res) => {
             res.status(200).send({ msg: 'ok' });
         }).catch((error) => {
             console.log(error);
-            res.status(500).send({ error: 'Uma das disciplinas selecionadas já estão em sua lista de proficiencia' })
+            res.status(500).send({ error: 'Umas das disciplinas selecionadas não estão em sua lista de proficiência' })
         });
     } else {
-        res.status(500);
+        res.status(500).send({error: 'Nenhuma disciplina selecionada'});
     }
 }
 
@@ -199,10 +199,10 @@ const api_improficiencia_adicionar = async (req, res) => {
         ).then(() => {
             res.status(200).send({ msg: 'ok' });
         }).catch(() => {
-            res.status(500).send({ error: 'Uma das disciplinas selecionadas já estão em sua lista de proficiencia' })
+            res.status(500).send({ error: 'Umas das disciplinas selecionadas já estão em sua lista de improficiência' })
         });
     } else {
-        res.status(500);
+        res.status(500).send({error: 'Nenhuma disciplina selecionada'});
     }
 }
 
@@ -219,10 +219,10 @@ const api_improficiencia_remover = async (req, res) => {
             res.status(200).send({ msg: 'ok' });
         }).catch((error) => {
             console.log(error);
-            res.status(500).send({ error: 'Uma das disciplinas selecionadas já estão em sua lista de proficiencia' })
+            res.status(500).send({ error: 'Umas das disciplinas selecionadas não estão em sua lista de improficiência' })
         });
     } else {
-        res.status(500);
+        res.status(500).send({error: 'Nenhuma disciplina selecionada'});
     }
 }
 
