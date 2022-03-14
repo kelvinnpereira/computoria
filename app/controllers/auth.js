@@ -24,7 +24,7 @@ module.exports = {
 
     api_login: async (req, res) => {
         if (req.route.methods.post) {
-            let username = req.body.username.replace(/[^\d]+/g, '');
+            let username = /[a-zA-Z]/g.test(req.body.username) ? req.body.username : req.body.username.replace(/[^\d]+/g, '');
             if (/^\d+$/.test(username)) {
                 await Usuario.findOne({
                     where: {

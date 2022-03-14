@@ -40,7 +40,7 @@ const Form = ({ message = null, setLogin, isLoading }) => {
                 ref={register({
                   required: 'Insira seu CPF ou E-mail',
                   validate: (value) => {
-                    let username = value.replace(/[^\d]+/g, '');
+                    let username = /[a-zA-Z]/g.test(value) ? value : value.replace(/[^\d]+/g, '');
                     if (/^\d+$/.test(username)) {
                       return cpf.isValid(username) || "CPF inválido"
                     } else if (value.includes('@')) {
