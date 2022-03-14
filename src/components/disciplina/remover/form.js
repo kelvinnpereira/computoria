@@ -3,11 +3,10 @@ import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { FaSpinner } from "react-icons/fa";
 import { useCsrf } from "../../../hooks/auth";
-import { get } from '../../../lib/api';
 
 const Form = ({ message = null, setAction, isLoading, disciplinas }) => {
   const [csrf, setCsrf] = useCsrf(null);
-  const { handleSubmit, errors, register, watch } = useForm();
+  const { handleSubmit, errors, register } = useForm();
 
   useEffect(() => {
     setCsrf();
