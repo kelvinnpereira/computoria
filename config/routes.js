@@ -3,6 +3,7 @@ const router = express.Router();
 const mainController = require('../app/controllers/main');
 const authController = require('../app/controllers/auth');
 const errorController = require('../app/controllers/error');
+const usuarioController = require('../app/controllers/usuario');
 
 //mainController
 router.get ('/'                            , mainController.index);
@@ -36,6 +37,10 @@ router.get ('/auth/forgot'            , authController.forgot);
 router.get ('/auth/restart/:token'    , authController.restart);
 router.post('/api/auth/restart/:token', authController.api_restart);
 router.post('/api/auth/forgot'        , authController.api_forgot);
+
+router.get('/usuario/:matricula'    , usuarioController.usuario);
+router.get('/api/usuario/:matricula', usuarioController.api_usuario);
+router.get('/api/listar_tutores'    , usuarioController.listar_tutores);
 
 //errorController
 router.get ('/404', errorController.not_found);
