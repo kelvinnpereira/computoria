@@ -34,8 +34,8 @@ module.exports = {
                     if (sucess) {
                         bcrypt.compare(req.body.password, sucess.senha, (err, ok) => {
                             if (ok) {
-                                req.session.user = sucess.cpf;
-                                res.status(200).send({ username: sucess.cpf, redirect: '/home' });
+                                req.session.user = sucess.matricula;
+                                res.status(200).send({ username: sucess.matricula, redirect: '/home' });
                             } else {
                                 res.status(500).send({ error: 'Senha incorreta' });
                             }
@@ -53,8 +53,8 @@ module.exports = {
                     if (sucess) {
                         bcrypt.compare(req.body.password, sucess.senha, (err, ok) => {
                             if (ok) {
-                                req.session.user = sucess.cpf;
-                                res.status(200).send({ username: sucess.cpf, redirect: '/home' });
+                                req.session.user = sucess.matricula;
+                                res.status(200).send({ username: sucess.matricula, redirect: '/home' });
                             } else {
                                 res.status(500).send({ error: 'Senha incorreta' });
                             }
