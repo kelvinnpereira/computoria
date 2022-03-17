@@ -1,6 +1,7 @@
 const models = require('../models/index');
 const Sequelize = require('sequelize');
 const Op = Sequelize.Op
+const Usuario = models.usuario;
 const Curso = models.curso;
 const Disciplina = models.disciplina;
 const DisciplinaCurso = models.disciplina_curso;
@@ -105,6 +106,11 @@ const disciplinas = async (req, res) => {
 
 const api_proficiencia = async (req, res) => {
     if (req.query.user && req.route.methods.get) {
+        const user = await Usuario.findOne({
+            where: {
+                matricula: req.query.user
+            }
+        });
         await Disciplina.findAll({
             where: {
                 sigla: {
@@ -116,7 +122,7 @@ const api_proficiencia = async (req, res) => {
                 attributes: [],
                 where: {
                     cpf: {
-                        [Op.eq]: req.query.user
+                        [Op.eq]: user.cpf
                     }
                 }
             }
@@ -133,10 +139,15 @@ const api_proficiencia = async (req, res) => {
 
 const api_proficiencia_adicionar = async (req, res) => {
     if (req.session.user && req.route.methods.post && req.body?.disciplinas) {
+        const user = await Usuario.findOne({
+            where: {
+                matricula: req.session.user
+            }
+        });
         await Proficiencia.bulkCreate(
             req.body.disciplinas.map((value) => {
                 return {
-                    cpf: req.session.user,
+                    cpf: user.cpf,
                     sigla_disciplina: value
                 }
             })
@@ -152,9 +163,14 @@ const api_proficiencia_adicionar = async (req, res) => {
 
 const api_proficiencia_remover = async (req, res) => {
     if (req.session.user && req.route.methods.post && req.body?.disciplinas) {
+        const user = await Usuario.findOne({
+            where: {
+                matricula: req.session.user
+            }
+        });
         await Proficiencia.destroy({
             where: {
-                cpf: req.session.user,
+                cpf: user.cpf,
                 sigla_disciplina: [req.body.disciplinas.map((value) => {
                     return value
                 })]
@@ -172,6 +188,11 @@ const api_proficiencia_remover = async (req, res) => {
 
 const api_improficiencia = async (req, res) => {
     if (req.query.user && req.route.methods.get) {
+        const user = await Usuario.findOne({
+            where: {
+                matricula: req.query.user
+            }
+        });
         await Disciplina.findAll({
             where: {
                 sigla: {
@@ -183,7 +204,7 @@ const api_improficiencia = async (req, res) => {
                 attributes: [],
                 where: {
                     cpf: {
-                        [Op.eq]: req.query.user
+                        [Op.eq]: user.cpf
                     }
                 }
             }
@@ -197,10 +218,15 @@ const api_improficiencia = async (req, res) => {
 
 const api_improficiencia_adicionar = async (req, res) => {
     if (req.session.user && req.route.methods.post && req.body?.disciplinas) {
+        const user = await Usuario.findOne({
+            where: {
+                matricula: req.session.user
+            }
+        });
         await Improficiencia.bulkCreate(
             req.body.disciplinas.map((value) => {
                 return {
-                    cpf: req.session.user,
+                    cpf: user.cpf,
                     sigla_disciplina: value
                 }
             })
@@ -216,9 +242,14 @@ const api_improficiencia_adicionar = async (req, res) => {
 
 const api_improficiencia_remover = async (req, res) => {
     if (req.session.user && req.route.methods.post && req.body?.disciplinas) {
+        const user = await Usuario.findOne({
+            where: {
+                matricula: req.session.user
+            }
+        });
         await Improficiencia.destroy({
             where: {
-                cpf: req.session.user,
+                cpf: user.cpf,
                 sigla_disciplina: [req.body.disciplinas.map((value) => {
                     return value
                 })]
@@ -235,18 +266,18 @@ const api_improficiencia_remover = async (req, res) => {
 }
 
 module.exports = {
-    index: index,
-    home: home,
-    invalid: invalid,
-    cursos: cursos,
-    disciplinas: disciplinas,
-    proficiencia: proficiencia,
-    improficiencia: improficiencia,
-    api_proficiencia: api_proficiencia,
-    api_proficiencia_adicionar: api_proficiencia_adicionar,
-    api_proficiencia_remover: api_proficiencia_remover,
-    api_improficiencia: api_improficiencia,
-    api_improficiencia_adicionar: api_improficiencia_adicionar,
-    api_improficiencia_remover: api_improficiencia_remover,
-    perfil_atualizar: perfil_atualizar,
+    index,
+    home,
+    invalid,
+    cursos,
+    disciplinas,
+    proficiencia,
+    improficiencia,
+    api_proficiencia,
+    api_proficiencia_adicionar,
+    api_proficiencia_remover,
+    api_improficiencia,
+    api_improficiencia_adicionar,
+    api_improficiencia_remover,
+    perfil_atualizar
 }
