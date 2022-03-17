@@ -24,6 +24,14 @@ const home = async (req, res) => {
     }
 }
 
+const listTutors = async (req, res) => {
+    if (req.session.user && req.route.methods.get) {
+        handle(req, res);
+    } else {
+        res.redirect('/home');
+    }
+}
+
 const invalid = async (req, res) => {
     if (!req.session.user && req.route.methods.get) {
         handle(req, res);
@@ -271,4 +279,5 @@ module.exports = {
     api_improficiencia,
     api_improficiencia_adicionar,
     api_improficiencia_remover,
+    listTutors: listTutors,
 }
