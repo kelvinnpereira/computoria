@@ -82,7 +82,7 @@ const Index = ({ cursos }) => {
 export default Index;
 
 export const getServerSideProps = async (context) => {
-  const response = await get('/cursos');
+  const response = await get('/api/cursos');
   return {
     props: { cursos: response.data.cursos },
   }

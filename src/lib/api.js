@@ -21,4 +21,4 @@ const post = (uri, data, config = {}) => {
   return server.post(uri, data, config);
 };
 
-export { get, post, put, server, HOST};
+export { get, post, put, server, HOST };

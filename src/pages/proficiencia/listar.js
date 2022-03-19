@@ -25,11 +25,11 @@ const Index = ({ disciplinas }) => {
       </Head>
       <SectionTitle title="Proficiencia" subtitle="Listar" actions={actions} />
       <Widget>
-        <List1 items={disciplinas?.map((item)=> {
+        <List1 items={disciplinas?.map((item) => {
           return {
             title: item.sigla + " - " + item.nome
           }
-        })}/>
+        })} />
       </Widget>
     </>
   );
@@ -39,11 +39,7 @@ export default Index;
 
 export const getServerSideProps = async (context) => {
   const { req, res } = context;
-  const response = await get('/api/proficiencia/listar', {
-    params : {
-      user: req.session.user
-    }
-  });
+  const response = await get('/api/proficiencia/listar', { headers: { cookie: req.headers.cookie } });
   return {
     props: { disciplinas: response.data.disciplinas },
   }

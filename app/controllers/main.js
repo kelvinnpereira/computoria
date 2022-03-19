@@ -8,70 +8,6 @@ const DisciplinaCurso = models.disciplina_curso;
 const Proficiencia = models.proficiencia;
 const Improficiencia = models.improficiencia;
 
-const next = require('next');
-const app = next({ dev: false });
-const handle = app.getRequestHandler();
-
-const index = async function (req, res) {
-    res.redirect('/home');
-};
-
-const home = async (req, res) => {
-    if (req.session.user && req.route.methods.get) {
-        handle(req, res);
-    } else {
-        res.redirect('/auth/login');
-    }
-}
-
-const listTutors = async (req, res) => {
-    if (req.session.user && req.route.methods.get) {
-        handle(req, res);
-    } else {
-        res.redirect('/home');
-    }
-}
-
-const invalid = async (req, res) => {
-    if (!req.session.user && req.route.methods.get) {
-        handle(req, res);
-    } else {
-        res.redirect('/home');
-    }
-}
-
-const perfil = async (req, res) => {
-    if (req.session.user && req.route.methods.get) {
-        handle(req, res);
-    } else {
-        res.redirect('/home');
-    }
-}
-
-const perfil_atualizar = async (req, res) => {
-    if (req.session.user && req.route.methods.get) {
-        handle(req, res);
-    } else {
-        res.redirect('/home');
-    }
-}
-
-const proficiencia = async (req, res) => {
-    if (req.session.user && req.route.methods.get) {
-        handle(req, res);
-    } else {
-        res.redirect('/home');
-    }
-}
-
-const improficiencia = async (req, res) => {
-    if (req.session.user && req.route.methods.get) {
-        handle(req, res);
-    } else {
-        res.redirect('/home');
-    }
-}
-
 const cursos = async (req, res) => {
     if (req.route.methods.get) {
         let curso = await Curso.findAll();
@@ -104,8 +40,10 @@ const disciplinas = async (req, res) => {
                             }
                         }
                     });
+                    console.log('Disciplinas encontradas');
                     res.status(200).send({ disciplinas: disciplinas });
                 } else {
+                    console.log('Curso não encontrado');
                     res.status(500).send({ error: 'Curso não encontrado' });
                 }
             }).catch((error) => {
@@ -116,15 +54,16 @@ const disciplinas = async (req, res) => {
             disciplina = await Disciplina.findAll();
             res.status(200).send({ disciplina: disciplina });
         }
+    } else {
+        res.status(500);
     }
-    res.status(500);
 }
 
 const api_proficiencia = async (req, res) => {
-    if (req.query.user && req.route.methods.get) {
+    if (req.route.methods.get) {
         const user = await Usuario.findOne({
             where: {
-                matricula: req.query.user
+                matricula: req.user
             }
         });
         await Disciplina.findAll({
@@ -154,10 +93,10 @@ const api_proficiencia = async (req, res) => {
 }
 
 const api_proficiencia_adicionar = async (req, res) => {
-    if (req.session.user && req.route.methods.post && req.body?.disciplinas) {
+    if (req.route.methods.post && req.body?.disciplinas) {
         const user = await Usuario.findOne({
             where: {
-                matricula: req.session.user
+                matricula: req.user
             }
         });
         await Proficiencia.bulkCreate(
@@ -178,18 +117,22 @@ const api_proficiencia_adicionar = async (req, res) => {
 }
 
 const api_proficiencia_remover = async (req, res) => {
-    if (req.session.user && req.route.methods.post && req.body?.disciplinas) {
+    if (req.route.methods.post && req.body?.disciplinas) {
         const user = await Usuario.findOne({
             where: {
-                matricula: req.session.user
+                matricula: req.user
             }
         });
         await Proficiencia.destroy({
             where: {
                 cpf: user.cpf,
-                sigla_disciplina: [req.body.disciplinas.map((value) => {
-                    return value
-                })]
+                sigla_disciplina: [
+                    typeof req.body.disciplinas == 'string' ?
+                    req.body.disciplinas :
+                    req.body.disciplinas.map((value) => {
+                        return value
+                    })
+                ]
             }
         }).then(() => {
             res.status(200).send({ msg: 'ok' });
@@ -203,10 +146,10 @@ const api_proficiencia_remover = async (req, res) => {
 }
 
 const api_improficiencia = async (req, res) => {
-    if (req.query.user && req.route.methods.get) {
+    if (req.route.methods.get) {
         const user = await Usuario.findOne({
             where: {
-                matricula: req.query.user
+                matricula: req.user
             }
         });
         await Disciplina.findAll({
@@ -233,10 +176,10 @@ const api_improficiencia = async (req, res) => {
 }
 
 const api_improficiencia_adicionar = async (req, res) => {
-    if (req.session.user && req.route.methods.post && req.body?.disciplinas) {
+    if (req.route.methods.post && req.body?.disciplinas) {
         const user = await Usuario.findOne({
             where: {
-                matricula: req.session.user
+                matricula: req.user
             }
         });
         await Improficiencia.bulkCreate(
@@ -257,18 +200,22 @@ const api_improficiencia_adicionar = async (req, res) => {
 }
 
 const api_improficiencia_remover = async (req, res) => {
-    if (req.session.user && req.route.methods.post && req.body?.disciplinas) {
+    if (req.route.methods.post && req.body?.disciplinas) {
         const user = await Usuario.findOne({
             where: {
-                matricula: req.session.user
+                matricula: req.user
             }
         });
         await Improficiencia.destroy({
             where: {
                 cpf: user.cpf,
-                sigla_disciplina: [req.body.disciplinas.map((value) => {
-                    return value
-                })]
+                sigla_disciplina: [
+                    typeof req.body.disciplinas == 'string' ?
+                    req.body.disciplinas :
+                    req.body.disciplinas.map((value) => {
+                        return value
+                    })
+                ]
             }
         }).then(() => {
             res.status(200).send({ msg: 'ok' });
@@ -282,20 +229,12 @@ const api_improficiencia_remover = async (req, res) => {
 }
 
 module.exports = {
-    index,
-    home,
-    invalid,
     cursos,
     disciplinas,
-    proficiencia,
-    improficiencia,
     api_proficiencia,
     api_proficiencia_adicionar,
     api_proficiencia_remover,
     api_improficiencia,
     api_improficiencia_adicionar,
     api_improficiencia_remover,
-    listTutors,
-    perfil_atualizar,
-    perfil,
 }

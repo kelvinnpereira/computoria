@@ -1,24 +1,8 @@
 const models = require('../models/index');
 const sequelize = models.sequelize;
 
-const usuario = async (req, res) => {
-    if (req.session.user && req.route.methods.get) {
-        handle(req, res);
-    } else {
-        res.redirect('/auth/login');
-    }
-}
-
-const api_usuario = async (req, res) => {
-    if (req.query.user && req.route.methods.get) {
-        handle(req, res);
-    } else {
-        res.redirect('/auth/login');
-    }
-}
-
 const listar_tutores = async (req, res) => {
-    if (req.query.user && req.route.methods.get) {
+    if (req.route.methods.get) {
         await sequelize.query('\
             SELECT \
                 c.nome as curso, u.nome as usuario, matricula  \
@@ -44,11 +28,11 @@ const listar_tutores = async (req, res) => {
             console.log(error);
             res.status(500).send({error: error});
         });
+    } else {
+        res.status(500).send({error: 'error'});
     }
 }
 
 module.exports = {
-    usuario,
-    api_usuario,
     listar_tutores,
 }

@@ -17,15 +17,11 @@ const LogIn = () => {
     dispatch({
       type: "LOGIN",
       auth: {
-        username: data.username,
+        token: data.token,
+        user: data.user,
       }
     });
-
-    if (data.redirect) {
-      Router.push(data.redirect);
-    } else {
-      Router.push("/");
-    }
+    Router.push('/home');
   };
 
   const onClick = () => {
