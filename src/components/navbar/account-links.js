@@ -23,7 +23,7 @@ const AccountLinks = ({ emailCount }) => {
       }) : null
     },
     {
-      url: "/home",
+      url: "/perfil",
       icon: <FiUser size={18} className="stroke-current"/>,
       name: "Perfil",
       badge: null

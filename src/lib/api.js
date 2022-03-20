@@ -9,6 +9,16 @@ const server = axios.create({
   }
 });
 
+const cookieToDict = (cookie) => {
+  let dict = {};
+  let items = cookie?.split('; ');
+  items?.forEach(item => {
+      [key, value] = item.split('=');
+      dict[key] = value;
+  });
+  return dict;
+}
+
 const get = (uri, config = {}) => {
   return server.get(uri, config);
 };
@@ -21,4 +31,4 @@ const post = (uri, data, config = {}) => {
   return server.post(uri, data, config);
 };
 
-export { get, post, put, server, HOST };
+export { get, post, put, server, HOST, cookieToDict };

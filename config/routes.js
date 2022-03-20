@@ -43,6 +43,10 @@ router.get ('/api/improficiencia/listar'   , auth.authenticated, mainController.
 router.post('/api/improficiencia/adicionar', auth.authenticated, mainController.api_improficiencia_adicionar);
 router.post('/api/improficiencia/remover'  , auth.authenticated, mainController.api_improficiencia_remover);
 router.get ('/api/listar_tutores'          , auth.authenticated, usuarioController.listar_tutores);
+router.get ('/api/usuario'                 , usuarioController.usuario);
+router.post('/api/atualizar_conta'         , auth.authenticated, usuarioController.atualizar_conta);
+router.post('/api/atualizar_email'         , auth.authenticated, usuarioController.atualizar_email);
+router.post('/api/atualizar_senha'         , auth.authenticated, usuarioController.atualizar_senha);
 
 //auth
 router.post('/api/auth/signup'        , auth.not_authenticated, authController.api_signup);

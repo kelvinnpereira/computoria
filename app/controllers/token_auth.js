@@ -2,21 +2,26 @@ const jwt = require('jsonwebtoken');
 
 const authenticated = (req, res, next) => {
   const token = cookieToDict(req.headers.cookie)?.Authorization;
-  if (!token) return res.redirect('/auth/login');
+  if (!token) {
+    console.log('Token de sessão não existe');
+    return res.redirect('/auth/login');
+  }
   jwt.verify(token, process.env.TOKEN_SECRET.trim(), (err, user) => {
     if (err?.expiredAt) {
       console.log('Token de sessão expirado');
       res.clearCookie('Authorization');
       res.clearCookie('user');
       return res.redirect('/auth/login');
-    }
-    if (err) {
+    } else if (err) {
       console.log('Token de sessão invalido');
-      return res.status(403).send({error: 'Forbidden'});
+      res.clearCookie('Authorization');
+      res.clearCookie('user');
+      return res.redirect('/auth/login');
+    } else {
+      console.log('Token de sessão valido');
+      req.user = user.matricula;
+      next();
     }
-    console.log('Token de sessão valido');
-    req.user = user.matricula;
-    next();
   })
 }
 
@@ -44,5 +49,5 @@ module.exports = {
     authenticated,
     not_authenticated,
     generateAccessToken,
-    cookieToDict
+    cookieToDict,
 }

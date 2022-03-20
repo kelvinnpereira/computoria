@@ -94,6 +94,9 @@ const api_proficiencia = async (req, res) => {
 
 const api_proficiencia_adicionar = async (req, res) => {
     if (req.route.methods.post && req.body?.disciplinas) {
+        if (req.body.disciplinas.length > 10) {
+            return res.status(500).send({error: 'Muitas disciplinas selecionadas'});
+        }
         const user = await Usuario.findOne({
             where: {
                 matricula: req.user
@@ -177,6 +180,9 @@ const api_improficiencia = async (req, res) => {
 
 const api_improficiencia_adicionar = async (req, res) => {
     if (req.route.methods.post && req.body?.disciplinas) {
+        if (req.body.disciplinas.length > 10) {
+            return res.status(500).send({error: 'Muitas disciplinas selecionadas'});
+        }
         const user = await Usuario.findOne({
             where: {
                 matricula: req.user
