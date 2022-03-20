@@ -4,27 +4,33 @@ const Usuario = models.usuario;
 const bcrypt = require('bcryptjs');
 const auth = require('./token_auth');
 
-const listar_tutores = async (req, res) => {
-    if (req.route.methods.get) {
-        await sequelize.query('\
-            SELECT \
-                c.nome as curso, u.nome as usuario, matricula  \
-            FROM \
-                    (select distinct(cpf) as cpf from proficiencia) as prof \
-                INNER JOIN \
-                    usuario as u \
-                ON \
-                    prof.cpf = u.cpf\
-                INNER JOIN \
-                    curso as c \
-                ON \
-                    sigla = sigla_curso\
-            ;\
-        ').then((tutores) => {
+const tutores = async (req, res) => {
+    if (req.route.methods.get && req.params?.disciplina) {
+        const disciplina = req.params.disciplina;
+        await sequelize.query(`\
+            SELECT
+                c.nome AS curso, u.nome AS usuario, matricula
+            FROM
+                    (SELECT 
+                        DISTINCT(cpf) AS cpf 
+                    FROM 
+                        proficiencia 
+                    ${disciplina !== 'all' ? `WHERE sigla_disciplina = \'${disciplina}\'` : ''}) AS prof
+                INNER JOIN
+                    usuario AS u
+                ON
+                    prof.cpf = u.cpf
+                INNER JOIN
+                    curso AS c
+                ON
+                    sigla = sigla_curso
+            ;
+        `).then((tutores) => {
             if (tutores?.at(0)?.length > 0) {
-                console.log(tutores?.at(0));
+                console.log('Listar tutores');
                 res.status(200).send({ tutores: tutores?.at(0) });
             } else {
+                console.log('Tutores não encontrados');
                 res.status(500).send({ tutores: [] });
             }
         }).catch((error) => {
@@ -37,7 +43,7 @@ const listar_tutores = async (req, res) => {
 }
 
 const usuario = async (req, res) => {
-    if (req.route.methods.get && req.query.user) {
+    if (req.route.methods.get && req.params?.matricula) {
         await Usuario.findOne({
             attributes: [
                 'nome',
@@ -47,7 +53,7 @@ const usuario = async (req, res) => {
                 'sigla_curso',
             ],
             where: {
-                matricula: req.query.user
+                matricula: req.params.matricula
             }
         }).then((usuario) => {
             if (usuario) {
@@ -168,7 +174,7 @@ const atualizar_senha = async (req, res) => {
 }
 
 module.exports = {
-    listar_tutores,
+    tutores,
     usuario,
     atualizar_conta,
     atualizar_email,

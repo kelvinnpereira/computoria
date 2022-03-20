@@ -1,9 +1,9 @@
 import React from 'react';
-import Datatable from '../components/datatable';
-import { get } from '../lib/api';
+import Datatable from '../../components/datatable';
+import { get } from '../../lib/api';
 import Head from "next/head";
-import SectionTitle from "../components/section/section-title";
-import Widget from "../components/widget";
+import SectionTitle from "../../components/section/section-title";
+import Widget from "../../components/widget";
 
 const ListarTutores = ({ tutores }) => {
   const columns = [
@@ -23,7 +23,12 @@ const ListarTutores = ({ tutores }) => {
 
   const items = tutores?.map((item) => {
     return {
-      nome: <a href='#'>{item.usuario}</a>,
+      nome:
+        <a
+          className='underline decoration-sky'
+          href={`/perfil/${item.matricula}`}>
+          {item.usuario}
+        </a>,
       curso: item.curso,
       media: '',
     }
@@ -36,19 +41,22 @@ const ListarTutores = ({ tutores }) => {
           Computoria: Listar Tutores
         </title>
       </Head>
-      <SectionTitle title="Tutores" subtitle="Listar" actions={() => { }} />
+      <SectionTitle title="Listar" subtitle="Tutores" />
       <Widget>
-        <Datatable columns={columns} data={items} actions={() => { }} />
+        <Datatable columns={columns} data={items} />
       </Widget>
     </>
   );
 
 };
+
 export default ListarTutores;
 
 export const getServerSideProps = async (context) => {
   const { req, res } = context;
-  const response = await get('/api/listar_tutores', { headers: { cookie: req.headers.cookie } });
+  const response = await get(`/api/tutores/${context.params.disciplina}`, {
+    headers: { cookie: req.headers.cookie },
+  });
   return {
     props: { tutores: response.data.tutores },
   }

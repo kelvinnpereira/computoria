@@ -5,17 +5,7 @@ import Widget from "../../components/widget";
 import List1 from "../../components/d-board/lists/list-1";
 import { get } from '../../lib/api';
 
-const Index = ({ disciplinas }) => {
-  const actions = (
-    <>
-      <button
-        className="btn btn-default bg-blue-500 hover:bg-blue-600 text-white btn-rounded btn-icon"
-      >
-        Refresh
-      </button>
-    </>
-  );
-
+const ListarImproficiencia = ({ disciplinas }) => {
   return (
     <>
       <Head>
@@ -23,19 +13,24 @@ const Index = ({ disciplinas }) => {
           Computoria: Listar Improficiencia
         </title>
       </Head>
-      <SectionTitle title="Improficiencia" subtitle="Listar" actions={actions} />
+      <SectionTitle title="Listar" subtitle="Improficiencia" />
       <Widget>
-        <List1 items={disciplinas?.map((item)=> {
+        <List1 items={disciplinas?.map((item) => {
           return {
-            title: item.sigla + " - " + item.nome
+            title:
+              <a
+                className='underline decoration-sky'
+                href={`/tutores/${item.sigla}`}>
+                {item.sigla + " - " + item.nome}
+              </a>
           }
-        })}/>
+        })} />
       </Widget>
     </>
   );
 };
 
-export default Index;
+export default ListarImproficiencia;
 
 export const getServerSideProps = async (context) => {
   const { req, res } = context;

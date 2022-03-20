@@ -5,23 +5,13 @@ import Widget from "../../components/widget";
 import { useRequest } from "@src/hooks/auth";
 import Form from "../../components/disciplina/remover/form";
 import { useState } from "react";
-import { get } from '../../lib/api';
+import { get,cookieToDict } from '../../lib/api';
 import Modal from '../../components/modals';
 import Router from "next/router";
 
-const Index = ({ disciplinas }) => {
+const RemoverProficiencia = ({ disciplinas }) => {
   const [errorMessage, setErrorMessage] = useState("");
   const [showModal, setModal] = useState(false);
-
-  const actions = (
-    <>
-      <button
-        className="btn btn-default bg-blue-500 hover:bg-blue-600 text-white btn-rounded btn-icon"
-      >
-        Refresh
-      </button>
-    </>
-  );
 
   const sucessBody = () => {
     return (
@@ -69,7 +59,7 @@ const Index = ({ disciplinas }) => {
           Computoria: Remover Proficiencia
         </title>
       </Head>
-      <SectionTitle title="Proficiencia" subtitle="Remover" actions={actions} />
+      <SectionTitle title="Remover" subtitle="Proficiencia" />
       <Widget>
         <Modal title={'Computoria'} body={sucessBody()} open={showModal} setOpen={setModal} btns={buttonModal()} />
         <Form setAction={setRequest} isLoading={isLoading}
@@ -79,11 +69,14 @@ const Index = ({ disciplinas }) => {
   );
 };
 
-export default Index;
+export default RemoverProficiencia;
 
 export const getServerSideProps = async (context) => {
   const { req, res } = context;
-  const response = await get('/api/proficiencia/listar', { headers: { cookie: req.headers.cookie } });
+  const cookie = cookieToDict(req.headers.cookie);
+  const response = await get(`/api/proficiencia/listar/${cookie.user}`, { 
+    headers: { cookie: req.headers.cookie } 
+  });
   return {
     props: { disciplinas: response.data.disciplinas },
   }

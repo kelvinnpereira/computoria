@@ -15,7 +15,7 @@ const ErrorPage = () => {
         to the homepage or contact us
       </div>
       <div className="flex w-full">
-        <a href="/" className="btn btn-lg btn-rounded btn-block bg-blue-500 hover:bg-blue-600 text-white">
+        <a href="/home" className="btn btn-lg btn-rounded btn-block bg-blue-500 hover:bg-blue-600 text-white">
           Go back
         </a>
       </div>

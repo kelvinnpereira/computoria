@@ -23,7 +23,7 @@ const IndeterminateCheckbox = React.forwardRef(
   }
 );
 
-const Datatable = ({ columns, data, actions }) => {
+const Datatable = ({ columns, data, actions = () => {} }) => {
   const {
     getTableProps,
     getTableBodyProps,

@@ -9,19 +9,9 @@ import { get } from '../../lib/api';
 import Modal from '../../components/modals';
 import Router from "next/router";
 
-const Index = ({ cursos }) => {
+const AdicionarImproficiencia = ({ cursos }) => {
   const [errorMessage, setErrorMessage] = useState("");
   const [showModal, setModal] = useState(false);
-
-  const actions = (
-    <>
-      <button
-        className="btn btn-default bg-blue-500 hover:bg-blue-600 text-white btn-rounded btn-icon"
-      >
-        Refresh
-      </button>
-    </>
-  );
 
   const sucessBody = () => {
     return (
@@ -69,7 +59,7 @@ const Index = ({ cursos }) => {
           Computoria: Adicionar Improficiencia
         </title>
       </Head>
-      <SectionTitle title="Improficiencia" subtitle="Adicionar" actions={actions} />
+      <SectionTitle title="Adicionar" subtitle="Improficiencia" />
       <Widget>
         <Modal title={'Computoria'} body={sucessBody()} open={showModal} setOpen={setModal} btns={buttonModal()} />
         <Form setAction={setRequest} isLoading={isLoading}
@@ -79,7 +69,7 @@ const Index = ({ cursos }) => {
   );
 };
 
-export default Index;
+export default AdicionarImproficiencia;
 
 export const getServerSideProps = async (context) => {
   const response = await get('/api/cursos');

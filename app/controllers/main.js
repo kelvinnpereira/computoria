@@ -60,10 +60,10 @@ const disciplinas = async (req, res) => {
 }
 
 const api_proficiencia = async (req, res) => {
-    if (req.route.methods.get) {
+    if (req.route.methods.get && req.params?.matricula) {
         const user = await Usuario.findOne({
             where: {
-                matricula: req.user
+                matricula: req.params.matricula
             }
         });
         await Disciplina.findAll({

@@ -9,19 +9,9 @@ import { get } from '../../lib/api';
 import Modal from '../../components/modals';
 import Router from "next/router";
 
-const Index = ({ disciplinas }) => {
+const RemoverImproficiencia = ({ disciplinas }) => {
   const [errorMessage, setErrorMessage] = useState("");
   const [showModal, setModal] = useState(false);
-
-  const actions = (
-    <>
-      <button
-        className="btn btn-default bg-blue-500 hover:bg-blue-600 text-white btn-rounded btn-icon"
-      >
-        Refresh
-      </button>
-    </>
-  );
 
   const sucessBody = () => {
     return (
@@ -69,7 +59,7 @@ const Index = ({ disciplinas }) => {
           Computoria: Remover Improficiencia
         </title>
       </Head>
-      <SectionTitle title="Improficiencia" subtitle="Remover" actions={actions} />
+      <SectionTitle title="Remover" subtitle="Improficiencia" />
       <Widget>
         <Modal title={'Computoria'} body={sucessBody()} open={showModal} setOpen={setModal} btns={buttonModal()} />
         <Form setAction={setRequest} isLoading={isLoading}
@@ -79,7 +69,7 @@ const Index = ({ disciplinas }) => {
   );
 };
 
-export default Index;
+export default RemoverImproficiencia;
 
 export const getServerSideProps = async (context) => {
   const { req, res } = context;

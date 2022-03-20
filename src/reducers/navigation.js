@@ -25,86 +25,48 @@ const menuLevels = getStorageLevel();
 
 const initialState = [
   {
-    title: "Opções",
+    title: "Disciplinas",
     items: [
       {
         url: "/proficiencia/adicionar",
         icon: <FiCompass size={20}/>,
         title: "Adicionar Proficiencia",
-        items: [
-          {
-            url: "/home",
-            title: "Dashboard",
-            items: menuLevels.tasks,
-            onlyChildren: true
-          }
-        ]
       },
       {
         url: "/proficiencia/remover",
         icon: <HiOutlineDocumentSearch size={20}/>,
         title: "Remover Proficiencia",
-        items: [
-          {
-            url: "/home",
-            title: "Dashboard",
-            items: menuLevels.reviews,
-            onlyChildren: true
-          }
-        ]
       },
       {
         url: "/proficiencia/listar",
         icon: <CgTemplate size={20}/>,
         title: "Listar Proficiencia",
-        items: [
-          {
-            url: "/home",
-            title: "Dashboard",
-            items: menuLevels.tasks,
-            onlyChildren: true
-          }
-        ]
       },
       {
         url: "/improficiencia/adicionar",
         icon: <CgListTree size={20}/>,
         title: "Adicionar Improficiencia",
-        items: [
-          {
-            url: "/home",
-            title: "Dashboard",
-            items: menuLevels.propagations,
-            onlyChildren: true
-          }
-        ]
       },
       {
         url: "/improficiencia/remover",
         icon: <FaRocket size={20}/>,
         title: "Remover improficiencia",
-        items: [
-          {
-            url: "/home",
-            title: "Dashboard",
-            items: menuLevels.pre_releases,
-            onlyChildren: true
-          }
-        ]
       },
       {
         url: "/improficiencia/listar",
         icon: <MdBusiness size={20}/>,
         title: "Listar improficiencia",
-        items: [
-          {
-            url: "/home",
-            title: "Dashboard",
-            items: menuLevels.pre_releases,
-            onlyChildren: true
-          }
-        ]
       }
+    ]
+  },
+  {
+    title: "Tutores",
+    items: [
+      {
+        url: "/tutores",
+        icon: <HiOutlineDocumentSearch size={20}/>,
+        title: "Listar todos os tutores",
+      },
     ]
   }
 ];
