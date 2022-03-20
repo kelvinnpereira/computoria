@@ -1,10 +1,8 @@
 import React from 'react';
 import Datatable from '../components/datatable';
 import { get } from '../lib/api';
-import List1 from '../components/d-board/lists/list-1';
 import Head from "next/head";
 import SectionTitle from "../components/section/section-title";
-import Widget from "../components/widget";
 
 const ListarTutores = ({ tutores }) => {
   const columns = [
@@ -22,17 +20,24 @@ const ListarTutores = ({ tutores }) => {
     },
   ];
 
-
   const items = tutores?.map( (item) => {
     return {
       nome: item.usuario, 
       curso: item.curso, 
-      media: '4.0'
+      media: '',
     }
   });
 
   return (
-    <Datatable columns={columns} data={items} actions={ () => {}}/>
+    <>
+      <Head>
+        <title>
+          Computoria: Listar Tutores
+        </title>
+      </Head>
+      <SectionTitle title="Tutores" subtitle="Listar" actions={ () => {}} />
+      <Datatable columns={columns} data={items} actions={ () => {}}/>
+    </>
   );
 
 };
