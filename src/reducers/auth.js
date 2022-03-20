@@ -1,30 +1,27 @@
 import cookieCutter from "cookie-cutter";
 
-const initialState = { username: "", token: "", permissions: "", team: "" };
+const initialState = { user: "", token: "", permissions: "", team: "" };
 
 const auth = (state = initialState, { type, auth }) => {
   switch (type) {
     case "LOGIN":
-      cookieCutter.set("username", auth.username, { path: "/" });
+      cookieCutter.set("Authorization", `${auth.token}`, { path: "/" });
+      cookieCutter.set("user", auth.user, { path: "/" });
       return {
-        username: auth.username,
+        token: auth.token,
+        user: auth.user,
       };
     case "LOGOUT":
       cookieCutter.set("Authorization", "", { expires: new Date(0) });
-      cookieCutter.set("username", "", { expires: new Date(0) });
-      localStorage.setItem("permissions", "");
+      cookieCutter.set("user", "", { expires: new Date(0) });
       return {
-        username: null,
         token: null,
-        permissions: null,
-        team: null
+        user: null,
       };
     case "RESTORE":
       return {
-        username: cookieCutter.get("username"),
         token: cookieCutter.get("Authorization"),
-        permissions: localStorage.getItem("permissions"),
-        team: localStorage.getItem("team")
+        user: cookieCutter.get("user"),
       };
     default:
       return state;

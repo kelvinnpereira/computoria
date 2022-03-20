@@ -85,7 +85,7 @@ const SignUp = ({ cursos }) => {
 export default SignUp;
 
 export const getServerSideProps = async (context) => {
-  const response = await get('/api/auth/signup');
+  const response = await get('/api/cursos');
   return {
     props: { cursos: response.data.cursos },
   }

@@ -44,7 +44,7 @@ const Form = ({ message = null, setAction, isLoading, cursos }) => {
                 className={` w-full form-select ${errors["curso"] ? "border border-red-500" : ""
                   }`}
                 onChange={async (event) => {
-                  let response = await get('/disciplinas/' + event.target.value);
+                  let response = await get('/api/disciplinas/' + event.target.value);
                   if (response?.data?.disciplinas) {
                     setDisciplinas(response.data.disciplinas);
                   }
