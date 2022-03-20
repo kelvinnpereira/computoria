@@ -58,14 +58,14 @@ const Datatable = ({ columns, data, actions }) => {
           // to render a checkbox
           Header: ({ getToggleAllRowsSelectedProps }) => (
             <>
-              <IndeterminateCheckbox {...getToggleAllRowsSelectedProps()} />
+              {/* <IndeterminateCheckbox {...getToggleAllRowsSelectedProps()} /> */}
             </>
           ),
           // The cell can use the individual row's getToggleRowSelectedProps method
           // to the render a checkbox
           Cell: ({ row }) => (
             <>
-              <IndeterminateCheckbox {...row.getToggleRowSelectedProps()} />
+               {/*<IndeterminateCheckbox {...row.getToggleRowSelectedProps()} />*/}
             </>
           )
         }
@@ -155,7 +155,7 @@ const Datatable = ({ columns, data, actions }) => {
           onChange={(e) => {
             setPageSize(Number(e.target.value));
           }}>
-          {[10, 25, 50, 100, 500].map((pageSize) => (
+          {[10, 25, 50, 100].map((pageSize) => (
             <option key={pageSize} value={pageSize}>
               Show {pageSize}
             </option>

@@ -24,9 +24,10 @@ router.post('/api/proficiencia/remover'    , mainController.api_proficiencia_rem
 router.get ('/api/improficiencia/listar'   , mainController.api_improficiencia);
 router.post('/api/improficiencia/adicionar', mainController.api_improficiencia_adicionar);
 router.post('/api/improficiencia/remover'  , mainController.api_improficiencia_remover);
-router.get ('/listTutors'                  , mainController.listTutors);
+router.get ('/listarTutores'               , mainController.listarTutores);
 router.get ('/perfil/atualizar'            , mainController.perfil_atualizar);
 router.get ('/perfil'                      , mainController.perfil);
+
 
 //authController
 router.get ('/auth/signup'            , authController.signup);
