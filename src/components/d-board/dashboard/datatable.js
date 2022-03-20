@@ -2,7 +2,7 @@ import React from 'react'
 import {useTable, useSortBy, usePagination, useRowSelect} from 'react-table'
 import {PageWithText} from '../pagination'
 import {FiChevronDown, FiChevronUp} from 'react-icons/fi'
-
+/*
 const IndeterminateCheckbox = React.forwardRef(
   ({indeterminate, ...rest}, ref) => {
     const defaultRef = React.useRef()
@@ -21,7 +21,7 @@ const IndeterminateCheckbox = React.forwardRef(
       />
     )
   }
-)
+)*/
 
 const Datatable = ({columns, data}) => {
   const {
@@ -55,18 +55,18 @@ const Datatable = ({columns, data}) => {
           id: 'selection',
           // The header can use the table's getToggleAllRowsSelectedProps method
           // to render a checkbox
-          Header: ({getToggleAllRowsSelectedProps}) => (
+         /* Header: ({getToggleAllRowsSelectedProps}) => (
             <>
               <IndeterminateCheckbox {...getToggleAllRowsSelectedProps()} />
             </>
-          ),
+          ),*/
           // The cell can use the individual row's getToggleRowSelectedProps method
           // to the render a checkbox
-          Cell: ({row}) => (
+          /*Cell: ({row}) => (
             <>
               <IndeterminateCheckbox {...row.getToggleRowSelectedProps()} />
             </>
-          )
+          )*/
         },
         ...columns
       ])
@@ -81,7 +81,7 @@ const Datatable = ({columns, data}) => {
           {headerGroups.map(headerGroup => (
             <tr {...headerGroup.getHeaderGroupProps()}>
               {headerGroup.headers.map(column => (
-                <th {...column.getHeaderProps(column.getSortByToggleProps())}>
+                //<th {...column.getHeaderProps(column.getSortByToggleProps())}>
                   <div className="flex flex-row items-center justify-start whitespace-nowrap">
                     <span>{column.render('Header')}</span>
                     <span className="ml-auto">
@@ -96,7 +96,7 @@ const Datatable = ({columns, data}) => {
                       )}
                     </span>
                   </div>
-                </th>
+                //</th>
               ))}
             </tr>
           ))}
