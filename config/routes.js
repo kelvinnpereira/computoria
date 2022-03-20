@@ -12,7 +12,7 @@ router.get ('/home'                    , auth.authenticated, nextController.hand
 router.get ('/404'                     , nextController.handler);
 router.get ('/500'                     , nextController.handler);
 router.get ('/invalid'                 , auth.not_authenticated, nextController.handler);
-router.get ('/listTutors'              , auth.authenticated, nextController.handler);
+router.get ('/listarTutores'           , auth.authenticated, nextController.handler);
 //next /auth/
 router.get ('/auth/forgot'             , auth.not_authenticated, nextController.handler);
 router.get ('/auth/login'              , auth.not_authenticated, nextController.handler);
