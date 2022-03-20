@@ -40,6 +40,22 @@ const invalid = async (req, res) => {
     }
 }
 
+const perfil = async (req, res) => {
+    if (req.session.user && req.route.methods.get) {
+        handle(req, res);
+    } else {
+        res.redirect('/home');
+    }
+}
+
+const perfil_atualizar = async (req, res) => {
+    if (req.session.user && req.route.methods.get) {
+        handle(req, res);
+    } else {
+        res.redirect('/home');
+    }
+}
+
 const proficiencia = async (req, res) => {
     if (req.session.user && req.route.methods.get) {
         handle(req, res);
@@ -280,4 +296,7 @@ module.exports = {
     api_improficiencia_adicionar,
     api_improficiencia_remover,
     listarTutores,
+    perfil_atualizar,
+    perfil,
+
 }
