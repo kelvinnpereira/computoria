@@ -4,9 +4,10 @@ import SectionTitle from "../../components/section/section-title";
 import { UnderlinedTabs } from "../../components/tabs";
 import Widget from "../../components/widget";
 import List1 from "../../components/d-board/lists/list-1";
-import { get, cookieToDict } from '../../lib/api';
+import { get } from '../../lib/api';
 import Cookies from 'js-cookie';
 import { useRouter } from "next/router";
+import Router from "next/router";
 
 const Conta = ({ usuario, curso }) => {
   return (

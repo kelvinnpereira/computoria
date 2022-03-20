@@ -106,7 +106,9 @@ export default Atualizar;
 export const getServerSideProps = async (context) => {
   const { req, res } = context;
   const cookie = cookieToDict(req.headers.cookie);
-  const response1 = await get('/api/usuario', { params: { user: cookie.user } });
+  const response1 = await get(`/api/usuario/${cookie.user}`, {
+    headers: { cookie: req.headers.cookie },
+  });
   const response2 = await get('/api/cursos');
   return {
     props: {
