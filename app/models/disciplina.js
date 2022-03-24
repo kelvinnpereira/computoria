@@ -19,6 +19,7 @@ module.exports = (sequelize, DataTypes) => {
     disciplina.hasMany(models.proficiencia, {foreignKey: 'sigla_disciplina'});
     disciplina.hasMany(models.improficiencia, {foreignKey: 'sigla_disciplina'});
     disciplina.hasMany(models.monitor, {foreignKey: 'sigla_disciplina'});
+    disciplina.hasMany(models.ajuda, { foreignKey: 'sigla_disciplina' });
   };
   return disciplina;
 };

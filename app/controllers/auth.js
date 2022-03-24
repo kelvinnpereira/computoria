@@ -9,7 +9,7 @@ const crypto = require('crypto');
 const nodemailer = require('nodemailer');
 
 const api_login = async (req, res) => {
-    if (req.route.methods.post) {
+    if (req.route.methods.post && req.body) {
         let value = /[a-zA-Z]/g.test(req.body.user) ? req.body.user : req.body.user.replace(/[^\d]+/g, '');
         let user = undefined;
         if (/^\d+$/.test(value)) {
@@ -48,7 +48,7 @@ const api_login = async (req, res) => {
 }
 
 const api_signup = async (req, res) => {
-    if (req.route.methods.post) {
+    if (req.route.methods.post && req.body) {
         try {
             bcrypt.genSalt(10, function (err, salt) {
                 bcrypt.hash(req.body.senha, salt, async (err, hash) => {
@@ -85,7 +85,7 @@ const api_signup = async (req, res) => {
 //console.log(req.headers, req.cookies, req.path, req.method, req.headers.cookies);
 
 const api_forgot = async (req, res) => {
-    if (req.route.methods.post) {
+    if (req.route.methods.post && req.body) {
         let value = /[a-zA-Z]/g.test(req.body.user) ? req.body.user : req.body.user.replace(/[^\d]+/g, '');
         let user = undefined;
         if (/^\d+$/.test(value)) {

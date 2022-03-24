@@ -4,6 +4,7 @@ const mainController = require('../app/controllers/main');
 const authController = require('../app/controllers/auth');
 const usuarioController = require('../app/controllers/usuario');
 const nextController = require('../app/controllers/next_routes');
+const ajudaController = require('../app/controllers/ajuda');
 const auth = require('../app/controllers/token_auth');
 
 //next
@@ -55,6 +56,11 @@ router.post('/api/auth/signup'        , auth.not_authenticated, authController.a
 router.post('/api/auth/login'         , auth.not_authenticated, authController.api_login);
 router.post('/api/auth/forgot'        , auth.not_authenticated, authController.api_forgot);
 router.post('/api/auth/restart/:token', auth.not_authenticated, authController.api_restart);
+
+//ajuda
+router.get ('/api/ajuda/listar_agenda_tutor/:user', auth.authenticated, ajudaController.listar_ajuda_tutor);
+router.get ('/api/ajuda/listar_agenda_aluno/:user', auth.authenticated, ajudaController.listar_ajuda_aluno);
+router.post('/api/ajuda/agendar'                  , auth.authenticated, ajudaController.agendar);
 
 //not found
 router.get ('*', nextController.handler);

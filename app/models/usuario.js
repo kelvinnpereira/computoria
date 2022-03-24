@@ -36,6 +36,8 @@ module.exports = (sequelize, DataTypes) => {
     usuario.hasMany(models.improficiencia, {foreignKey: 'cpf'});
     usuario.hasMany(models.monitor, {foreignKey: 'cpf'});
     usuario.hasMany(models.mudar_senha, {foreignKey: 'cpf'});
+    usuario.hasMany(models.ajuda, { foreignKey: 'tutor' });
+    usuario.hasMany(models.ajuda, { foreignKey: 'aluno' });
   };
   return usuario;
 };
