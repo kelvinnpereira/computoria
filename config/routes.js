@@ -58,9 +58,9 @@ router.post('/api/auth/forgot'        , auth.not_authenticated, authController.a
 router.post('/api/auth/restart/:token', auth.not_authenticated, authController.api_restart);
 
 //ajuda
-router.get ('/api/ajuda/listar_agenda_tutor/:user', auth.not_authenticated, ajudaController.listar_agenda_tutor);
-router.get ('/api/ajuda/listar_agenda_aluno/:user', auth.not_authenticated, ajudaController.listar_agenda_aluno);
-router.post('/api/ajuda/agendar'                  , auth.not_authenticated, ajudaController.agendar);
+router.get ('/api/ajuda/listar_agenda_tutor/:user', auth.authenticated, ajudaController.listar_ajuda_tutor);
+router.get ('/api/ajuda/listar_agenda_aluno/:user', auth.authenticated, ajudaController.listar_ajuda_aluno);
+router.post('/api/ajuda/agendar'                  , auth.authenticated, ajudaController.agendar);
 
 //not found
 router.get ('*', nextController.handler);
