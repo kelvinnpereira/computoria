@@ -1,4 +1,5 @@
 module.exports = {
+	ajuda: require(__dirname + "/../app/models/ajuda"), 
 	area: require(__dirname + "/../app/models/area"), 
 	cargo: require(__dirname + "/../app/models/cargo"), 
 	categoria: require(__dirname + "/../app/models/categoria"), 

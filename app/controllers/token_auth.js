@@ -7,13 +7,8 @@ const authenticated = (req, res, next) => {
     return res.redirect('/auth/login');
   }
   jwt.verify(token, process.env.TOKEN_SECRET.trim(), (err, user) => {
-    if (err?.expiredAt) {
-      console.log('Token de sessão expirado');
-      res.clearCookie('Authorization');
-      res.clearCookie('user');
-      return res.redirect('/auth/login');
-    } else if (err) {
-      console.log('Token de sessão invalido');
+    if (err) {
+      console.log('Token de sessão invalido ou expirado');
       res.clearCookie('Authorization');
       res.clearCookie('user');
       return res.redirect('/auth/login');
