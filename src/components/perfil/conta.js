@@ -13,6 +13,20 @@ const Conta = ({ message = null, setAction, isLoading, usuario, cursos }) => {
     setCsrf();
   });
 
+
+  const validaNome = (value) => {
+    const specialChar = ['.', ',', '"', '?', '!', ';', ':', '#', '$', '%', '&', '*', '(', ')',
+                         '+', '*', '_', '/', '<', '>', '+', '@', '[', ']', '^', '_', '{', '}', 
+                         '|', '~', '0','1','2','3','4','5','6','7','8','9'];
+    
+    for(let i = 0; i < specialChar.length; i++){
+      if(value.includes(specialChar[i])){
+        return false;
+      }
+    }
+    return true;
+  }
+
   return (
     <>
       <div className="flex flex-col" style={{ width: "450px" }}>
@@ -40,8 +54,9 @@ const Conta = ({ message = null, setAction, isLoading, usuario, cursos }) => {
                   required: 'Insira seu nome',
                   minLength: {
                     value: 10,
-                    message: 'Seu nome deve ter pelo menos 10 caracteres'
-                  }
+                    message: 'Seu nome deve ter pelo menos 10 caracteres',
+                  },
+                  validate: (value) => validaNome(value) || 'Seu nome não pode conter caracteres especiais e números'
                 })}
                 defaultValue={usuario.nome}
                 name="nome"
@@ -71,16 +86,15 @@ const Conta = ({ message = null, setAction, isLoading, usuario, cursos }) => {
                 defaultValue={usuario.cpf}
                 name="cpf"
                 type="text"
-                className={`form-input ${
-                  errors["cpf"] ? "border-red-500" : ""
-                }`}
+                className={`form-input ${errors["cpf"] ? "border-red-500" : ""
+                  }`}
                 placeholder="Insira seu CPF"
               />
               {errors["cpf"] && (
                 <div className="form-error">{errors["cpf"].message}</div>
               )}
             </div>
-            
+
             <div className="form-element" key="container-4">
               <div className="form-label text-white">Matricula</div>
               <input
@@ -94,9 +108,8 @@ const Conta = ({ message = null, setAction, isLoading, usuario, cursos }) => {
                 defaultValue={usuario.matricula}
                 name="matricula"
                 type="text"
-                className={`form-input ${
-                  errors["matricula"] ? "border-red-500" : ""
-                }`}
+                className={`form-input ${errors["matricula"] ? "border-red-500" : ""
+                  }`}
                 placeholder="Insira sua Matricula"
               />
               {errors["matricula"] && (
