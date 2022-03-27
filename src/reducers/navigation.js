@@ -60,17 +60,17 @@ const initialState = [
     ]
   },
   {
-    title: "Tutores",
+    title: "Tutores/Monitores",
     items: [
       {
         url: "/tutores",
         icon: <HiOutlineDocumentSearch size={20}/>,
-        title: "Listar Tutores",
+        title: "Listar Tutores/Monitores",
       },
       {
         url: "/tutores/disciplina",
         icon: <HiOutlineDocumentSearch size={20}/>,
-        title: "Listar Tutores por disciplina",
+        title: "Listar por disciplina",
       },
     ]
   }

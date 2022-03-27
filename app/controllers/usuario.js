@@ -42,6 +42,46 @@ const tutores = async (req, res) => {
   }
 }
 
+const tutores_por_disciplina = async (req, res) => {
+  if (req.route.methods.get && req.params?.disciplina) {
+    const disciplina = req.params.disciplina;
+    await sequelize.query(`\
+      SELECT
+        c.nome AS curso, 
+        u.nome AS usuario, 
+        matricula,
+        cat.nome AS categoria,
+        d.nome AS disciplina
+      FROM
+        proficiencia AS prof, 
+        disciplina AS d, 
+        categoria AS cat,
+        usuario AS u,
+        curso AS c
+      WHERE
+        id_categoria = cat.id AND 
+        sigla_disciplina = d.sigla AND
+        prof.cpf = u.cpf AND
+        c.sigla = sigla_curso 
+        ${disciplina !== 'all' ? `AND sigla_disciplina = \'${disciplina}\'` : ''}
+      ;
+    `).then((tutores) => {
+      if (tutores?.at(0)?.length > 0) {
+        console.log('Listar tutores');
+        res.status(200).send({ tutores: tutores?.at(0) });
+      } else {
+        console.log('Tutores não encontrados');
+        res.status(500).send({ tutores: [] });
+      }
+    }).catch((error) => {
+      console.log(error);
+      res.status(500).send({ error: error });
+    });
+  } else {
+    res.status(500).send({ error: 'error' });
+  }
+}
+
 const usuario = async (req, res) => {
   if (req.route.methods.get && req.params?.matricula) {
     await Usuario.findOne({
@@ -175,6 +215,7 @@ const atualizar_senha = async (req, res) => {
 
 module.exports = {
   tutores,
+  tutores_por_disciplina,
   usuario,
   atualizar_conta,
   atualizar_email,

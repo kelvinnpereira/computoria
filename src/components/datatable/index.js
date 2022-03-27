@@ -65,7 +65,6 @@ const Datatable = ({ columns, data }) => {
 
   useEffect(() => console.log(selectedRowIds), [selectedRowIds]);
 
-  // Render the UI for your table
   return (
     <>
       <table {...getTableProps()} className="table">
@@ -76,7 +75,6 @@ const Datatable = ({ columns, data }) => {
                 <th {...column.getHeaderProps(column.getSortByToggleProps())}>
                   <div className="flex flex-row items-center justify-start">
                     <span>{column.render("Header")}</span>
-                    {/* Add a sort direction indicator */}
                     <span className="ml-auto">
                       {column.isSorted ? (
                         column.isSortedDesc ? (
@@ -89,7 +87,6 @@ const Datatable = ({ columns, data }) => {
                       )}
                     </span>
                   </div>
-                  {console.log(column)}
                 </th>
               ))}
             </tr>
