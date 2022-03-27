@@ -1,29 +1,40 @@
 import React, { useEffect } from "react";
-import { useTable, useSortBy, usePagination, useRowSelect } from "react-table";
+import { useTable, useSortBy, usePagination, useRowSelect, useFilters } from "react-table";
 import { FiChevronDown, FiChevronUp } from "react-icons/fi";
 import { PageWithText } from "../pagination";
 
-const IndeterminateCheckbox = React.forwardRef(
-  ({ indeterminate, ...rest }, ref) => {
-    const defaultRef = React.useRef();
-    const resolvedRef = ref || defaultRef;
-
-    useEffect(() => {
-      resolvedRef.current.indeterminate = indeterminate;
-    }, [resolvedRef, indeterminate]);
-
-    return (
+const DefaultColumnFilter = ({
+  column: { filterValue, preFilteredRows, setFilter },
+}) => {
+  const count = preFilteredRows.length
+  return (
+    <div className="form-element" key="container-0">
       <input
-        type="checkbox"
-        ref={resolvedRef}
-        {...rest}
-        className="form-checkbox h-4 w-4"
+        type="text"
+        className={`form-input`}
+        placeholder={`Search ${count} records...`}
+        onChange={e => {
+          setFilter(e.target.value || undefined)
+        }}
+        value={filterValue || ''}
       />
-    );
-  }
-);
+    </div>
+  )
+}
 
-const Datatable = ({ columns, data, actions = () => {} }) => {
+const defaultFilter = (rows, id, filterValue) => {
+  return rows.filter((row) => row.values[id].props.children.toLowerCase().includes(filterValue));
+}
+
+const Datatable = ({ columns, data }) => {
+  const defaultColumn = React.useMemo(
+    () => ({
+      Filter: DefaultColumnFilter,
+      filter: defaultFilter,
+    }),
+    []
+  );
+
   const {
     getTableProps,
     getTableBodyProps,
@@ -43,34 +54,13 @@ const Datatable = ({ columns, data, actions = () => {} }) => {
     {
       columns,
       data,
+      defaultColumn,
       initialState: { pageIndex: 0, pageSize: 10 }
     },
+    useFilters,
     useSortBy,
     usePagination,
     useRowSelect,
-    (hooks) => {
-      hooks.visibleColumns.push((columns) => [
-        // Let's make a column for selection
-        ...columns,
-        {
-          id: "selection",
-          // The header can use the table's getToggleAllRowsSelectedProps method
-          // to render a checkbox
-          Header: ({ getToggleAllRowsSelectedProps }) => (
-            <>
-              {/* <IndeterminateCheckbox {...getToggleAllRowsSelectedProps()} /> */}
-            </>
-          ),
-          // The cell can use the individual row's getToggleRowSelectedProps method
-          // to the render a checkbox
-          Cell: ({ row }) => (
-            <>
-               {/*<IndeterminateCheckbox {...row.getToggleRowSelectedProps()} />*/}
-            </>
-          )
-        }
-      ]);
-    }
   );
 
   useEffect(() => console.log(selectedRowIds), [selectedRowIds]);
@@ -78,44 +68,53 @@ const Datatable = ({ columns, data, actions = () => {} }) => {
   // Render the UI for your table
   return (
     <>
-      {actions(selectedRowIds)}
       <table {...getTableProps()} className="table">
         <thead>
-        {headerGroups.map((headerGroup) => (
-          <tr {...headerGroup.getHeaderGroupProps()}>
-            {headerGroup.headers.map((column) => (
-              <th {...column.getHeaderProps(column.getSortByToggleProps())}>
-                <div className="flex flex-row items-center justify-start">
-                  <span>{column.render("Header")}</span>
-                  {/* Add a sort direction indicator */}
-                  <span className="ml-auto">
+          {headerGroups.map((headerGroup) => (
+            <tr {...headerGroup.getHeaderGroupProps()}>
+              {headerGroup.headers.map((column) => (
+                <th {...column.getHeaderProps(column.getSortByToggleProps())}>
+                  <div className="flex flex-row items-center justify-start">
+                    <span>{column.render("Header")}</span>
+                    {/* Add a sort direction indicator */}
+                    <span className="ml-auto">
                       {column.isSorted ? (
                         column.isSortedDesc ? (
-                          <FiChevronDown className="stroke-current text-2xs"/>
+                          <FiChevronDown className="stroke-current text-2xs" />
                         ) : (
-                          <FiChevronUp className="stroke-current text-2xs"/>
+                          <FiChevronUp className="stroke-current text-2xs" />
                         )
                       ) : (
                         ""
                       )}
                     </span>
-                </div>
-              </th>
-            ))}
-          </tr>
-        ))}
+                  </div>
+                  {console.log(column)}
+                </th>
+              ))}
+            </tr>
+          ))}
+          {headerGroups.map(headerGroup => (
+            <tr {...headerGroup.getHeaderGroupProps()}>
+              {headerGroup.headers.map((column) => (
+                <th {...column.getHeaderProps()}>
+                  <div>{column?.Filter ? column.render("Filter") : null}</div>
+                </th>
+              ))}
+            </tr>
+          ))}
         </thead>
         <tbody {...getTableBodyProps()}>
-        {page.map((row, i) => {
-          prepareRow(row);
-          return (
-            <tr {...row.getRowProps()} key={`datatable-${i}`}>
-              {row.cells.map((cell) => {
-                return <td {...cell.getCellProps()}>{cell.render("Cell")}</td>;
-              })}
-            </tr>
-          );
-        })}
+          {page.map((row, i) => {
+            prepareRow(row);
+            return (
+              <tr {...row.getRowProps()} key={`datatable-${i}`}>
+                {row.cells.map((cell) => {
+                  return <td {...cell.getCellProps()}>{cell.render("Cell")}</td>;
+                })}
+              </tr>
+            );
+          })}
         </tbody>
       </table>
 

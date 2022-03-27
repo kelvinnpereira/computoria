@@ -2,7 +2,6 @@ import Head from "next/head";
 
 import SectionTitle from "../../components/section/section-title";
 import Widget from "../../components/widget";
-import Datepicker from "../../components/d-board/datepicker";
 
 const Home = () => {
   return (

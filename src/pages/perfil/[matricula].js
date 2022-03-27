@@ -14,15 +14,32 @@ const Conta = ({ usuario, curso }) => {
     <>
       <table className="table">
         <tbody>
-          {Object.keys(usuario).map((key) => {
-            let [chave, valor] = key == 'sigla_curso' ? ['Curso', curso.nome] : [key, usuario[key]];
-            return (
-              <tr key={key}>
-                <td> <b>{chave}</b> </td>
-                <td>{valor}</td>
-              </tr>
-            )
-          })}
+
+          <tr key='nome'>
+            <td> <b>Nome</b> </td>
+            <td>{usuario.nome}</td>
+          </tr>
+
+          <tr key='cpf'>
+            <td> <b>CPF</b> </td>
+            <td>{usuario.cpf}</td>
+          </tr>
+
+          <tr key='matricula'>
+            <td> <b>Matricula</b> </td>
+            <td>{usuario.matricula}</td>
+          </tr>
+
+          <tr key='email'>
+            <td> <b>E-mail</b> </td>
+            <td>{usuario.email}</td>
+          </tr>
+
+          <tr key='curso'>
+            <td> <b>Curso</b> </td>
+            <td>{curso.nome}</td>
+          </tr>
+
         </tbody>
       </table>
     </>
@@ -58,14 +75,20 @@ const Perfil = ({ usuario, cursos, disciplinas }) => {
 
   const actions = (
     query.matricula === Cookies.get('user') ?
-    <button
-      onClick={() => {
-        Router.push('/perfil/atualizar');
-      }}
-      className="btn btn-default bg-blue-500 hover:bg-blue-600 text-white btn-rounded btn-icon">
-      Atualizar Perfil
-    </button> :
-    <></>
+      <button
+        onClick={() => {
+          Router.push('/perfil/atualizar');
+        }}
+        className="btn btn-default bg-blue-500 hover:bg-blue-600 text-white btn-rounded btn-icon">
+        Atualizar Perfil
+      </button> :
+      <button
+        onClick={() => {
+          Router.push(`/denunciar/${query.matricula}`);
+        }}
+        className="btn btn-default bg-red-500 hover:bg-red-600 text-white btn-rounded btn-icon">
+        Denunciar Perfil
+      </button>
   );
 
   return (
@@ -75,7 +98,7 @@ const Perfil = ({ usuario, cursos, disciplinas }) => {
           Computoria: Perfil
         </title>
       </Head>
-      <SectionTitle title='Visualizar' subtitle="Perfil" actions={actions}/>
+      <SectionTitle title='Visualizar' subtitle="Perfil" actions={actions} />
 
       <Widget>
         <div className="flex flex-row m-4">
@@ -99,8 +122,8 @@ export const getServerSideProps = async (context) => {
     headers: { cookie: req.headers.cookie },
   });
   const response2 = await get('/api/cursos');
-  const response3 = await get(`/api/proficiencia/listar/${context.params.matricula}`, { 
-    headers: { cookie: req.headers.cookie } 
+  const response3 = await get(`/api/proficiencia/listar/${context.params.matricula}`, {
+    headers: { cookie: req.headers.cookie }
   });
   return {
     props: {

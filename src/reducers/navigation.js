@@ -65,7 +65,12 @@ const initialState = [
       {
         url: "/tutores",
         icon: <HiOutlineDocumentSearch size={20}/>,
-        title: "Listar todos os tutores",
+        title: "Listar Tutores",
+      },
+      {
+        url: "/tutores/disciplina",
+        icon: <HiOutlineDocumentSearch size={20}/>,
+        title: "Listar Tutores por disciplina",
       },
     ]
   }
