@@ -71,6 +71,8 @@ const ListarTutores = ({ tutores }) => {
     {
       Header: 'Média',
       accessor: 'media',
+      Filter: <></>,
+      filter: 'includes',
     },
   ];
 
@@ -83,7 +85,7 @@ const ListarTutores = ({ tutores }) => {
           {item.usuario}
         </a>,
       curso: item.curso,
-      media: '',
+      media: item.media,
     }
   });
 

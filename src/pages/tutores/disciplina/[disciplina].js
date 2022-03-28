@@ -5,6 +5,24 @@ import Head from "next/head";
 import SectionTitle from "../../../components/section/section-title";
 import Widget from "../../../components/widget";
 
+function disciplinaFilter({
+  column: { filterValue, setFilter },
+}) {
+  return (
+    <div className="form-element" key="container-0">
+      <input
+        type="text"
+        className={`form-input`}
+        placeholder={`Pesquise pelas disciplinas...`}
+        onChange={e => {
+          setFilter(e.target.value || undefined)
+        }}
+        value={filterValue || ''}
+      />
+    </div>
+  )
+}
+
 function nomeFilter({
   column: { filterValue, setFilter },
 }) {
@@ -92,6 +110,7 @@ const ListarTutores = ({ tutores }) => {
     {
       Header: 'Disciplinas',
       accessor: 'disciplina',
+      Filter: disciplinaFilter,
     },
     {
       Header: 'Tutores',
@@ -113,6 +132,14 @@ const ListarTutores = ({ tutores }) => {
     {
       Header: 'Média',
       accessor: 'media',
+      Filter: <></>,
+      filter: 'includes',
+    },
+    {
+      Header: 'Pontuação',
+      accessor: 'pontuacao',
+      Filter: <></>,
+      filter: 'includes',
     },
   ];
 
@@ -127,7 +154,8 @@ const ListarTutores = ({ tutores }) => {
         </a>,
       curso: item.curso,
       categoria: item.categoria,
-      media: '',
+      media: item.media,
+      pontuacao: item.pontuacao,
     }
   });
 
