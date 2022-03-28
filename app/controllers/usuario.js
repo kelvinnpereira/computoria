@@ -9,7 +9,7 @@ const tutores = async (req, res) => {
     const disciplina = req.params.disciplina;
     await sequelize.query(`\
       SELECT
-        c.nome AS curso, u.nome AS usuario, matricula
+        c.nome AS curso, u.nome AS usuario, matricula, media
       FROM
         (SELECT 
           DISTINCT(cpf) AS cpf 
@@ -24,6 +24,73 @@ const tutores = async (req, res) => {
           curso AS c
         ON
           sigla = sigla_curso
+        LEFT JOIN
+          (SELECT tutor, AVG(nota_aluno) AS media FROM ajuda GROUP BY tutor) AS ajuda_table
+        ON
+          tutor = u.cpf
+      ;
+    `).then((tutores) => {
+      if (tutores?.at(0)?.length > 0) {
+        console.log('Listar tutores');
+        res.status(200).send({ tutores: tutores?.at(0) });
+      } else {
+        console.log('Tutores não encontrados');
+        res.status(500).send({ tutores: [] });
+      }
+    }).catch((error) => {
+      console.log(error);
+      res.status(500).send({ error: error });
+    });
+  } else {
+    res.status(500).send({ error: 'error' });
+  }
+}
+
+const tutores_por_disciplina = async (req, res) => {
+  if (req.route.methods.get && req.params?.disciplina) {
+    const disciplina = req.params.disciplina;
+    await sequelize.query(`\
+    SELECT 
+      curso, 
+      usuario, 
+      matricula, 
+      categoria, 
+      disciplina, 
+      IFNULL(pontuacao, 0) AS pontuacao,
+      IFNULL(media, 0) AS media
+    FROM 
+      (SELECT
+        c.nome AS curso, 
+        u.nome AS usuario, 
+        matricula,
+        cat.nome AS categoria,
+        d.nome AS disciplina,
+        prof.sigla_disciplina as prof_sigla,
+        u.cpf AS cpf_user 
+      FROM
+        proficiencia AS prof, 
+        disciplina AS d, 
+        categoria AS cat,
+        usuario AS u,
+        curso AS c
+      WHERE
+        id_categoria = cat.id AND 
+        prof.sigla_disciplina = d.sigla AND
+        prof.cpf = u.cpf AND
+        c.sigla = sigla_curso 
+        ${disciplina !== 'all' ? `AND sigla_disciplina = \'${disciplina}\'` : ''}
+        ) AS user 
+    LEFT JOIN
+      (SELECT 
+        improficiencia.sigla_disciplina AS improf_sigla, 
+        COUNT(improficiencia.sigla_disciplina) AS pontuacao  
+      FROM improficiencia) AS improf 
+    ON 
+      improf_sigla = prof_sigla
+    LEFT JOIN
+      (SELECT tutor, AVG(nota_aluno) AS media FROM ajuda GROUP BY tutor) AS ajuda_table
+    ON
+      tutor = cpf_user
       ;
     `).then((tutores) => {
       if (tutores?.at(0)?.length > 0) {
@@ -175,6 +242,7 @@ const atualizar_senha = async (req, res) => {
 
 module.exports = {
   tutores,
+  tutores_por_disciplina,
   usuario,
   atualizar_conta,
   atualizar_email,

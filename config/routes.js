@@ -8,13 +8,15 @@ const ajudaController = require('../app/controllers/ajuda');
 const auth = require('../app/controllers/token_auth');
 
 //next
-router.get ('/'                        , auth.authenticated, nextController.handler);
-router.get ('/home'                    , auth.authenticated, nextController.handler);
-router.get ('/404'                     , nextController.handler);
-router.get ('/500'                     , nextController.handler);
-router.get ('/invalid'                 , auth.not_authenticated, nextController.handler);
-router.get ('/tutores'                 , auth.authenticated, nextController.handler);
-router.get ('/tutores/:disciplina'     , auth.authenticated, nextController.handler);
+router.get ('/'                              , auth.authenticated, nextController.handler);
+router.get ('/home'                          , auth.authenticated, nextController.handler);
+router.get ('/404'                           , nextController.handler);
+router.get ('/500'                           , nextController.handler);
+router.get ('/invalid'                       , auth.not_authenticated, nextController.handler);
+router.get ('/tutores'                       , auth.authenticated, nextController.handler);
+router.get ('/tutores/:disciplina'           , auth.authenticated, nextController.handler);
+router.get ('/tutores/disciplina'            , auth.authenticated, nextController.handler);
+router.get ('/tutores/disciplina/:disciplina', auth.authenticated, nextController.handler);
 //next /auth/
 router.get ('/auth/forgot'             , auth.not_authenticated, nextController.handler);
 router.get ('/auth/login'              , auth.not_authenticated, nextController.handler);
@@ -46,6 +48,7 @@ router.get ('/api/improficiencia/listar'         , auth.authenticated, mainContr
 router.post('/api/improficiencia/adicionar'      , auth.authenticated, mainController.api_improficiencia_adicionar);
 router.post('/api/improficiencia/remover'        , auth.authenticated, mainController.api_improficiencia_remover);
 router.get ('/api/tutores/:disciplina'           , auth.authenticated, usuarioController.tutores);
+router.get ('/api/tutores/disciplina/:disciplina', auth.authenticated, usuarioController.tutores_por_disciplina);
 router.get ('/api/usuario/:matricula'            , auth.authenticated, usuarioController.usuario);
 router.post('/api/atualizar_conta'               , auth.authenticated, usuarioController.atualizar_conta);
 router.post('/api/atualizar_email'               , auth.authenticated, usuarioController.atualizar_email);

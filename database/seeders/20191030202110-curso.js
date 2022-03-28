@@ -142,7 +142,6 @@ module.exports = {
       // { sigla: "IP05", nome: "Servi\u00e7o Social (Diurno", id_area: 1, created_at: new Date(new Date() + "+0"), updated_at: new Date(new Date() + "+0") },
       // { sigla: "IP06", nome: "Zootecnia (Diurno)", id_area: 1, created_at: new Date(new Date() + "+0"), updated_at: new Date(new Date() + "+0") },
       // { sigla: "IP07", nome: "Artes Visuais (Noturno)", id_area: 1, created_at: new Date(new Date() + "+0"), updated_at: new Date(new Date() + "+0") },
-      
       { sigla: "IE08", nome: "Ci\u00eancia da Computa\u00e7\u00e3o (Diurno)", id_area: 1, created_at: new Date(new Date() + "+0"), updated_at: new Date(new Date() + "+0") },
       { sigla: "IE17", nome: "Engenharia de Software (Vesp\/Noturno)", id_area: 1, created_at: new Date(new Date() + "+0"), updated_at: new Date(new Date() + "+0") },
     ], {});
