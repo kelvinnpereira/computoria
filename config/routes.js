@@ -74,6 +74,8 @@ router.post('/api/admin/auth/restart/:token', auth.admin_not_authenticated, auth
 router.get ('/api/ajuda/listar_agenda_tutor/:user', auth.authenticated, ajudaController.listar_ajuda_tutor);
 router.get ('/api/ajuda/listar_agenda_aluno/:user', auth.authenticated, ajudaController.listar_ajuda_aluno);
 router.post('/api/ajuda/agendar'                  , auth.authenticated, ajudaController.agendar);
+router.get ('/api/disponibilidade/listar/:user'   , auth.authenticated, ajudaController.listar_disponibilidade);
+router.post('/api/disponibilidade/adicionar'      , auth.authenticated, ajudaController.adicionar_disponibilidade);
 
 //not found
 router.get ('*', nextController.handler);

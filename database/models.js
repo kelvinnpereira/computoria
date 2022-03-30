@@ -7,6 +7,7 @@ module.exports = {
 	curso: require(__dirname + "/../app/models/curso"), 
 	disciplina: require(__dirname + "/../app/models/disciplina"), 
 	disciplina_curso: require(__dirname + "/../app/models/disciplina_curso"), 
+	disponibilidade: require(__dirname + "/../app/models/disponibilidade"), 
 	improficiencia: require(__dirname + "/../app/models/improficiencia"), 
 	monitor: require(__dirname + "/../app/models/monitor"), 
 	mudar_senha: require(__dirname + "/../app/models/mudar_senha"), 
