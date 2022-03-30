@@ -27,8 +27,8 @@ module.exports = (sequelize, DataTypes) => {
     underscored: true,
     freezeTableName: true,
   });
-  disponibilidade.associate = function(models) {
-    disponibilidade.belongsTo(models.usuario, {foreignKey: 'cpf'});
+  disponibilidade.associate = function (models) {
+    disponibilidade.belongsTo(models.usuario, { foreignKey: 'cpf' });
   };
   return disponibilidade;
 };

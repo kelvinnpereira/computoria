@@ -31,7 +31,7 @@ module.exports = (sequelize, DataTypes) => {
     freezeTableName: true,
   });
   admin.associate = function (models) {
-    admin.hasMany(models.mudar_senha_admin, {foreignKey: 'cpf'});
+    admin.hasMany(models.mudar_senha_admin, { foreignKey: 'cpf' });
   };
   return admin;
 };

@@ -12,11 +12,11 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
     },
   }, {
-      underscored: true,
-      freezeTableName: true,
+    underscored: true,
+    freezeTableName: true,
   });
-  mudar_senha_admin.associate = function(models) {
-    mudar_senha_admin.belongsTo(models.admin, {foreignKey: 'cpf'});
+  mudar_senha_admin.associate = function (models) {
+    mudar_senha_admin.belongsTo(models.admin, { foreignKey: 'cpf' });
   };
   return mudar_senha_admin;
 };

@@ -4,7 +4,7 @@ module.exports = (sequelize, DataTypes) => {
     sigla: {
       type: DataTypes.STRING,
       primaryKey: true,
-    }, 
+    },
     nome: {
       type: DataTypes.STRING,
     },
@@ -13,10 +13,10 @@ module.exports = (sequelize, DataTypes) => {
     underscored: true,
     freezeTableName: true,
   });
-  curso.associate = function(models) {
-    curso.belongsTo(models.area, {foreignKey: 'id_area'});
-    curso.hasMany(models.usuario, {foreignKey: 'sigla_curso'});
-    curso.hasMany(models.disciplina_curso, {foreignKey: 'sigla_curso'});
+  curso.associate = function (models) {
+    curso.belongsTo(models.area, { foreignKey: 'id_area' });
+    curso.hasMany(models.usuario, { foreignKey: 'sigla_curso' });
+    curso.hasMany(models.disciplina_curso, { foreignKey: 'sigla_curso' });
   };
   return curso;
 };

@@ -1,7 +1,7 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
   const area = sequelize.define('area', {
-    id : {
+    id: {
       type: DataTypes.INTEGER,
       primaryKey: true,
     },
@@ -12,8 +12,8 @@ module.exports = (sequelize, DataTypes) => {
     underscored: true,
     freezeTableName: true,
   });
-  area.associate = function(models) {
-    area.hasMany(models.curso, {foreignKey: 'id_area'});
+  area.associate = function (models) {
+    area.hasMany(models.curso, { foreignKey: 'id_area' });
   };
   return area;
 };

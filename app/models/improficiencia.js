@@ -13,9 +13,9 @@ module.exports = (sequelize, DataTypes) => {
     underscored: true,
     freezeTableName: true,
   });
-  improficiencia.associate = function(models) {
-    improficiencia.belongsTo(models.disciplina, {foreignKey: 'sigla_disciplina'});
-    improficiencia.belongsTo(models.usuario, {foreignKey: 'cpf'});
+  improficiencia.associate = function (models) {
+    improficiencia.belongsTo(models.disciplina, { foreignKey: 'sigla_disciplina' });
+    improficiencia.belongsTo(models.usuario, { foreignKey: 'cpf' });
   };
   return improficiencia;
 };
