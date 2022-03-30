@@ -110,7 +110,7 @@ export default ListarTutores;
 export const getServerSideProps = async (context) => {
   const { req, res } = context;
   const response = await get(`/api/tutores/${context.params.disciplina}`, {
-    headers: { cookie: req.headers.cookie },
+    headers: req.headers
   });
   return {
     props: { tutores: response.data.tutores },

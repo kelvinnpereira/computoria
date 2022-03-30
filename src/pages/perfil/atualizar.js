@@ -107,7 +107,7 @@ export const getServerSideProps = async (context) => {
   const { req, res } = context;
   const cookie = cookieToDict(req.headers.cookie);
   const response1 = await get(`/api/usuario/${cookie.user}`, {
-    headers: { cookie: req.headers.cookie },
+    headers: req.headers
   });
   const response2 = await get('/api/cursos');
   return {

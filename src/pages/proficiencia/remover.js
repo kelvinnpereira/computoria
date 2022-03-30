@@ -75,7 +75,7 @@ export const getServerSideProps = async (context) => {
   const { req, res } = context;
   const cookie = cookieToDict(req.headers.cookie);
   const response = await get(`/api/proficiencia/listar/${cookie.user}`, { 
-    headers: { cookie: req.headers.cookie } 
+    headers: req.headers
   });
   return {
     props: { disciplinas: response.data.disciplinas },
