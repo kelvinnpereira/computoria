@@ -64,13 +64,15 @@ const ListarProficiencia = ({ disciplinas }) => {
   );
 };
 
-const Perfil = ({ usuario, cursos, disciplinas }) => {
+const Perfil = ({ usuario, cursos, disciplinas, improf }) => {
   const { query } = useRouter();
   const curso = cursos.find(curso => curso.sigla == usuario.sigla_curso);
   const tabs = [
     { title: 'Conta', index: 0, content: <Conta usuario={usuario} curso={curso} /> },
+    { title: 'Horarios', index: 1 },
     { title: 'Redes Sociais', index: 1, content: <Redes /> },
-    { title: 'Proficiencias', index: 2, content: <ListarProficiencia disciplinas={disciplinas} /> }
+    { title: 'Proficiencias', index: 2, content: <ListarProficiencia disciplinas={disciplinas} /> },
+    { title: 'Improficiencias', index: 3, content: <ListarProficiencia disciplinas={improf} /> },
   ];
 
   const actions = (
@@ -82,13 +84,20 @@ const Perfil = ({ usuario, cursos, disciplinas }) => {
         className="btn btn-default bg-blue-500 hover:bg-blue-600 text-white btn-rounded btn-icon">
         Atualizar Perfil
       </button> :
-      <button
-        onClick={() => {
-          Router.push(`/denunciar/${query.matricula}`);
-        }}
-        className="btn btn-default bg-red-500 hover:bg-red-600 text-white btn-rounded btn-icon">
-        Denunciar Perfil
-      </button>
+      <>
+        <button
+          onClick={() => {
+            Router.push(`/denunciar/${query.matricula}`);
+          }}
+          className="btn btn-default bg-red-500 hover:bg-red-600 text-white btn-rounded btn-icon">
+          Denunciar Perfil
+        </button>
+        <button className="btn btn-default bg-blue-500 hover:bg-blue-600 text-white btn-rounded btn-icon">
+          Solicitar Ajuda
+        </button>
+      </>
+
+
   );
 
   return (
@@ -125,11 +134,15 @@ export const getServerSideProps = async (context) => {
   const response3 = await get(`/api/proficiencia/listar/${context.params.matricula}`, {
     headers: { cookie: req.headers.cookie }
   });
+  const response4 = await get(`/api/improficiencia/listar`, {
+    headers: { cookie: req.headers.cookie }
+  });
   return {
     props: {
       usuario: response1.data.usuario,
       cursos: response2.data.cursos,
       disciplinas: response3.data.disciplinas,
+      improf: response4.data.disciplinas,
     },
   }
 }

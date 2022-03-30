@@ -68,11 +68,14 @@ const Atualizar = ({ usuario, cursos }) => {
         message={errorMessage} usuario={usuario} cursos={cursos} />
     },
     {
-      title: 'Email', index: 1, content: <Email setAction={atualizarEmail} isLoading={isLoadingEmail}
+      title: 'Horarios', index: 1
+    },
+    {
+      title: 'Email', index: 2, content: <Email setAction={atualizarEmail} isLoading={isLoadingEmail}
         message={errorMessage} usuario={usuario} />
     },
     {
-      title: 'Senha', index: 2, content: <Senha setAction={atualizarSenha} isLoading={isLoadingSenha}
+      title: 'Senha', index: 3, content: <Senha setAction={atualizarSenha} isLoading={isLoadingSenha}
         message={errorMessage} />
     }
   ];
