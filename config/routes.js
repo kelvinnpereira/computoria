@@ -10,6 +10,7 @@ const auth = require('../app/controllers/token_auth');
 //next
 router.get ('/'                              , auth.authenticated, nextController.handler);
 router.get ('/home'                          , auth.authenticated, nextController.handler);
+router.get ('/admin/home'                    , auth.admin_authenticated, nextController.handler);
 router.get ('/404'                           , nextController.handler);
 router.get ('/500'                           , nextController.handler);
 router.get ('/invalid'                       , auth.not_authenticated, nextController.handler);
@@ -18,12 +19,17 @@ router.get ('/tutores/:disciplina'           , auth.authenticated, nextControlle
 router.get ('/tutores/disciplina'            , auth.authenticated, nextController.handler);
 router.get ('/tutores/disciplina/:disciplina', auth.authenticated, nextController.handler);
 //next /auth/
-router.get ('/auth/forgot'             , auth.not_authenticated, nextController.handler);
-router.get ('/auth/login'              , auth.not_authenticated, nextController.handler);
-router.get ('/auth/logout'             , auth.authenticated, nextController.logout);
-router.get ('/auth/signup'             , auth.not_authenticated, nextController.handler);
+router.get ('/auth/forgot', auth.not_authenticated, nextController.handler);
+router.get ('/auth/login' , auth.not_authenticated, nextController.handler);
+router.get ('/auth/logout', auth.authenticated    , nextController.logout);
+router.get ('/auth/signup', auth.not_authenticated, nextController.handler);
+//next /admin/auth/
+router.get ('/admin/auth/forgot', auth.admin_not_authenticated, nextController.handler);
+router.get ('/admin/auth/login' , auth.admin_not_authenticated, nextController.handler);
+router.get ('/admin/auth/logout', auth.admin_authenticated    , nextController.logout);
 //next /auth/restart
-router.get ('/auth/restart/:token'     , auth.not_authenticated, nextController.restart);
+router.get ('/auth/restart/:token'      , auth.not_authenticated, nextController.restart);
+router.get ('/admin/auth/restart/:token', auth.admin_not_authenticated, nextController.restart);
 //next /improficiencia/
 router.get ('/improficiencia/adicionar', auth.authenticated, nextController.handler);
 router.get ('/improficiencia/remover'  , auth.authenticated, nextController.handler);
@@ -59,6 +65,10 @@ router.post('/api/auth/signup'        , auth.not_authenticated, authController.a
 router.post('/api/auth/login'         , auth.not_authenticated, authController.api_login);
 router.post('/api/auth/forgot'        , auth.not_authenticated, authController.api_forgot);
 router.post('/api/auth/restart/:token', auth.not_authenticated, authController.api_restart);
+//admin/auth
+router.post('/api/admin/auth/login'         , auth.admin_not_authenticated, authController.api_login);
+router.post('/api/admin/auth/forgot'        , auth.admin_not_authenticated, authController.api_forgot);
+router.post('/api/admin/auth/restart/:token', auth.admin_not_authenticated, authController.api_restart);
 
 //ajuda
 router.get ('/api/ajuda/listar_agenda_tutor/:user', auth.authenticated, ajudaController.listar_ajuda_tutor);

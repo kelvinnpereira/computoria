@@ -1,8 +1,9 @@
 const models = require('../models/index');
 const auth = require('./token_auth');
 const Usuario = models.usuario;
-const Curso = models.curso;
+const Admin = models.admin;
 const MudarSenha = models.mudar_senha;
+const MudarSenhaAdmin = models.mudar_senha_admin;
 
 const bcrypt = require('bcryptjs');
 const crypto = require('crypto');
@@ -13,13 +14,13 @@ const api_login = async (req, res) => {
         let value = /[a-zA-Z]/g.test(req.body.user) ? req.body.user : req.body.user.replace(/[^\d]+/g, '');
         let user = undefined;
         if (/^\d+$/.test(value)) {
-            user = await Usuario.findOne({
+            user = await (req.admin ? Admin : Usuario).findOne({
                 where: {
                     cpf: value,
                 }
             });
         } else if (req.body.user.includes('@')) {
-            user = await Usuario.findOne({
+            user = await (req.admin ? Admin : Usuario).findOne({
                 where: {
                     email: req.body.user,
                 }
@@ -29,9 +30,12 @@ const api_login = async (req, res) => {
             bcrypt.compare(req.body.password, user.senha, (err, ok) => {
                 if (ok) {
                     console.log('Login feito com sucesso');
+                    let token = req.admin ? 
+                        auth.generateAccessTokenAdmin({ matricula: user.matricula }) :
+                        auth.generateAccessToken({ matricula: user.matricula })
                     res.status(200).send({
                         user: user.matricula,
-                        token: auth.generateAccessToken({ matricula: user.matricula }),
+                        token: token,
                     });
                 } else {
                     console.log('Senha incorreta');
@@ -89,13 +93,13 @@ const api_forgot = async (req, res) => {
         let value = /[a-zA-Z]/g.test(req.body.user) ? req.body.user : req.body.user.replace(/[^\d]+/g, '');
         let user = undefined;
         if (/^\d+$/.test(value)) {
-            user = await Usuario.findOne({
+            user = await (req.admin ? Admin : Usuario).findOne({
                 where: {
                     cpf: value,
                 }
             });
         } else if (req.body.user.includes('@')){
-            user = await Usuario.findOne({
+            user = await (req.admin ? Admin : Usuario).findOne({
                 where: {
                     email: req.body.user,
                 }
@@ -116,9 +120,9 @@ const api_forgot = async (req, res) => {
                 from: email.user,
                 to: user.email,
                 subject: 'Computoria: Recuperação de senha',
-                text: (process.env?.URL ? 'https://' + process.env.URL : "http://localhost:3000") + '/auth/restart/' + token
+                text: (process.env?.URL ? 'https://' + process.env.URL : "http://localhost:3000") + (req.admin ? '/admin' : '') + '/auth/restart/' + token
             };
-            await MudarSenha.create({
+            await (req.admin ? MudarSenhaAdmin : MudarSenha).create({
                 cpf: user.cpf,
                 token: token,
                 usado: false,
@@ -138,16 +142,14 @@ const api_forgot = async (req, res) => {
             res.status(500).send({ error: 'Usuario não encontrado' });
         }
     } else {
-        res.redirect('/home');
+        req.admin ? res.redirect('/admin/home') : res.redirect('/home');
     }
 }
-
-
 
 const api_restart = async (req, res) => {
     if (req.route.methods.post && req.params?.token) {
         let token = req.params.token;
-        let request = await MudarSenha.findOne({
+        let request = await (req.admin ? MudarSenhaAdmin : MudarSenha).findOne({
             where: {
                 token: token,
             }
@@ -158,7 +160,7 @@ const api_restart = async (req, res) => {
         bcrypt.genSalt(10, function (err, salt) {
             bcrypt.hash(req.body.senha, salt, async (err, hash) => {
                 if (!err) {
-                    await Usuario.update({
+                    await (req.admin ? Admin : Usuario).update({
                         senha: hash,
                     }, {
                         where: {
@@ -179,7 +181,7 @@ const api_restart = async (req, res) => {
             });
         });
     } else {
-        res.redirect('/home');
+        req.admin ? res.redirect('/admin/home') : res.redirect('/home');
     }
 }
 
