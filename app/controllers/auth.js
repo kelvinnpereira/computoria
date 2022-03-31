@@ -30,12 +30,12 @@ const api_login = async (req, res) => {
             bcrypt.compare(req.body.password, user.senha, (err, ok) => {
                 if (ok) {
                     console.log('Login feito com sucesso');
-                    let token = req.admin ? 
-                        auth.generateAccessTokenAdmin({ matricula: user.matricula }) :
-                        auth.generateAccessToken({ matricula: user.matricula })
                     res.status(200).send({
                         user: user.matricula,
-                        token: token,
+                        token: auth.generateAccessToken({ 
+                            matricula: user.matricula, 
+                            role: req.admin ? 'admin' : 'usuario', 
+                        })
                     });
                 } else {
                     console.log('Senha incorreta');

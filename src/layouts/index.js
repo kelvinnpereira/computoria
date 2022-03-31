@@ -2,7 +2,6 @@ import {useRouter} from 'next/router'
 import Centered from './centered'
 import Empty from './empty'
 import Layout1 from './layout-1'
-import Layout2 from './layout-2'
 
 const Layouts = ({children}) => {
   const router = useRouter()
@@ -44,8 +43,6 @@ const Layouts = ({children}) => {
     ].includes(pathname)
   ) {
     return <Empty>{children}</Empty>
-  } else if (pathname.startsWith('/admin/')) {
-    return <Layout2>{children}</Layout2>
   } else {
     return <Layout1>{children}</Layout1>
   }

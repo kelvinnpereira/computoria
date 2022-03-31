@@ -1,20 +1,26 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector, shallowEqual } from "react-redux";
 import Title from "./title";
 import Item from "./item";
 import Logo from "./logo";
+import Cookies from 'js-cookie';
 
 const LeftSidebar = () => {
-  const { navigation } = useSelector(
+  const { navigation, navigation_admin } = useSelector(
     state => ({
-      navigation: state.navigation
+      navigation: state.navigation,
+      navigation_admin: state.navigation_admin,
     }),
     shallowEqual
   );
+  const [nav, setNav] = useState([]);
+  useEffect(() => {
+    setNav(Cookies.get('role') === 'admin' ? navigation_admin : navigation);
+  })
   return (
     <div className="left-sidebar left-sidebar-1">
-      <Logo/>
-      {navigation.map((menu, i) => (
+      <Logo />
+      {nav.map((menu, i) => (
         <React.Fragment key={i}>
           <Title>{menu.title}</Title>
           <ul>

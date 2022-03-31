@@ -154,7 +154,10 @@ const atualizar_conta = async (req, res) => {
     }).then((usuario) => {
       if (usuario && usuario.length > 0 && usuario[0] !== 0) {
         console.log('Update conta');
-        res.cookie('Authorization', auth.generateAccessToken({ matricula: req.body.matricula }));
+        res.cookie('Authorization', auth.generateAccessToken({ 
+          matricula: req.body.matricula,
+          role: req.admin ? 'admin' : 'usuario',
+        }));
         res.cookie('user', req.body.matricula);
         res.status(200).send({});
       } else {

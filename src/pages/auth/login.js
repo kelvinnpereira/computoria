@@ -19,6 +19,7 @@ const LogIn = () => {
       auth: {
         token: data.token,
         user: data.user,
+        role: 'usuario',
       }
     });
     Router.push('/home');

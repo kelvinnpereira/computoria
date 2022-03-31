@@ -11,6 +11,7 @@ const authenticated = (req, res, next) => {
       console.log('Token de sessão invalido ou expirado');
       res.clearCookie('Authorization');
       res.clearCookie('user');
+      res.clearCookie('role');
       return res.redirect('/auth/login');
     } else {
       console.log('Token de sessão valido');
@@ -32,11 +33,12 @@ const admin_authenticated = (req, res, next) => {
     console.log('Token de sessão não existe');
     return res.redirect('/admin/auth/login');
   }
-  jwt.verify(token, process.env.ADMIN_SECRET.trim(), (err, user) => {
-    if (err) {
-      console.log('Token de sessão invalido ou expirado');
+  jwt.verify(token, process.env.TOKEN_SECRET.trim(), (err, user) => {
+    if (err || user.role === 'usuario') {
+      console.log('Token de sessão invalido, expirado ou de usuario');
       res.clearCookie('Authorization');
       res.clearCookie('user');
+      res.clearCookie('role');
       return res.redirect('/admin/auth/login');
     } else {
       console.log('Token de sessão valido');
@@ -58,15 +60,11 @@ const generateAccessToken = (obj) => {
   return jwt.sign(obj, process.env.TOKEN_SECRET, { expiresIn: '3600s' });
 }
 
-const generateAccessTokenAdmin = (obj) => {
-  return jwt.sign(obj, process.env.ADMIN_SECRET, { expiresIn: '3600s' });
-}
-
 const cookieToDict = (cookie) => {
   let dict = {};
   let items = cookie?.split('; ');
   items?.forEach(item => {
-    [key, value] = item.split('=');
+    const [key, value] = item.split('=');
     dict[key] = value;
   });
   return dict;
@@ -78,6 +76,5 @@ module.exports = {
   admin_authenticated,
   admin_not_authenticated,
   generateAccessToken,
-  generateAccessTokenAdmin,
   cookieToDict,
 }
