@@ -5,32 +5,40 @@ import Widget from "../../components/widget";
 import List1 from "../../components/d-board/lists/list-1";
 import { get, cookieToDict } from '../../lib/api';
 
-const ListarProficiencia = ({ disciplinas }) => {
+const ListarMonitoria = ({ disciplinas }) => {
   return (
     <>
       <Head>
         <title>
-          Computoria: Listar Proficiencia
+          Computoria: Listar Monitoria
         </title>
       </Head>
-      <SectionTitle title="Listar" subtitle="Proficiencia" />
+      <SectionTitle title="Listar" subtitle="Monitoria" />
       <Widget>
-        <List1 items={disciplinas?.map((item) => {
-          return {
-            title: item.sigla + " - " + item.nome
-          }
-        })} />
+        {
+          disciplinas?.length == 0
+            ?
+            <div className="w-full mb-4">
+              Você não tem monitorias
+            </div>
+            :
+            <List1 items={disciplinas?.map((item) => {
+              return {
+                title: item.sigla + " - " + item.nome
+              }
+            })} />
+        }
       </Widget>
     </>
   );
 };
 
-export default ListarProficiencia;
+export default ListarMonitoria;
 
 export const getServerSideProps = async (context) => {
   const { req, res } = context;
   const cookie = cookieToDict(req.headers.cookie);
-  const response = await get(`/api/proficiencia/listar/${cookie.user}`, { 
+  const response = await get(`/api/monitoria/listar/${cookie.user}`, {
     headers: req.headers
   });
   return {

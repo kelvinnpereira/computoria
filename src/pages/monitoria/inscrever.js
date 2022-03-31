@@ -3,13 +3,13 @@ import Head from "next/head";
 import SectionTitle from "../../components/section/section-title";
 import Widget from "../../components/widget";
 import { useRequest } from "@src/hooks/auth";
-import Form from "../../components/disciplina/remover/form";
+import Form from "../../components/disciplina/inscrever/form";
 import { useState } from "react";
 import { get } from '../../lib/api';
 import Modal from '../../components/modals';
 import Router from "next/router";
 
-const RemoverImproficiencia = ({ disciplinas }) => {
+const InscreverMonitoria = ({ cursos }) => {
   const [errorMessage, setErrorMessage] = useState("");
   const [showModal, setModal] = useState(false);
 
@@ -22,18 +22,18 @@ const RemoverImproficiencia = ({ disciplinas }) => {
           </svg>
         </span>
         <div class="flex flex-col w-full mb-4">
-          <div class="text-lg mb-2 font-bold">Disciplina(s) removidas(s) com sucesso</div>
+          <div class="text-lg mb-2 font-bold">Solicitação enviada para o coordenador</div>
         </div>
       </div>)
   }
 
   const onClick = (e) => {
-    Router.push('/improficiencia/listar');
+    Router.push('/monitoria/listar');
   }
 
   const buttonModal = () => {
     return (
-      <button onClick={onClick} class="btn btn-default btn-rounded bg-blue-500 text-white hover:bg-blue-600 w-full" type="button">Listar Disciplinas</button>
+      <button onClick={onClick} class="btn btn-default btn-rounded bg-blue-500 text-white hover:bg-blue-600 w-full" type="button">Listar Monitorias</button>
     );
   }
 
@@ -50,31 +50,30 @@ const RemoverImproficiencia = ({ disciplinas }) => {
     }
   };
 
-  const [isLoading, setRequest] = useRequest(onAction, onError, '/api/improficiencia/remover');
+  const [isLoading, setRequest] = useRequest(onAction, onError, '/api/monitoria/inscrever');
 
   return (
     <>
       <Head>
         <title>
-          Computoria: Remover Improficiencia
+          Computoria: Inscrever Monitoria
         </title>
       </Head>
-      <SectionTitle title="Remover" subtitle="Improficiencia" />
+      <SectionTitle title="Inscrever" subtitle="Monitoria" />
       <Widget>
         <Modal title={'Computoria'} body={sucessBody()} open={showModal} setOpen={setModal} btns={buttonModal()} />
         <Form setAction={setRequest} isLoading={isLoading}
-          message={errorMessage} disciplinas={disciplinas} />
+          message={errorMessage} cursos={cursos} />
       </Widget>
     </>
   );
 };
 
-export default RemoverImproficiencia;
+export default InscreverMonitoria;
 
 export const getServerSideProps = async (context) => {
-  const { req, res } = context;
-  const response = await get('/api/improficiencia/listar', { headers: req.headers });
+  const response = await get('/api/cursos');
   return {
-    props: { disciplinas: response.data.disciplinas },
+    props: { cursos: response.data.cursos },
   }
 }

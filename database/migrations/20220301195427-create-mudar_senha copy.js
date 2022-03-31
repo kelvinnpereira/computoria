@@ -1,22 +1,21 @@
 'use strict';
 
 module.exports = {
-  up: (queryInterface, Sequelize) => {
-    return queryInterface.createTable('monitor', {
-      sigla_disciplina: {
-        primaryKey: true,
+  async up (queryInterface, Sequelize) {
+    return queryInterface.createTable('mudar_senha_admin', {
+      id: {
         allowNull: false,
-        type: Sequelize.STRING
+        autoIncrement: true,
+        primaryKey: true,
+        type: Sequelize.INTEGER
       },
       cpf: {
-        primaryKey: true,
         allowNull: false,
         type: Sequelize.STRING
       },
-      aprovado: {
+      token: {
         allowNull: false,
-        type: Sequelize.BOOLEAN,
-        defaultValue: false,
+        type: Sequelize.STRING
       },
       created_at: {
         allowNull: false,
@@ -30,7 +29,8 @@ module.exports = {
       }
     });
   },
-  down: (queryInterface, Sequelize) => {
-    return queryInterface.dropTable('monitor');
+
+  async down (queryInterface, Sequelize) {
+    return queryInterface.dropTable('mudar_senha_admin');
   }
 };

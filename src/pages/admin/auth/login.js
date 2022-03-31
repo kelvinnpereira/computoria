@@ -3,11 +3,11 @@ import { useState } from "react";
 import Router from "next/router";
 import Head from "next/head";
 
-import Logo from "../../components/login/logo";
-import Text from "../../components/login/text";
-import Footer from "../../components/login/footer";
-import Form from "../../components/login/form";
-import { useRequest } from "../../hooks/auth";
+import Logo from "../../../components/login/logo";
+import Text from "../../../components/login/text";
+import Footer from "../../../components/login/footer";
+import Form from "../../../components/login/form";
+import { useRequest } from "../../../hooks/auth";
 
 const LogIn = () => {
   const [errorMessage, setErrorMessage] = useState("");
@@ -19,15 +19,11 @@ const LogIn = () => {
       auth: {
         token: data.token,
         user: data.user,
-        role: 'usuario',
+        role: 'admin',
       }
     });
-    Router.push('/home');
+    Router.push('/admin/home');
   };
-
-  const onClick = () => {
-    Router.push('/auth/signup')
-  }
 
   const onError = (err) => {
     console.error(err);
@@ -39,12 +35,12 @@ const LogIn = () => {
     }
   };
 
-  const [isLoading, setRequest] = useRequest(onLogin, onError, '/api/auth/login');
+  const [isLoading, setRequest] = useRequest(onLogin, onError, '/api/admin/auth/login');
 
   return (
     <>
       <Head>
-        <title>Computoria: Login</title>
+        <title>Admin Computoria: Login</title>
       </Head>
       <div className="w-full flex flex-row h-screen overflow-hidden">
         <div
@@ -57,7 +53,7 @@ const LogIn = () => {
           className="w-full lg:w-1/2 p-8 lg:p-24 flex flex-col items-start justify-center"
           style={{ background: "rgba(17,24,39)" }}>
           <p className="text-2xl font-bold text-blue-500 mb-4">
-            Login em Computoria
+            Login em Computoria para administradores
           </p>
           <div className="w-full mb-4">
           </div>
@@ -68,15 +64,9 @@ const LogIn = () => {
               className="text-secondary text-white mr-1">Esqueceu sua senha?
             </span>
             <span>
-              <a href="/auth/forgot" className="link">Clique aqui</a>
+              <a href="/admin/auth/forgot" className="link">Clique aqui</a>
             </span>
           </div>
-          <button
-            className="btn btn-default bg-green-500 hover:bg-green-600 text-white btn-rounded btn-icon"
-            style={{ width: "250px" }}
-            onClick={onClick}>
-            <p >Criar nova conta</p>
-          </button>
         </div>
       </div>
     </>

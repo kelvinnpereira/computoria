@@ -1,22 +1,34 @@
 'use strict';
-
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    return queryInterface.createTable('monitor', {
-      sigla_disciplina: {
-        primaryKey: true,
-        allowNull: false,
-        type: Sequelize.STRING
-      },
+    return queryInterface.createTable('admin', {
       cpf: {
+        allowNull: false,
         primaryKey: true,
+        unique: true,
+        type: Sequelize.STRING,
+      },
+      matricula: {
+        allowNull: false,
+        unique: true,
+        type: Sequelize.STRING,
+      },
+      nome: {
         allowNull: false,
         type: Sequelize.STRING
       },
-      aprovado: {
+      email: {
         allowNull: false,
-        type: Sequelize.BOOLEAN,
-        defaultValue: false,
+        unique: true,
+        type: Sequelize.STRING
+      },
+      senha: {
+        allowNull: false,
+        type: Sequelize.STRING
+      },
+      sigla_curso: {
+        allowNull: false,
+        type: Sequelize.STRING
       },
       created_at: {
         allowNull: false,
@@ -31,6 +43,6 @@ module.exports = {
     });
   },
   down: (queryInterface, Sequelize) => {
-    return queryInterface.dropTable('monitor');
+    return queryInterface.dropTable('admin');
   }
 };

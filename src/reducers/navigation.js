@@ -73,6 +73,46 @@ const initialState = [
         title: "Listar por disciplina",
       },
     ]
+  },
+  {
+    title: "Monitoria",
+    items: [
+      {
+        url: "/monitoria/inscrever",
+        icon: <HiOutlineDocumentSearch size={20}/>,
+        title: "Inscrever Monitoria",
+      },
+      {
+        url: "/monitoria/listar",
+        icon: <HiOutlineDocumentSearch size={20}/>,
+        title: "Minhas Monitorias",
+      },
+      {
+        url: "/monitoria/solicitacoes",
+        icon: <HiOutlineDocumentSearch size={20}/>,
+        title: "Solicitações Pendentes",
+      },
+    ]
+  },
+  {
+    title: "Certificados",
+    items: [
+      {
+        url: "/certificado/solicitar",
+        icon: <HiOutlineDocumentSearch size={20}/>,
+        title: "Solicitar Certificado",
+      },
+      {
+        url: "/certificado/listar",
+        icon: <HiOutlineDocumentSearch size={20}/>,
+        title: "Meus Certificados",
+      },
+      {
+        url: "/certificado/solicitacoes",
+        icon: <HiOutlineDocumentSearch size={20}/>,
+        title: "Solicitações de Certificados",
+      },
+    ]
   }
 ];
 

@@ -34,7 +34,7 @@ export default ListarImproficiencia;
 
 export const getServerSideProps = async (context) => {
   const { req, res } = context;
-  const response = await get('/api/improficiencia/listar', { headers: { cookie: req.headers.cookie } });
+  const response = await get('/api/improficiencia/listar', { headers: req.headers });
   return {
     props: { disciplinas: response.data.disciplinas },
   }

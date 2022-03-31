@@ -128,11 +128,11 @@ export default Perfil;
 export const getServerSideProps = async (context) => {
   const { req, res } = context;
   const response1 = await get(`/api/usuario/${context.params.matricula}`, {
-    headers: { cookie: req.headers.cookie },
+    headers: req.headers
   });
   const response2 = await get('/api/cursos');
   const response3 = await get(`/api/proficiencia/listar/${context.params.matricula}`, {
-    headers: { cookie: req.headers.cookie }
+    headers: req.headers
   });
   const response4 = await get(`/api/improficiencia/listar`, {
     headers: { cookie: req.headers.cookie }

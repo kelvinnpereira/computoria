@@ -1,6 +1,6 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
-  const usuario = sequelize.define('usuario', {
+  const admin = sequelize.define('admin', {
     nome: {
       type: DataTypes.STRING,
     },
@@ -30,14 +30,8 @@ module.exports = (sequelize, DataTypes) => {
     underscored: true,
     freezeTableName: true,
   });
-  usuario.associate = function (models) {
-    usuario.belongsTo(models.curso, { foreignKey: 'sigla_curso' });
-    usuario.hasMany(models.proficiencia, { foreignKey: 'cpf' });
-    usuario.hasMany(models.improficiencia, { foreignKey: 'cpf' });
-    usuario.hasMany(models.monitor, { foreignKey: 'cpf' });
-    usuario.hasMany(models.mudar_senha, { foreignKey: 'cpf' });
-    usuario.hasMany(models.ajuda, { foreignKey: 'tutor' });
-    usuario.hasMany(models.ajuda, { foreignKey: 'aluno' });
+  admin.associate = function (models) {
+    admin.hasMany(models.mudar_senha_admin, { foreignKey: 'cpf' });
   };
-  return usuario;
+  return admin;
 };

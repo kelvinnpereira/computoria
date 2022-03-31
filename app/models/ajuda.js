@@ -15,7 +15,10 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
     },
     status: {
-      type: DataTypes.STRING, //solicitado, agendado, concluido
+      type: DataTypes.STRING,
+      validate: {
+        isIn: [['solicitado', 'agendado', 'concluido']]
+      },
     },
     data_inicio: {
       type: DataTypes.DATE,

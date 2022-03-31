@@ -1,7 +1,7 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
   const cargo = sequelize.define('cargo', {
-    id : {
+    id: {
       type: DataTypes.INTEGER,
       primaryKey: true,
     },
@@ -12,7 +12,7 @@ module.exports = (sequelize, DataTypes) => {
     underscored: true,
     freezeTableName: true,
   });
-  cargo.associate = function(models) {
+  cargo.associate = function (models) {
   };
   return cargo;
 };

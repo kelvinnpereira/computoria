@@ -1,6 +1,6 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
-  const mudar_senha = sequelize.define('mudar_senha', {
+  const mudar_senha_admin = sequelize.define('mudar_senha_admin', {
     id: {
       type: DataTypes.INTEGER,
       primaryKey: true,
@@ -15,8 +15,8 @@ module.exports = (sequelize, DataTypes) => {
     underscored: true,
     freezeTableName: true,
   });
-  mudar_senha.associate = function (models) {
-    mudar_senha.belongsTo(models.usuario, { foreignKey: 'cpf' });
+  mudar_senha_admin.associate = function (models) {
+    mudar_senha_admin.belongsTo(models.admin, { foreignKey: 'cpf' });
   };
-  return mudar_senha;
+  return mudar_senha_admin;
 };

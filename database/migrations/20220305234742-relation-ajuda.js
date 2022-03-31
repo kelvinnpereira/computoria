@@ -37,6 +37,7 @@ module.exports = {
 
   down: (queryInterface, Sequelize) => {
     return queryInterface.removeConstraint(
+      'ajuda', 
       'tutor_cpf',
       'aluno_cpf',
       'sigla_disciplina_ajuda',
