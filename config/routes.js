@@ -11,8 +11,6 @@ const auth = require('../app/controllers/token_auth');
 router.get ('/'                              , auth.authenticated, nextController.handler);
 router.get ('/home'                          , auth.authenticated, nextController.handler);
 router.get ('/admin/home'                    , auth.admin_authenticated, nextController.handler);
-router.get ('/404'                           , nextController.handler);
-router.get ('/500'                           , nextController.handler);
 router.get ('/invalid'                       , auth.not_authenticated, nextController.handler);
 router.get ('/tutores'                       , auth.authenticated, nextController.handler);
 router.get ('/tutores/:disciplina'           , auth.authenticated, nextController.handler);
@@ -42,6 +40,10 @@ router.get ('/proficiencia/listar'     , auth.authenticated, nextController.hand
 router.get ('/perfil/atualizar'        , auth.authenticated, nextController.handler);
 router.get ('/perfil'                  , auth.authenticated, nextController.handler);
 router.get ('/perfil/:matricula'       , auth.authenticated, nextController.handler);
+//next monitoria
+router.post('/monitoria/inscrever'        , auth.authenticated, nextController.handler);
+router.post('/monitoria/listar'           , auth.authenticated, nextController.handler);
+router.post('/monitoria/solicitacoes'     , auth.authenticated, nextController.handler);
 
 //main
 router.get ('/api/cursos'                        , mainController.cursos);
@@ -59,6 +61,11 @@ router.get ('/api/usuario/:matricula'            , auth.authenticated, usuarioCo
 router.post('/api/atualizar_conta'               , auth.authenticated, usuarioController.atualizar_conta);
 router.post('/api/atualizar_email'               , auth.authenticated, usuarioController.atualizar_email);
 router.post('/api/atualizar_senha'               , auth.authenticated, usuarioController.atualizar_senha);
+
+//monitor
+router.post('/api/monitoria/inscrever'        , auth.authenticated, mainController.monitoria_inscrever);
+router.get ('/api/monitoria/listar/:matricula', auth.authenticated, mainController.monitoria_listar);
+router.get ('/api/monitoria/solicitacoes'     , auth.authenticated, mainController.monitoria_solicitacoes);
 
 //auth
 router.post('/api/auth/signup'        , auth.not_authenticated, authController.api_signup);

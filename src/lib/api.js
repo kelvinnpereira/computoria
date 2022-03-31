@@ -13,8 +13,8 @@ const cookieToDict = (cookie) => {
   let dict = {};
   let items = cookie?.split('; ');
   items?.forEach(item => {
-      [key, value] = item.split('=');
-      dict[key] = value;
+    const [key, value] = item.split('=');
+    dict[key] = value;
   });
   return dict;
 }
