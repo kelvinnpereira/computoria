@@ -11,8 +11,12 @@ module.exports = {
       cpf: {
         primaryKey: true,
         allowNull: false,
-        unique: true,
         type: Sequelize.STRING
+      },
+      aprovado: {
+        allowNull: false,
+        type: Sequelize.BOOLEAN,
+        defaultValue: false,
       },
       created_at: {
         allowNull: false,

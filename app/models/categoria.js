@@ -4,7 +4,7 @@ module.exports = (sequelize, DataTypes) => {
     id: {
       type: DataTypes.INTEGER,
       primaryKey: true,
-    }, 
+    },
     nome: {
       type: DataTypes.STRING,
     },
@@ -12,8 +12,8 @@ module.exports = (sequelize, DataTypes) => {
     underscored: true,
     freezeTableName: true,
   });
-  categoria.associate = function(models) {
-    categoria.hasMany(models.disciplina, {foreignKey: 'id_categoria'});
+  categoria.associate = function (models) {
+    categoria.hasMany(models.disciplina, { foreignKey: 'id_categoria' });
   };
   return categoria;
 };

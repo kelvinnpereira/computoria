@@ -8,14 +8,14 @@ const ErrorPage = () => {
         src="/images/illustration.svg"
         alt="svg"
       />
-      <h1 className="text-6xl text-blue-500 mb-4">404</h1>
+      <h1 className="text-6xl text-blue-500 mb-4">500</h1>
 
       <div className="mb-8 text-center text-white">
         We're sorry. The page you requested could not be found. Please go back
         to the homepage or contact us
       </div>
       <div className="flex w-full">
-        <a href="/" className="btn btn-lg btn-rounded btn-block bg-blue-500 hover:bg-blue-600 text-white">
+        <a href="/home" className="btn btn-lg btn-rounded btn-block bg-blue-500 hover:bg-blue-600 text-white">
           Go back
         </a>
       </div>

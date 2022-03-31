@@ -38,15 +38,15 @@ const Form = ({ message = null, setForgot, isLoading }) => {
                 ref={register({
                   required: 'Insira seu CPF ou E-mail',
                 })}
-                name="username"
+                name="user"
                 type="text"
                 className={`form-input ${
-                  errors["username"] ? "border-red-500" : ""
+                  errors["user"] ? "border-red-500" : ""
                 }`}
                 placeholder="Insira seu CPF ou E-mail"
               />
-              {errors["username"] && (
-                <div className="form-error">{errors["username"].message}</div>
+              {errors["user"] && (
+                <div className="form-error">{errors["user"].message}</div>
               )}
             </div>
 

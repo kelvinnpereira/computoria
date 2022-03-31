@@ -35,7 +35,7 @@ const Item = ({
       <a className={className}
          style={{ flex: "1" }}>
         {icon}
-        <span className="title" style={{ flex: "1" }}>{title.length > 17 ? `${title.substring(0, 17)}...` : title}</span>
+        <span className="title" style={{ flex: "1" }}>{title}</span>
         {badge && (
           <span className={`badge badge-circle badge-sm ${badge.color}`}>
               {badge.text}

@@ -29,7 +29,7 @@ export const usePush = (uri, dataDispatch = null, method = "PUT") => {
       response = await put(uri, data);
     }
     setIsLoading(false);
-    if (response.status === 401 && !auth?.username) {
+    if (response.status === 401 && !auth?.user) {
       dispatch({ type: "LOGOUT" });
       Router.push("/auth/login");
       return;

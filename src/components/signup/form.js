@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useRef, useEffect } from "react";
 import Alert from "../alerts";
 import { useForm } from "react-hook-form";
 import { FaSpinner } from "react-icons/fa";
@@ -13,7 +13,7 @@ const Form = ({ message = null, setSignup, isLoading , cursos}) => {
   const senha = useRef({});
   senha.current = watch("senha", "");
 
-  React.useEffect(() => {
+  useEffect(() => {
     setCsrf();
   });
 
@@ -120,7 +120,7 @@ const Form = ({ message = null, setSignup, isLoading , cursos}) => {
                   errors["curso"] ? "border border-red-500" : ""
                 }`}>
                 {cursos.map((option, i) => (
-                  <option key={i} value={option.nome}>
+                  <option key={i} value={option.sigla}>
                     {option.sigla + ' - ' + option.nome}
                   </option>
                 ))}

@@ -1,5 +1,5 @@
 
-const List4 = ({items}) => (
+const List4 = ({ items }) => (
   <div className="w-full mb-4">
     {items.map((item, i) => (
       <div

@@ -25,60 +25,93 @@ const menuLevels = getStorageLevel();
 
 const initialState = [
   {
-    title: "Computoria",
+    title: "Disciplinas",
     items: [
       {
-        url: "/home",
+        url: "/proficiencia/adicionar",
         icon: <FiCompass size={20}/>,
-        title: "Computoria",
-        items: [
-          {
-            url: "/home",
-            title: "Dashboard",
-            items: menuLevels.tasks,
-            onlyChildren: true
-          }
-        ]
+        title: "Adicionar Proficiencia",
       },
       {
-        url: "/home",
+        url: "/proficiencia/remover",
         icon: <HiOutlineDocumentSearch size={20}/>,
-        title: "Computoria",
-        items: [
-          {
-            url: "/home",
-            title: "Dashboard",
-            items: menuLevels.reviews,
-            onlyChildren: true
-          }
-        ]
+        title: "Remover Proficiencia",
       },
       {
-        url: "/home",
+        url: "/proficiencia/listar",
+        icon: <CgTemplate size={20}/>,
+        title: "Listar Proficiencia",
+      },
+      {
+        url: "/improficiencia/adicionar",
         icon: <CgListTree size={20}/>,
-        title: "Computoria",
-        items: [
-          {
-            url: "/home",
-            title: "Dashboard",
-            items: menuLevels.propagations,
-            onlyChildren: true
-          }
-        ]
+        title: "Adicionar Improficiencia",
       },
       {
-        url: "/home",
+        url: "/improficiencia/remover",
         icon: <FaRocket size={20}/>,
-        title: "Computoria",
-        items: [
-          {
-            url: "/home",
-            title: "Dashboard",
-            items: menuLevels.pre_releases,
-            onlyChildren: true
-          }
-        ]
+        title: "Remover improficiencia",
+      },
+      {
+        url: "/improficiencia/listar",
+        icon: <MdBusiness size={20}/>,
+        title: "Listar improficiencia",
       }
+    ]
+  },
+  {
+    title: "Tutores/Monitores",
+    items: [
+      {
+        url: "/tutores",
+        icon: <HiOutlineDocumentSearch size={20}/>,
+        title: "Listar Tutores/Monitores",
+      },
+      {
+        url: "/tutores/disciplina",
+        icon: <HiOutlineDocumentSearch size={20}/>,
+        title: "Listar por disciplina",
+      },
+    ]
+  },
+  {
+    title: "Monitoria",
+    items: [
+      {
+        url: "/monitoria/inscrever",
+        icon: <HiOutlineDocumentSearch size={20}/>,
+        title: "Inscrever Monitoria",
+      },
+      {
+        url: "/monitoria/listar",
+        icon: <HiOutlineDocumentSearch size={20}/>,
+        title: "Minhas Monitorias",
+      },
+      {
+        url: "/monitoria/solicitacoes",
+        icon: <HiOutlineDocumentSearch size={20}/>,
+        title: "Solicitações Pendentes",
+      },
+    ]
+  },
+  {
+    title: "Certificados",
+    items: [
+      {
+        url: "/certificado/solicitar",
+        icon: <HiOutlineDocumentSearch size={20}/>,
+        title: "Solicitar Certificado",
+      },
+      {
+        url: "/certificado/listar",
+        icon: <HiOutlineDocumentSearch size={20}/>,
+        title: "Meus Certificados",
+      },
+      {
+        url: "/certificado/solicitacoes",
+        icon: <HiOutlineDocumentSearch size={20}/>,
+        title: "Solicitações de Certificados",
+      },
     ]
   }
 ];

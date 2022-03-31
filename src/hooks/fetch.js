@@ -25,7 +25,7 @@ export const useFetch = (
       return;
     }
     const response = await get(url);
-    if (response.status === 401 && !auth?.username) {
+    if (response.status === 401 && !auth?.user) {
       dispatch({ type: "LOGOUT" });
       Router.push("/auth/login");
       return;

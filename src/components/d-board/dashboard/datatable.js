@@ -81,7 +81,7 @@ const Datatable = ({columns, data}) => {
           {headerGroups.map(headerGroup => (
             <tr {...headerGroup.getHeaderGroupProps()}>
               {headerGroup.headers.map(column => (
-                <th {...column.getHeaderProps(column.getSortByToggleProps())}>
+                //<th {...column.getHeaderProps(column.getSortByToggleProps())}>
                   <div className="flex flex-row items-center justify-start whitespace-nowrap">
                     <span>{column.render('Header')}</span>
                     <span className="ml-auto">
@@ -96,7 +96,7 @@ const Datatable = ({columns, data}) => {
                       )}
                     </span>
                   </div>
-                </th>
+                //</th>
               ))}
             </tr>
           ))}

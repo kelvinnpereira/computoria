@@ -10,9 +10,15 @@ module.exports = (sequelize, DataTypes) => {
     },
     matricula: {
       type: DataTypes.STRING,
+      unique: {
+        msg: 'Este número de matrícula já está em uso!'
+      },
     },
     email: {
       type: DataTypes.STRING,
+      unique: {
+        msg: 'Este E-mail já está em uso!'
+      },
     },
     senha: {
       type: DataTypes.STRING,
@@ -24,8 +30,14 @@ module.exports = (sequelize, DataTypes) => {
     underscored: true,
     freezeTableName: true,
   });
-  usuario.associate = function(models) {
-    usuario.belongsTo(models.curso, {foreignKey: 'sigla_curso'});
+  usuario.associate = function (models) {
+    usuario.belongsTo(models.curso, { foreignKey: 'sigla_curso' });
+    usuario.hasMany(models.proficiencia, { foreignKey: 'cpf' });
+    usuario.hasMany(models.improficiencia, { foreignKey: 'cpf' });
+    usuario.hasMany(models.monitor, { foreignKey: 'cpf' });
+    usuario.hasMany(models.mudar_senha, { foreignKey: 'cpf' });
+    usuario.hasMany(models.ajuda, { foreignKey: 'tutor' });
+    usuario.hasMany(models.ajuda, { foreignKey: 'aluno' });
   };
   return usuario;
 };

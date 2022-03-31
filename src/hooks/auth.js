@@ -5,12 +5,8 @@ export const useRequest = (success, error, url) => {
   const [isLoading, setIsLoading] = useState(false);
   const setRequest = async (data) => {
     setIsLoading(true);
-    console.log('antes do post');
     const response = await post(url, data);
-    console.log('depois do post');
-    console.log(response.data);
     if (response.status === 200) {
-      console.log('response.status === 200');
       success(response.data);
     } else {
       setIsLoading(false);

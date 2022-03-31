@@ -1,6 +1,6 @@
-import {CircularBadge} from '../../badges'
+import { CircularBadge } from '../../badges'
 
-const List3 = ({items}) => (
+const List3 = ({ items }) => (
   <div className="w-full mb-4">
     {items.map((item, i) => (
       <div
@@ -19,7 +19,7 @@ const List3 = ({items}) => (
         </div>
         <div className="flex-shrink-0">
           <CircularBadge size="sm" color="bg-indigo-500 text-white">
-            1
+            {i + 1}
           </CircularBadge>
         </div>
       </div>

@@ -2,15 +2,15 @@ import { useState } from "react";
 import Router from "next/router";
 import Head from "next/head";
 
-import Logo from "../../components/signup/logo";
-import Text from "../../components/signup/text";
-import Footer from "../../components/signup/footer";
+import Logo from "@src/components/signup/logo";
+import Text from "@src/components/signup/text";
+import Footer from "@src/components/signup/footer";
 import Form from "../../components/signup/form";
-import { useRequest } from "../../hooks/auth";
-import Modal from '../../components/modals';
-import { get } from "../../lib/api";
+import { useRequest } from "@src/hooks/auth";
+import Modal from '@src/components/modals';
+import { get } from '../../lib/api';
 
-const SignUp = ({data}) => {
+const SignUp = ({ cursos }) => {
   const [errorMessage, setErrorMessage] = useState("");
   const [showModal, setModal] = useState(false);
 
@@ -21,8 +21,7 @@ const SignUp = ({data}) => {
   const onError = (err) => {
     setErrorMessage('');
     if (typeof err !== "undefined") {
-      console.error(err.error);
-      setErrorMessage('Erro ' + err.error);
+      setErrorMessage(err.error);
     } else {
       setErrorMessage("Algo esta incorreto");
     }
@@ -62,33 +61,32 @@ const SignUp = ({data}) => {
       <div className="w-full flex flex-row h-screen overflow-hidden">
         <div
           className="hidden lg:flex lg:flex-col w-1/2 text-white p-8 items-start justify-between relative bg-login-2">
-          <Logo/>
-          <Text/>
-          <Footer/>
+          <Logo />
+          <Text />
+          <Footer />
         </div>
         <div
           className="w-full lg:w-1/2 p-8 lg:p-24 flex flex-col items-start justify-center"
-          style={{background: "rgba(17,24,39)"}}>
-          <Modal title={'Computoria'} body={sucessBody()} open={showModal} setOpen={setModal} btns={buttonModal()}/>
+          style={{ background: "rgba(17,24,39)" }}>
+          <Modal title={'Computoria'} body={sucessBody()} open={showModal} setOpen={setModal} btns={buttonModal()} />
           <p className="text-2xl font-bold text-blue-500 mb-4">
             Cadastre-se
           </p>
           <div className="w-full mb-4">
           </div>
           <Form setSignup={setRequest} isLoading={isLoading}
-                message={errorMessage} cursos={data.cursos}/>
+            message={errorMessage} cursos={cursos} />
         </div>
       </div>
     </>
   );
 };
 
+export default SignUp;
+
 export const getServerSideProps = async (context) => {
-  const response = await get('/api/auth/signup');
-  const data = response.data;
+  const response = await get('/api/cursos');
   return {
-    props: {data: data},
+    props: { cursos: response.data.cursos },
   }
 }
-
-export default SignUp;
