@@ -1,7 +1,7 @@
 import Head from "next/head";
 import SectionTitle from "../../components/section/section-title";
 import Widget from "../../components/widget";
-import ListarTutores from '../../components/tutor/listar';
+import ListarTutores from '../../components/tutor/listar_por_disciplina';
 import { get } from '../../lib/api';
 
 const Tutores = ({ tutores }) => {
@@ -25,7 +25,7 @@ export default Tutores;
 
 export const getServerSideProps = async (context) => {
   const { req, res } = context;
-  const response = await get(`/api/tutores/${context.params.disciplina}`, {
+  const response = await get(`/api/tutores_disciplina/${context.params.disciplina}`, {
     headers: req.headers
   });
   return {

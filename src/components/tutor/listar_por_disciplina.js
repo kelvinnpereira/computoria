@@ -1,9 +1,5 @@
 import React from 'react';
-import Datatable from '../../../components/datatable';
-import { get } from '../../../lib/api';
-import Head from "next/head";
-import SectionTitle from "../../../components/section/section-title";
-import Widget from "../../../components/widget";
+import Datatable from '../datatable';
 
 function disciplinaFilter({
   column: { filterValue, setFilter },
@@ -160,29 +156,9 @@ const ListarTutores = ({ tutores }) => {
   });
 
   return (
-    <>
-      <Head>
-        <title>
-          Computoria: Listar Tutores
-        </title>
-      </Head>
-      <SectionTitle title="Listar" subtitle="Tutores" />
-      <Widget>
-        <Datatable columns={columns} data={items} />
-      </Widget>
-    </>
+    <Datatable columns={columns} data={items} />
   );
 
 };
 
 export default ListarTutores;
-
-export const getServerSideProps = async (context) => {
-  const { req, res } = context;
-  const response = await get(`/api/tutores/disciplina/${context.params.disciplina}`, {
-    headers: req.headers
-  });
-  return {
-    props: { tutores: response.data.tutores },
-  }
-}

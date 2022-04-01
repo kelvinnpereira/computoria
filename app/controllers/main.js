@@ -61,10 +61,11 @@ const disciplinas = async (req, res) => {
 }
 
 const api_proficiencia = async (req, res) => {
-    if (req.route.methods.get && req.params?.matricula) {
+    if (req.route.methods.get) {
+        const matricula = req.params?.matricula ? req.params?.matricula : req.user
         const user = await Usuario.findOne({
             where: {
-                matricula: req.params.matricula
+                matricula: matricula
             }
         });
         await Disciplina.findAll({
@@ -266,10 +267,11 @@ const monitoria_inscrever = async (req, res) => {
 }
 
 const monitoria_listar = async (req, res) => {
-    if (req.route.methods.get && req.params?.matricula) {
+    if (req.route.methods.get) {
+        const matricula = req.params?.matricula ? req.params?.matricula : req.user;
         const user = await Usuario.findOne({
             where: {
-                matricula: req.params?.matricula
+                matricula: matricula
             }
         });
         await Disciplina.findAll({

@@ -3,7 +3,7 @@ import Head from "next/head";
 import SectionTitle from "../../components/section/section-title";
 import Widget from "../../components/widget";
 import List1 from "../../components/d-board/lists/list-1";
-import { get, cookieToDict } from '../../lib/api';
+import { get } from '../../lib/api';
 
 const ListarMonitoria = ({ disciplinas }) => {
   return (
@@ -37,8 +37,7 @@ export default ListarMonitoria;
 
 export const getServerSideProps = async (context) => {
   const { req, res } = context;
-  const cookie = cookieToDict(req.headers.cookie);
-  const response = await get(`/api/monitoria/listar/${cookie.user}`, {
+  const response = await get(`/api/monitoria/listar`, {
     headers: req.headers
   });
   return {

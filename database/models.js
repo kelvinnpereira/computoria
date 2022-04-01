@@ -5,6 +5,7 @@ module.exports = {
 	cargo: require(__dirname + "/../app/models/cargo"), 
 	categoria: require(__dirname + "/../app/models/categoria"), 
 	curso: require(__dirname + "/../app/models/curso"), 
+	denuncia: require(__dirname + "/../app/models/denuncia"), 
 	disciplina: require(__dirname + "/../app/models/disciplina"), 
 	disciplina_curso: require(__dirname + "/../app/models/disciplina_curso"), 
 	disponibilidade: require(__dirname + "/../app/models/disponibilidade"), 

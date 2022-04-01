@@ -1,17 +1,35 @@
+import { useState } from "react";
+import { useRouter } from "next/router";
 import Head from "next/head";
 
+import Form from "../../components/denunciar/form";
+import Modal from '../../components/modals';
 import SectionTitle from "../../components/section/section-title";
 import Widget from "../../components/widget";
-import { useRequest } from "@src/hooks/auth";
-import Form from "../../components/disciplina/remover/form";
-import { useState } from "react";
-import { get } from '../../lib/api';
-import Modal from '../../components/modals';
-import Router from "next/router";
 
-const RemoverProficiencia = ({ disciplinas }) => {
+import { useRequest } from "../../hooks/auth";
+import { get } from '../../lib/api';
+
+const Denunciar = ({ usuario }) => {
+  const { query } = useRouter();
   const [errorMessage, setErrorMessage] = useState("");
   const [showModal, setModal] = useState(false);
+
+  const onDenunciar = (data) => {
+    setModal(true);
+  };
+
+  const onError = (err) => {
+    console.error(err);
+    setErrorMessage("");
+    if (typeof err !== "undefined" && err.error) {
+      setErrorMessage(err.error);
+    } else {
+      setErrorMessage("User or password incorrect");
+    }
+  };
+
+  const [isLoading, setRequest] = useRequest(onDenunciar, onError, '/api/denunciar/' + query.matricula);
 
   const sucessBody = () => {
     return (
@@ -22,61 +40,47 @@ const RemoverProficiencia = ({ disciplinas }) => {
           </svg>
         </span>
         <div class="flex flex-col w-full mb-4">
-          <div class="text-lg mb-2 font-bold">Disciplina(s) removidas(s) com sucesso</div>
+          <div class="text-lg mb-2 font-bold">Sua denuncia foi enviado com sucesso</div>
         </div>
-      </div>)
-  }
-
-  const onClick = (e) => {
-    Router.push('/proficiencia/listar');
+      </div>
+    )
   }
 
   const buttonModal = () => {
     return (
-      <button onClick={onClick} class="btn btn-default btn-rounded bg-blue-500 text-white hover:bg-blue-600 w-full" type="button">Listar Disciplinas</button>
+      <button
+        onClick={(e) => Router.push('/home')}
+        className="btn btn-default btn-rounded bg-blue-500 text-white hover:bg-blue-600 w-full"
+        type="button">
+        Home
+      </button>
     );
   }
-
-  const onAction = () => {
-    setModal(true);
-  }
-
-  const onError = (err) => {
-    setErrorMessage('');
-    if (typeof err !== "undefined") {
-      setErrorMessage(err.error);
-    } else {
-      setErrorMessage("Algo esta incorreto");
-    }
-  };
-
-  const [isLoading, setRequest] = useRequest(onAction, onError, '/api/proficiencia/remover');
 
   return (
     <>
       <Head>
         <title>
-          Computoria: Remover Proficiencia
+          Computoria: Denunciar
         </title>
       </Head>
-      <SectionTitle title="Remover" subtitle="Proficiencia" />
+      <SectionTitle subtitle="Denunciar" />
       <Widget>
         <Modal title={'Computoria'} body={sucessBody()} open={showModal} setOpen={setModal} btns={buttonModal()} />
-        <Form setAction={setRequest} isLoading={isLoading}
-          message={errorMessage} disciplinas={disciplinas} />
+        <Form setSubmit={setRequest} isLoading={isLoading} message={errorMessage} usuario={usuario} />
       </Widget>
     </>
   );
 };
 
-export default RemoverProficiencia;
+export default Denunciar;
 
 export const getServerSideProps = async (context) => {
   const { req, res } = context;
-  const response = await get(`/api/proficiencia/listar`, {
+  const response = await get(`/api/usuario/${context.params.matricula}`, {
     headers: req.headers
   });
   return {
-    props: { disciplinas: response.data.disciplinas },
+    props: { usuario: response.data.usuario },
   }
 }

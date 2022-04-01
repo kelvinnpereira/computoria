@@ -13,20 +13,6 @@ const Conta = ({ message = null, setAction, isLoading, usuario, cursos }) => {
     setCsrf();
   });
 
-
-  const validaNome = (value) => {
-    const specialChar = ['.', ',', '"', '?', '!', ';', ':', '#', '$', '%', '&', '*', '(', ')',
-                         '+', '*', '_', '/', '<', '>', '+', '@', '[', ']', '^', '_', '{', '}', 
-                         '|', '~', '0','1','2','3','4','5','6','7','8','9'];
-    
-    for(let i = 0; i < specialChar.length; i++){
-      if(value.includes(specialChar[i])){
-        return false;
-      }
-    }
-    return true;
-  }
-
   return (
     <>
       <div className="flex flex-col" style={{ width: "450px" }}>
@@ -56,7 +42,7 @@ const Conta = ({ message = null, setAction, isLoading, usuario, cursos }) => {
                     value: 10,
                     message: 'Seu nome deve ter pelo menos 10 caracteres',
                   },
-                  validate: (value) => validaNome(value) || 'Seu nome não pode conter caracteres especiais e números'
+                  validate: (value) => /^[a-zA-Z\s]*$/.test(value) || "Nome inválido"
                 })}
                 defaultValue={usuario.nome}
                 name="nome"
@@ -79,9 +65,7 @@ const Conta = ({ message = null, setAction, isLoading, usuario, cursos }) => {
                     value: 11,
                     message: 'Seu CPF deve ter 11 caracteres',
                   },
-                  validate: (value) => {
-                    return cpf.isValid(value) || "CPF inválido"
-                  }
+                  validate: (value) => cpf.isValid(value) || "CPF inválido"
                 })}
                 defaultValue={usuario.cpf}
                 name="cpf"
@@ -89,6 +73,7 @@ const Conta = ({ message = null, setAction, isLoading, usuario, cursos }) => {
                 className={`form-input ${errors["cpf"] ? "border-red-500" : ""
                   }`}
                 placeholder="Insira seu CPF"
+                readOnly
               />
               {errors["cpf"] && (
                 <div className="form-error">{errors["cpf"].message}</div>
@@ -103,7 +88,8 @@ const Conta = ({ message = null, setAction, isLoading, usuario, cursos }) => {
                   minLength: {
                     value: 8,
                     message: 'Seu Matricula deve ter 8 caracteres'
-                  }
+                  },
+                  validate: (value) => /^\d+$/.test(value) || "Matricula inválida"
                 })}
                 defaultValue={usuario.matricula}
                 name="matricula"

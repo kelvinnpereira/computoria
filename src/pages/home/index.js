@@ -4,7 +4,7 @@ import SectionTitle from "../../components/section/section-title";
 import Widget from "../../components/widget";
 import List1 from "../../components/d-board/lists/list-1";
 import { UnderlinedTabs } from "../../components/tabs";
-import { cookieToDict, get } from "../../lib/api";
+import { get } from "../../lib/api";
 
 const ListarProficiencia = ({ disciplinas }) => {
   return (
@@ -54,12 +54,11 @@ export default Home;
 
 export const getServerSideProps = async (context) => {
   const { req, res } = context;
-  const cookie = cookieToDict(req.headers.cookie);
-  const response1 = await get(`api/proficiencia/listar/${cookie.user}`, {
-    headers: { cookie: req.headers.cookie },
+  const response1 = await get(`api/proficiencia/listar`, {
+    headers: req.headers,
   });
-  const response2 = await get(`/api/usuario/${cookie.user}`, {
-    headers: { cookie: req.headers.cookie },
+  const response2 = await get(`/api/usuario`, {
+    headers: req.headers,
   });
   const response3 = await get('/api/cursos');
 

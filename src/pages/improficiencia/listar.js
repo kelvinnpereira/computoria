@@ -20,7 +20,7 @@ const ListarImproficiencia = ({ disciplinas }) => {
             title:
               <a
                 className='underline decoration-sky'
-                href={`/tutores/${item.sigla}`}>
+                href={`/tutores_disciplina/${item.sigla}`}>
                 {item.sigla + " - " + item.nome}
               </a>
           }

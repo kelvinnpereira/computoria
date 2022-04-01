@@ -68,7 +68,7 @@ const initialState = [
         title: "Listar Tutores/Monitores",
       },
       {
-        url: "/tutores/disciplina",
+        url: "/tutores_disciplina",
         icon: <HiOutlineDocumentSearch size={20}/>,
         title: "Listar por disciplina",
       },
