@@ -3,7 +3,7 @@ import Router from "next/router";
 import React, { useState } from 'react';
 
 import { useRequest } from "../../hooks/auth";
-import { cookieToDict, get } from '../../lib/api';
+import { get } from '../../lib/api';
 
 import SectionTitle from "../../components/section/section-title";
 import { UnderlinedTabs } from "../../components/tabs";
@@ -108,8 +108,7 @@ export default Atualizar;
 
 export const getServerSideProps = async (context) => {
   const { req, res } = context;
-  const cookie = cookieToDict(req.headers.cookie);
-  const response1 = await get(`/api/usuario/${cookie.user}`, {
+  const response1 = await get(`/api/usuario`, {
     headers: req.headers
   });
   const response2 = await get('/api/cursos');

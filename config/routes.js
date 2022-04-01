@@ -14,8 +14,8 @@ router.get ('/admin/home'                    , auth.admin_authenticated, nextCon
 router.get ('/invalid'                       , auth.not_authenticated, nextController.handler);
 router.get ('/tutores'                       , auth.authenticated, nextController.handler);
 router.get ('/tutores/:disciplina'           , auth.authenticated, nextController.handler);
-router.get ('/tutores/disciplina'            , auth.authenticated, nextController.handler);
-router.get ('/tutores/disciplina/:disciplina', auth.authenticated, nextController.handler);
+router.get ('/tutores_disciplina'            , auth.authenticated, nextController.handler);
+router.get ('/tutores_disciplina/:disciplina', auth.authenticated, nextController.handler);
 //next /auth/
 router.get ('/auth/forgot', auth.not_authenticated, nextController.handler);
 router.get ('/auth/login' , auth.not_authenticated, nextController.handler);
@@ -49,14 +49,18 @@ router.post('/monitoria/solicitacoes'     , auth.authenticated, nextController.h
 router.get ('/api/cursos'                        , mainController.cursos);
 router.get ('/api/disciplinas'                   , mainController.disciplinas);
 router.get ('/api/disciplinas/:curso'            , mainController.disciplinas);
+router.get ('/api/proficiencia/listar'           , auth.authenticated, mainController.api_proficiencia);
 router.get ('/api/proficiencia/listar/:matricula', auth.authenticated, mainController.api_proficiencia);
 router.post('/api/proficiencia/adicionar'        , auth.authenticated, mainController.api_proficiencia_adicionar);
 router.post('/api/proficiencia/remover'          , auth.authenticated, mainController.api_proficiencia_remover);
 router.get ('/api/improficiencia/listar'         , auth.authenticated, mainController.api_improficiencia);
 router.post('/api/improficiencia/adicionar'      , auth.authenticated, mainController.api_improficiencia_adicionar);
 router.post('/api/improficiencia/remover'        , auth.authenticated, mainController.api_improficiencia_remover);
+router.get ('/api/tutores'                       , auth.authenticated, usuarioController.tutores);
 router.get ('/api/tutores/:disciplina'           , auth.authenticated, usuarioController.tutores);
-router.get ('/api/tutores/disciplina/:disciplina', auth.authenticated, usuarioController.tutores_por_disciplina);
+router.get ('/api/tutores_disciplina'            , auth.authenticated, usuarioController.tutores_por_disciplina);
+router.get ('/api/tutores_disciplina/:disciplina', auth.authenticated, usuarioController.tutores_por_disciplina);
+router.get ('/api/usuario'                       , auth.authenticated, usuarioController.usuario);
 router.get ('/api/usuario/:matricula'            , auth.authenticated, usuarioController.usuario);
 router.post('/api/atualizar_conta'               , auth.authenticated, usuarioController.atualizar_conta);
 router.post('/api/atualizar_email'               , auth.authenticated, usuarioController.atualizar_email);
@@ -64,6 +68,7 @@ router.post('/api/atualizar_senha'               , auth.authenticated, usuarioCo
 
 //monitor
 router.post('/api/monitoria/inscrever'        , auth.authenticated, mainController.monitoria_inscrever);
+router.get ('/api/monitoria/listar'           , auth.authenticated, mainController.monitoria_listar);
 router.get ('/api/monitoria/listar/:matricula', auth.authenticated, mainController.monitoria_listar);
 router.get ('/api/monitoria/solicitacoes'     , auth.authenticated, mainController.monitoria_solicitacoes);
 
@@ -78,11 +83,12 @@ router.post('/api/admin/auth/forgot'        , auth.admin_not_authenticated, auth
 router.post('/api/admin/auth/restart/:token', auth.admin_not_authenticated, authController.api_restart);
 
 //ajuda
-router.get ('/api/ajuda/listar_agenda_tutor/:user', auth.authenticated, ajudaController.listar_ajuda_tutor);
-router.get ('/api/ajuda/listar_agenda_aluno/:user', auth.authenticated, ajudaController.listar_ajuda_aluno);
-router.post('/api/ajuda/agendar'                  , auth.authenticated, ajudaController.agendar);
-router.get ('/api/disponibilidade/listar/:user'   , auth.authenticated, ajudaController.listar_disponibilidade);
-router.post('/api/disponibilidade/adicionar'      , auth.authenticated, ajudaController.adicionar_disponibilidade);
+router.get ('/api/ajuda/listar_agenda_tutor/:user'  , auth.authenticated, ajudaController.listar_ajuda_tutor);
+router.get ('/api/ajuda/listar_agenda_aluno/:user'  , auth.authenticated, ajudaController.listar_ajuda_aluno);
+router.post('/api/ajuda/agendar'                    , auth.authenticated, ajudaController.agendar);
+router.get ('/api/disponibilidade/listar'           , auth.authenticated, ajudaController.listar_disponibilidade);
+router.get ('/api/disponibilidade/listar/:matricula', auth.authenticated, ajudaController.listar_disponibilidade);
+router.post('/api/disponibilidade/adicionar'        , auth.authenticated, ajudaController.adicionar_disponibilidade);
 
 //not found
 router.get ('*', nextController.handler);

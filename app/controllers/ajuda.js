@@ -71,10 +71,11 @@ const agendar = async (req, res) => {
 }
 
 const listar_disponibilidade = async (req, res) => {
-  if (req.route.methods.get && req.params?.user) {
+  if (req.route.methods.get) {
+    const matricula = req.params?.matricula ? req.params.matricula : req.user;
     const user = await Usuario.findOne({
       where: {
-        matricula: req.params.user
+        matricula: matricula
       }
     });
     await Disponibilidade.findAll({

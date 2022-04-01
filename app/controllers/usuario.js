@@ -5,8 +5,8 @@ const bcrypt = require('bcryptjs');
 const auth = require('./token_auth');
 
 const tutores = async (req, res) => {
-  if (req.route.methods.get && req.params?.disciplina) {
-    const disciplina = req.params.disciplina;
+  if (req.route.methods.get) {
+    const disciplina = req.params?.disciplina;
     await sequelize.query(`\
       SELECT
         c.nome AS curso, u.nome AS usuario, matricula, media
@@ -15,7 +15,7 @@ const tutores = async (req, res) => {
           DISTINCT(cpf) AS cpf 
         FROM 
           proficiencia 
-        ${disciplina !== 'all' ? `WHERE sigla_disciplina = \'${disciplina}\'` : ''}) AS prof
+        ${disciplina ? `WHERE sigla_disciplina = \'${disciplina}\'` : ''}) AS prof
         INNER JOIN
           usuario AS u
         ON
@@ -47,8 +47,8 @@ const tutores = async (req, res) => {
 }
 
 const tutores_por_disciplina = async (req, res) => {
-  if (req.route.methods.get && req.params?.disciplina) {
-    const disciplina = req.params.disciplina;
+  if (req.route.methods.get) {
+    const disciplina = req.params?.disciplina;
     await sequelize.query(`\
     SELECT 
       curso, 
@@ -78,7 +78,7 @@ const tutores_por_disciplina = async (req, res) => {
         prof.sigla_disciplina = d.sigla AND
         prof.cpf = u.cpf AND
         c.sigla = sigla_curso 
-        ${disciplina !== 'all' ? `AND sigla_disciplina = \'${disciplina}\'` : ''}
+        ${disciplina ? `AND sigla_disciplina = \'${disciplina}\'` : ''}
         ) AS user 
     LEFT JOIN
       (SELECT 
@@ -110,17 +110,16 @@ const tutores_por_disciplina = async (req, res) => {
 }
 
 const usuario = async (req, res) => {
-  if (req.route.methods.get && req.params?.matricula) {
+  if (req.route.methods.get) {
+    const [attributes, matricula] = req.params?.matricula
+      ?
+      [['nome', 'matricula', 'email', 'sigla_curso',], req.params?.matricula]
+      :
+      [{ exclude: ['senha'] }, req.user];
     await Usuario.findOne({
-      attributes: [
-        'nome',
-        'cpf',
-        'matricula',
-        'email',
-        'sigla_curso',
-      ],
+      attributes: attributes,
       where: {
-        matricula: req.params.matricula
+        matricula: matricula
       }
     }).then((usuario) => {
       if (usuario) {
@@ -154,7 +153,7 @@ const atualizar_conta = async (req, res) => {
     }).then((usuario) => {
       if (usuario && usuario.length > 0 && usuario[0] !== 0) {
         console.log('Update conta');
-        res.cookie('Authorization', auth.generateAccessToken({ 
+        res.cookie('Authorization', auth.generateAccessToken({
           matricula: req.body.matricula,
           role: req.admin ? 'admin' : 'usuario',
         }));

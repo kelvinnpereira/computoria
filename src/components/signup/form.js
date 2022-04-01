@@ -45,7 +45,8 @@ const Form = ({ message = null, setSignup, isLoading , cursos}) => {
                   minLength: {
                     value: 10,
                     message: 'Seu nome deve ter pelo menos 10 caracteres'
-                  }
+                  },
+                  validate: (value) => /^[a-zA-Z\s]*$/.test(value) || "Nome inválido"
                 })}
                 name="nome"
                 type="text"
@@ -68,9 +69,7 @@ const Form = ({ message = null, setSignup, isLoading , cursos}) => {
                     value: 11,
                     message: 'Seu CPF deve ter 11 caracteres',
                   },
-                  validate: (value) => {
-                    return cpf.isValid(value) || "CPF inválido"
-                  }
+                  validate: (value) => cpf.isValid(value) || "CPF inválido"
                 })}
                 name="cpf"
                 type="text"
@@ -93,9 +92,7 @@ const Form = ({ message = null, setSignup, isLoading , cursos}) => {
                     value: 10,
                     message: 'Seu E-mail deve ter pelo menos 10 caracteres'
                   },
-                  validate: (value) => {
-                    return email.validate(value) || "E-mail inválido"
-                  }
+                  validate: (value) => email.validate(value) || "E-mail inválido"
                 })}
                 name="email"
                 type="text"
@@ -138,7 +135,8 @@ const Form = ({ message = null, setSignup, isLoading , cursos}) => {
                   minLength: {
                     value: 8,
                     message: 'Seu Matricula deve ter 8 caracteres'
-                  }
+                  },
+                  validate: (value) => /^\d+$/.test(value) || "Matricula inválida"
                 })}
                 name="matricula"
                 type="text"
