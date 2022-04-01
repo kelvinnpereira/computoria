@@ -13,6 +13,7 @@ router.get ('/home'                          , auth.authenticated, nextControlle
 router.get ('/admin/home'                    , auth.admin_authenticated, nextController.handler);
 router.get ('/invalid'                       , auth.not_authenticated, nextController.handler);
 router.get ('/tutores'                       , auth.authenticated, nextController.handler);
+router.get ('/denunciar/:matricula'          , auth.authenticated, nextController.handler);
 router.get ('/tutores/:disciplina'           , auth.authenticated, nextController.handler);
 router.get ('/tutores_disciplina'            , auth.authenticated, nextController.handler);
 router.get ('/tutores_disciplina/:disciplina', auth.authenticated, nextController.handler);
@@ -65,6 +66,7 @@ router.get ('/api/usuario/:matricula'            , auth.authenticated, usuarioCo
 router.post('/api/atualizar_conta'               , auth.authenticated, usuarioController.atualizar_conta);
 router.post('/api/atualizar_email'               , auth.authenticated, usuarioController.atualizar_email);
 router.post('/api/atualizar_senha'               , auth.authenticated, usuarioController.atualizar_senha);
+router.post('/api/denunciar/:matricula'          , auth.authenticated, usuarioController.denunciar);
 
 //monitor
 router.post('/api/monitoria/inscrever'        , auth.authenticated, mainController.monitoria_inscrever);

@@ -1,6 +1,7 @@
 const models = require('../models/index');
 const sequelize = models.sequelize;
 const Usuario = models.usuario;
+const Denuncia = models.denuncia;
 const bcrypt = require('bcryptjs');
 const auth = require('./token_auth');
 
@@ -242,11 +243,34 @@ const atualizar_senha = async (req, res) => {
   }
 }
 
+const denunciar = async (req, res) => {
+  if (req.route.methods.post && req.body && req.params?.matricula) {
+    console.log(req.body);
+    const user1 = await Usuario.findOne({ where: { matricula: req.params.matricula } })
+    const user2 = await Usuario.findOne({ where: { matricula: req.user } })
+    await Denuncia.create({
+      denunciado: user1.cpf,
+      denunciador: user2.cpf,
+      status: '',
+      comentario: req.body.comentario
+    }).then((denuncia) => {
+      console.log('Denuncia enviada com sucesso');
+      res.status(200).send({ message: 'Denuncia enviada com sucesso' });
+    }).catch((error) => {
+      console.log(error);
+      res.status(500).send({ error: 'Usuario não encontrado' });
+    })
+  } else {
+    res.status(500).send({ error: 'not logged in or no a get resquest' })
+  }
+}
+
 module.exports = {
   tutores,
   tutores_por_disciplina,
   usuario,
   atualizar_conta,
   atualizar_email,
-  atualizar_senha
+  atualizar_senha,
+  denunciar
 }
