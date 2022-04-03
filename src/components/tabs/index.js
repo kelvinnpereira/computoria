@@ -220,6 +220,7 @@ export const UnderlinedTabs = ({ tabs }) => {
         {tabs.map((tab, key) => (
           <div key={key} className="flex-none">
             <button
+              id={`#tab-button-${key}`}
               onClick={() => {
                 setOpenTab(tab.index);
               }}

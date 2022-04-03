@@ -5,6 +5,7 @@ import Widget from "../../components/widget";
 import List1 from "../../components/d-board/lists/list-1";
 import { UnderlinedTabs } from "../../components/tabs";
 import { get } from "../../lib/api";
+import Horarios from "../../components/horarios/show";
 
 const ListarProficiencia = ({ disciplinas }) => {
   return (
@@ -18,14 +19,14 @@ const ListarProficiencia = ({ disciplinas }) => {
   );
 };
 
-const Home = ({ usuario, disciplinas, cursos }) => {
+const Home = ({ usuario, disciplinas, cursos, horarios }) => {
   const curso = cursos.find(curso => curso.sigla == usuario.sigla_curso);
 
   const tabs = [
     { title: "Aulas", index: 0 },
     { title: "Tutorias", index: 1 },
     { title: "Solicitações", index: 2 },
-    { title: "Horários", index: 3 }
+    { title: 'Horarios', index: 3, content: <Horarios horarios={horarios} /> },
   ]
 
   return (
@@ -61,12 +62,16 @@ export const getServerSideProps = async (context) => {
     headers: req.headers,
   });
   const response3 = await get('/api/cursos');
+  const response4 = await get('/api/disponibilidade/listar', {
+    headers: req.headers
+  });
 
   return {
     props: {
       disciplinas: response1.data.disciplinas,
       usuario: response2.data.usuario,
-      cursos: response3.data.cursos
+      cursos: response3.data.cursos,
+      horarios: response4.data.horarios,
     }
   }
 }

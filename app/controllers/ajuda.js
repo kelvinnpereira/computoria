@@ -84,7 +84,7 @@ const listar_disponibilidade = async (req, res) => {
       }
     }).then((disponibilidade) => {
       console.log('disponibilidades encontradas');
-      res.status(200).send({ disponibilidade: disponibilidade });
+      res.status(200).send({ horarios: disponibilidade });
     }).catch((error) => {
       console.log(error);
       res.status(500).send({ error: 'error' })
@@ -95,24 +95,33 @@ const listar_disponibilidade = async (req, res) => {
 }
 
 const adicionar_disponibilidade = async (req, res) => {
-  if (req.route.methods.get) {
+  if (req.route.methods.post) {
     const user = await Usuario.findOne({
       where: {
         matricula: req.user
       }
     });
-    await Disponibilidade.create({
-      cpf: user.cpf,
-      dia: 2,
-      hora_inicio: '16:00',
-      hora_fim: '20:00',
-    }).then(() => {
-      console.log('disponibilidade adicionada');
-      res.status(200).send({ msg: 'ok' });
-    }).catch((error) => {
-      console.log(error);
-      res.status(500).send({ error: 'error' })
+    let horarios = [];
+    req.body.dias.forEach((dia) => {
+      req.body.horarios[parseInt(dia)].forEach((hora, i) => {
+        horarios.push(
+          {
+            cpf: user.cpf,
+            dia: dia,
+            hora_indice: i,
+            hora_inicio: hora.inicio,
+            hora_fim: hora.fim,
+          }
+        )
+      })
+    })
+    await Disponibilidade.destroy({
+      where: {
+        cpf: user.cpf,
+      }
     });
+    await Disponibilidade.bulkCreate(horarios);
+    res.status(200).send({ msg: 'ok' });
   } else {
     res.status(500).send({ error: 'error' });
   }
