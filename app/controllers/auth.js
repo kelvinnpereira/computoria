@@ -1,9 +1,7 @@
 const models = require('../models/index');
 const auth = require('./token_auth');
 const Usuario = models.usuario;
-const Admin = models.admin;
 const MudarSenha = models.mudar_senha;
-const MudarSenhaAdmin = models.mudar_senha_admin;
 
 const bcrypt = require('bcryptjs');
 const crypto = require('crypto');
@@ -11,30 +9,31 @@ const nodemailer = require('nodemailer');
 
 const api_login = async (req, res) => {
     if (req.route.methods.post && req.body) {
-        let value = /[a-zA-Z]/g.test(req.body.user) ? req.body.user : req.body.user.replace(/[^\d]+/g, '');
-        let user = undefined;
+        let value = /[a-zA-Z]/g.test(req.body.usuario) ? req.body.usuario : req.body.usuario.replace(/[^\d]+/g, '');
+        let usuario = undefined;
         if (/^\d+$/.test(value)) {
-            user = await (req.admin ? Admin : Usuario).findOne({
+            usuario = await Usuario.findOne({
                 where: {
                     cpf: value,
                 }
             });
-        } else if (req.body.user.includes('@')) {
-            user = await (req.admin ? Admin : Usuario).findOne({
+        } else if (req.body.usuario.includes('@')) {
+            usuario = await Usuario.findOne({
                 where: {
-                    email: req.body.user,
+                    email: req.body.usuario,
                 }
             });
         }
-        if (user) {
-            bcrypt.compare(req.body.password, user.senha, (err, ok) => {
+        if (usuario) {
+            bcrypt.compare(req.body.password, usuario.senha, (err, ok) => {
                 if (ok) {
                     console.log('Login feito com sucesso');
                     res.status(200).send({
-                        user: user.matricula,
+                        matricula: usuario.matricula,
+                        cargo: usuario.cargo,
                         token: auth.generateAccessToken({ 
-                            matricula: user.matricula, 
-                            role: req.admin ? 'admin' : 'usuario', 
+                            matricula: usuario.matricula, 
+                            cargo: usuario.cargo
                         })
                     });
                 } else {
@@ -63,7 +62,8 @@ const api_signup = async (req, res) => {
                             email: req.body.email,
                             matricula: req.body.matricula,
                             senha: hash,
-                            sigla_curso: req.body.curso
+                            sigla_curso: req.body.curso,
+                            cargo: 'usuario',
                         }).then((sucess) => {
                             console.log('usuario criado com sucesso');
                             res.status(200).send({});
@@ -90,22 +90,22 @@ const api_signup = async (req, res) => {
 
 const api_forgot = async (req, res) => {
     if (req.route.methods.post && req.body) {
-        let value = /[a-zA-Z]/g.test(req.body.user) ? req.body.user : req.body.user.replace(/[^\d]+/g, '');
-        let user = undefined;
+        let value = /[a-zA-Z]/g.test(req.body.usuario) ? req.body.usuario : req.body.usuario.replace(/[^\d]+/g, '');
+        let usuario = undefined;
         if (/^\d+$/.test(value)) {
-            user = await (req.admin ? Admin : Usuario).findOne({
+            usuario = await Usuario.findOne({
                 where: {
                     cpf: value,
                 }
             });
-        } else if (req.body.user.includes('@')){
-            user = await (req.admin ? Admin : Usuario).findOne({
+        } else if (req.body.usuario.includes('@')){
+            usuario = await Usuario.findOne({
                 where: {
-                    email: req.body.user,
+                    email: req.body.usuario,
                 }
             });
         }
-        if (user) {
+        if (usuario) {
             let email = {
                 user: 'computoriapes@gmail.com',
                 pass: 'Computoria@123'
@@ -118,12 +118,12 @@ const api_forgot = async (req, res) => {
             let token = crypto.randomBytes(48).toString('hex');
             let mailOptions = {
                 from: email.user,
-                to: user.email,
+                to: usuario.email,
                 subject: 'Computoria: Recuperação de senha',
-                text: (process.env?.URL ? 'https://' + process.env.URL : "http://localhost:3000") + (req.admin ? '/admin' : '') + '/auth/restart/' + token
+                text: (process.env?.URL ? 'https://' + process.env.URL : "http://localhost:3000") + '/auth/restart/' + token
             };
-            await (req.admin ? MudarSenhaAdmin : MudarSenha).create({
-                cpf: user.cpf,
+            await MudarSenha.create({
+                cpf: usuario.cpf,
                 token: token,
                 usado: false,
             })
@@ -142,14 +142,14 @@ const api_forgot = async (req, res) => {
             res.status(500).send({ error: 'Usuario não encontrado' });
         }
     } else {
-        req.admin ? res.redirect('/admin/home') : res.redirect('/home');
+        res.redirect('/home');
     }
 }
 
 const api_restart = async (req, res) => {
     if (req.route.methods.post && req.params?.token) {
         let token = req.params.token;
-        let request = await (req.admin ? MudarSenhaAdmin : MudarSenha).findOne({
+        let request = await MudarSenha.findOne({
             where: {
                 token: token,
             }
@@ -160,7 +160,7 @@ const api_restart = async (req, res) => {
         bcrypt.genSalt(10, function (err, salt) {
             bcrypt.hash(req.body.senha, salt, async (err, hash) => {
                 if (!err) {
-                    await (req.admin ? Admin : Usuario).update({
+                    await Usuario.update({
                         senha: hash,
                     }, {
                         where: {
@@ -181,7 +181,7 @@ const api_restart = async (req, res) => {
             });
         });
     } else {
-        req.admin ? res.redirect('/admin/home') : res.redirect('/home');
+        res.redirect('/home');
     }
 }
 

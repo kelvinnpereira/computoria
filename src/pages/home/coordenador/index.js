@@ -2,16 +2,17 @@ import Head from "next/head";
 
 import SectionTitle from "../../../components/section/section-title";
 import Widget from "../../../components/widget";
+import { get } from "../../../lib/api";
 
 const Home = () => {
   return (
     <>
       <Head>
         <title>
-          Admin Computoria: Home
+          Computoria: Home Coordenador
         </title>
       </Head>
-      <SectionTitle title="Admin Computoria" subtitle="Home" />
+      <SectionTitle title="Computoria" subtitle="Home Coordenador" />
       <Widget>
       </Widget>
     </>
@@ -19,3 +20,13 @@ const Home = () => {
 };
 
 export default Home;
+
+export const getServerSideProps = async (context) => {
+  const { req, res } = context;
+  
+  return {
+    props: {
+      
+    }
+  }
+}

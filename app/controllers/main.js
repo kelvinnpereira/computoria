@@ -62,8 +62,8 @@ const disciplinas = async (req, res) => {
 
 const api_proficiencia = async (req, res) => {
     if (req.route.methods.get) {
-        const matricula = req.params?.matricula ? req.params?.matricula : req.user
-        const user = await Usuario.findOne({
+        const matricula = req.params?.matricula ? req.params?.matricula : req.matricula
+        const usuario = await Usuario.findOne({
             where: {
                 matricula: matricula
             }
@@ -79,7 +79,7 @@ const api_proficiencia = async (req, res) => {
                 attributes: [],
                 where: {
                     cpf: {
-                        [Op.eq]: user.cpf
+                        [Op.eq]: usuario.cpf
                     }
                 }
             }
@@ -99,15 +99,15 @@ const api_proficiencia_adicionar = async (req, res) => {
         if (req.body.disciplinas.length > 10) {
             return res.status(500).send({ error: 'Muitas disciplinas selecionadas' });
         }
-        const user = await Usuario.findOne({
+        const usuario = await Usuario.findOne({
             where: {
-                matricula: req.user
+                matricula: req.matricula
             }
         });
         await Proficiencia.bulkCreate(
             req.body.disciplinas.map((value) => {
                 return {
-                    cpf: user.cpf,
+                    cpf: usuario.cpf,
                     sigla_disciplina: value
                 }
             })
@@ -123,14 +123,14 @@ const api_proficiencia_adicionar = async (req, res) => {
 
 const api_proficiencia_remover = async (req, res) => {
     if (req.route.methods.post && req.body?.disciplinas) {
-        const user = await Usuario.findOne({
+        const usuario = await Usuario.findOne({
             where: {
-                matricula: req.user
+                matricula: req.matricula
             }
         });
         await Proficiencia.destroy({
             where: {
-                cpf: user.cpf,
+                cpf: usuario.cpf,
                 sigla_disciplina: [
                     typeof req.body.disciplinas == 'string' ?
                         req.body.disciplinas :
@@ -152,9 +152,9 @@ const api_proficiencia_remover = async (req, res) => {
 
 const api_improficiencia = async (req, res) => {
     if (req.route.methods.get) {
-        const user = await Usuario.findOne({
+        const usuario = await Usuario.findOne({
             where: {
-                matricula: req.user
+                matricula: req.matricula
             }
         });
         await Disciplina.findAll({
@@ -168,7 +168,7 @@ const api_improficiencia = async (req, res) => {
                 attributes: [],
                 where: {
                     cpf: {
-                        [Op.eq]: user.cpf
+                        [Op.eq]: usuario.cpf
                     }
                 }
             }
@@ -185,15 +185,15 @@ const api_improficiencia_adicionar = async (req, res) => {
         if (req.body.disciplinas.length > 10) {
             return res.status(500).send({ error: 'Muitas disciplinas selecionadas' });
         }
-        const user = await Usuario.findOne({
+        const usuario = await Usuario.findOne({
             where: {
-                matricula: req.user
+                matricula: req.matricula
             }
         });
         await Improficiencia.bulkCreate(
             req.body.disciplinas.map((value) => {
                 return {
-                    cpf: user.cpf,
+                    cpf: usuario.cpf,
                     sigla_disciplina: value
                 }
             })
@@ -209,14 +209,14 @@ const api_improficiencia_adicionar = async (req, res) => {
 
 const api_improficiencia_remover = async (req, res) => {
     if (req.route.methods.post && req.body?.disciplinas) {
-        const user = await Usuario.findOne({
+        const usuario = await Usuario.findOne({
             where: {
-                matricula: req.user
+                matricula: req.matricula
             }
         });
         await Improficiencia.destroy({
             where: {
-                cpf: user.cpf,
+                cpf: usuario.cpf,
                 sigla_disciplina: [
                     typeof req.body.disciplinas == 'string' ?
                         req.body.disciplinas :
@@ -238,20 +238,20 @@ const api_improficiencia_remover = async (req, res) => {
 
 const monitoria_inscrever = async (req, res) => {
     if (req.route.methods.post && req.body?.disciplina) {
-        const user = await Usuario.findOne({
+        const usuario = await Usuario.findOne({
             where: {
-                matricula: req.user
+                matricula: req.matricula
             }
         });
         const pendencias = await Monitor.findAll({
             where: {
-                cpf: user.cpf,
+                cpf: usuario.cpf,
                 aprovado: false,
             }
         })
         if (pendencias.length == 0) {
             await Monitor.create({
-                cpf: user.cpf,
+                cpf: usuario.cpf,
                 sigla_disciplina: req.body?.disciplina
             }).then(() => {
                 res.status(200).send({ msg: 'ok' });
@@ -268,8 +268,8 @@ const monitoria_inscrever = async (req, res) => {
 
 const monitoria_listar = async (req, res) => {
     if (req.route.methods.get) {
-        const matricula = req.params?.matricula ? req.params?.matricula : req.user;
-        const user = await Usuario.findOne({
+        const matricula = req.params?.matricula ? req.params?.matricula : req.matricula;
+        const usuario = await Usuario.findOne({
             where: {
                 matricula: matricula
             }
@@ -285,7 +285,7 @@ const monitoria_listar = async (req, res) => {
                 attributes: [],
                 where: {
                     cpf: {
-                        [Op.eq]: user.cpf
+                        [Op.eq]: usuario.cpf
                     }
                 }
             }
@@ -299,9 +299,9 @@ const monitoria_listar = async (req, res) => {
 
 const monitoria_solicitacoes = async (req, res) => {
     if (req.route.methods.get) {
-        const user = await Usuario.findOne({
+        const usuario = await Usuario.findOne({
             where: {
-                matricula: req.user
+                matricula: req.matricula
             }
         });
         await Disciplina.findAll({
@@ -314,7 +314,7 @@ const monitoria_solicitacoes = async (req, res) => {
                 model: Monitor,
                 attributes: [],
                 where: {
-                    cpf: user.cpf,
+                    cpf: usuario.cpf,
                     aprovado: false,
                 }
             }

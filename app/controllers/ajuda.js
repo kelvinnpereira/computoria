@@ -6,11 +6,16 @@ const Sequelize = require('sequelize');
 const Op = Sequelize.Op;
 
 const listar_ajuda_tutor = async (req, res) => {
-  if (req.route.methods.get && req.params?.user) {
-    const user = req.params.user;
+  if (req.route.methods.get && req.params?.matricula) {
+    const matricula = req.params.matricula;
+    const usuario = await Usuario.findOne({
+      where: {
+        matricula: matricula,
+      }
+    })
     await Ajuda.findAll({
       where: {
-        tutor: user,
+        tutor: usuario.cpf,
         status: 'agendado',
       },
     }).then((agenda) => {
@@ -26,16 +31,21 @@ const listar_ajuda_tutor = async (req, res) => {
       res.status(500).send({ error: error });
     });
   } else {
-    res.status(500).send({ error: 'sem parametros user' });
+    res.status(500).send({ error: 'sem parametros matricula' });
   }
 }
 
 const listar_ajuda_aluno = async (req, res) => {
-  if (req.route.methods.get && req.params?.user) {
-    const user = req.params.user;
+  if (req.route.methods.get && req.params?.matricula) {
+    const matricula = req.params.matricula;
+    const usuario = await Usuario.finOne({
+      where: {
+        matricula: matricula,
+      }
+    })
     await Ajuda.findAll({
       where: {
-        aluno: user,
+        aluno: usuario.cpf,
         status: 'agendado',
       },
     }).then((agenda) => {
@@ -51,15 +61,17 @@ const listar_ajuda_aluno = async (req, res) => {
       res.status(500).send({ error: error });
     });
   } else {
-    res.status(500).send({ error: 'sem parametros user' });
+    res.status(500).send({ error: 'sem parametros matricula' });
   }
 }
 
 const agendar = async (req, res) => {
-  if (req.route.methods.post && req.body && req.body?.aluno === req.user) {
+  if (req.route.methods.post) {
+    const usuario1 = await Usuario.finOne({ where: { matricula: req.body?.tutor } })
+    const usuario2 = await Usuario.finOne({ where: { matricula: req.matricula } })
     await Ajuda.create({
-      tutor: req.body.tutor,
-      aluno: req.body.aluno,
+      tutor: usuario1.cpf,
+      aluno: usuario2.cpf,
       sigla_disciplina: req.body.sigla_disciplina,
       status: 'solicitado',
       data_inicio: req.body.data_inicio,
@@ -72,15 +84,15 @@ const agendar = async (req, res) => {
 
 const listar_disponibilidade = async (req, res) => {
   if (req.route.methods.get) {
-    const matricula = req.params?.matricula ? req.params.matricula : req.user;
-    const user = await Usuario.findOne({
+    const matricula = req.params?.matricula ? req.params.matricula : req.matricula;
+    const usuario = await Usuario.findOne({
       where: {
         matricula: matricula
       }
     });
     await Disponibilidade.findAll({
       where: {
-        cpf: user.cpf,
+        cpf: usuario.cpf,
       }
     }).then((disponibilidade) => {
       console.log('disponibilidades encontradas');
@@ -96,9 +108,9 @@ const listar_disponibilidade = async (req, res) => {
 
 const adicionar_disponibilidade = async (req, res) => {
   if (req.route.methods.post) {
-    const user = await Usuario.findOne({
+    const usuario = await Usuario.findOne({
       where: {
-        matricula: req.user
+        matricula: req.matricula
       }
     });
     let horarios = [];
@@ -106,7 +118,7 @@ const adicionar_disponibilidade = async (req, res) => {
       req.body.horarios[parseInt(dia)].forEach((hora, i) => {
         horarios.push(
           {
-            cpf: user.cpf,
+            cpf: usuario.cpf,
             dia: dia,
             hora_indice: i,
             hora_inicio: hora.inicio,
@@ -117,7 +129,7 @@ const adicionar_disponibilidade = async (req, res) => {
     })
     await Disponibilidade.destroy({
       where: {
-        cpf: user.cpf,
+        cpf: usuario.cpf,
       }
     });
     await Disponibilidade.bulkCreate(horarios);

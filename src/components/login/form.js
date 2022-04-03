@@ -40,9 +40,9 @@ const Form = ({ message = null, setLogin, isLoading }) => {
                 ref={register({
                   required: 'Insira seu CPF ou E-mail',
                   validate: (value) => {
-                    let user = /[a-zA-Z]/g.test(value) ? value : value.replace(/[^\d]+/g, '');
-                    if (/^\d+$/.test(user)) {
-                      return cpf.isValid(user) || "CPF inválido"
+                    let usuario = /[a-zA-Z]/g.test(value) ? value : value.replace(/[^\d]+/g, '');
+                    if (/^\d+$/.test(usuario)) {
+                      return cpf.isValid(usuario) || "CPF inválido"
                     } else if (value.includes('@')) {
                       return email.validate(value) || "E-mail inválido"
                     } else {
@@ -50,15 +50,15 @@ const Form = ({ message = null, setLogin, isLoading }) => {
                     } 
                   }
                 })}
-                name="user"
+                name="usuario"
                 type="text"
                 className={`form-input ${
-                  errors["user"] ? "border-red-500" : ""
+                  errors["usuario"] ? "border-red-500" : ""
                 }`}
                 placeholder="Insira seu CPF ou E-mail"
               />
-              {errors["user"] && (
-                <div className="form-error">{errors["user"].message}</div>
+              {errors["usuario"] && (
+                <div className="form-error">{errors["usuario"].message}</div>
               )}
             </div>
 

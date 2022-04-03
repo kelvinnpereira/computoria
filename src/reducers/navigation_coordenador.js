@@ -28,7 +28,7 @@ const initialState = [
     title: "Coordenador",
     items: [
       {
-        url: "/admin/home",
+        url: "/home",
         icon: <FiCompass size={20} />,
         title: "Home",
       },
@@ -36,7 +36,7 @@ const initialState = [
   },
 ];
 
-export default function navigation_admin(state = initialState, action) {
+export default function navigation_coordenador(state = initialState, action) {
   switch (action.type) {
     case "ADD_MENU_LEVELS": {
       let newState = Array.from(state);
