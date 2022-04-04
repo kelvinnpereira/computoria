@@ -8,6 +8,7 @@ const DisciplinaCurso = models.disciplina_curso;
 const Proficiencia = models.proficiencia;
 const Improficiencia = models.improficiencia;
 const Monitor = models.monitor;
+const sequelize = models.sequelize;
 
 const cursos = async (req, res) => {
     if (req.route.methods.get) {
@@ -284,9 +285,8 @@ const monitoria_listar = async (req, res) => {
                 model: Monitor,
                 attributes: [],
                 where: {
-                    cpf: {
-                        [Op.eq]: usuario.cpf
-                    }
+                    cpf: usuario.cpf,
+                    aprovado: true,
                 }
             }
         }).then((disciplinas) => {
@@ -297,7 +297,7 @@ const monitoria_listar = async (req, res) => {
     }
 }
 
-const monitoria_solicitacoes = async (req, res) => {
+const monitoria_solicitacoes_usuario = async (req, res) => {
     if (req.route.methods.get) {
         const usuario = await Usuario.findOne({
             where: {
@@ -330,6 +330,70 @@ const monitoria_solicitacoes = async (req, res) => {
     }
 }
 
+const monitoria_solicitacoes = async (req, res) => {
+    if (req.route.methods.get) {
+        await sequelize.query(`
+            select 
+                usuario.nome as nome,
+                disciplina.nome as disciplina,
+                disciplina.sigla as sigla,
+                matricula
+            from 
+                disciplina, 
+                monitor, 
+                usuario
+            where
+                monitor.cpf = usuario.cpf and monitor.sigla_disciplina = disciplina.sigla;
+        `).then((pendencias) => {
+            console.log('pendencias');
+            console.log(pendencias);
+            res.status(200).send({ pendencias: pendencias?.at(0) });
+        }).catch((error) => {
+            console.log(error);
+            res.status(500).send({ error: '' })
+        });
+    } else {
+        res.status(500).send({ error: 'Nenhuma disciplina selecionada!' });
+    }
+}
+
+const monitoria_aceitar = async (req, res) => {
+    if (req.route.methods.post) {
+        console.log(req);
+        const usuario = await Usuario.findOne({
+            where: {
+                matricula: req.body.matricula
+            }
+        });
+        await Monitor.update({
+            aprovado: true
+        }, {
+            where: {
+                cpf: usuario.cpf
+            }
+        })
+    } else {
+        res.status(500).send({ error: 'error' });
+    }
+}
+
+const monitoria_remover = async (req, res) => {
+    if (req.route.methods.post) {
+        const usuario = await Usuario.findOne({
+            where: {
+                matricula: req.body.matricula
+            }
+        });
+        await Monitor.destroy({
+            where: {
+                cpf: usuario.cpf
+            }
+        })
+    } else {
+        res.status(500).send({ error: 'error' });
+    }
+}
+
 module.exports = {
     cursos,
     disciplinas,
@@ -341,5 +405,8 @@ module.exports = {
     api_improficiencia_remover,
     monitoria_inscrever,
     monitoria_listar,
+    monitoria_aceitar,
+    monitoria_remover,
     monitoria_solicitacoes,
+    monitoria_solicitacoes_usuario,
 }
