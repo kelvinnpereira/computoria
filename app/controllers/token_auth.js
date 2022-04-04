@@ -6,16 +6,16 @@ const authenticated = (req, res, next) => {
     console.log('Token de sessão não existe');
     return res.redirect('/auth/login');
   }
-  jwt.verify(token, process.env.TOKEN_SECRET.trim(), (err, user) => {
+  jwt.verify(token, process.env.TOKEN_SECRET.trim(), (err, usuario) => {
     if (err) {
       console.log('Token de sessão invalido ou expirado');
       res.clearCookie('Authorization');
-      res.clearCookie('user');
-      res.clearCookie('role');
+      res.clearCookie('matricula');
+      res.clearCookie('cargo');
       return res.redirect('/auth/login');
     } else {
       console.log('Token de sessão valido');
-      req.user = user.matricula;
+      req.matricula = usuario.matricula;
       next();
     }
   })
@@ -24,35 +24,6 @@ const authenticated = (req, res, next) => {
 const not_authenticated = (req, res, next) => {
   const token = cookieToDict(req.headers.cookie)?.Authorization;
   if (token) return res.redirect('/home');
-  next();
-}
-
-const admin_authenticated = (req, res, next) => {
-  const token = cookieToDict(req.headers.cookie)?.Authorization;
-  if (!token) {
-    console.log('Token de sessão não existe');
-    return res.redirect('/admin/auth/login');
-  }
-  jwt.verify(token, process.env.TOKEN_SECRET.trim(), (err, user) => {
-    if (err || user.role === 'usuario') {
-      console.log('Token de sessão invalido, expirado ou de usuario');
-      res.clearCookie('Authorization');
-      res.clearCookie('user');
-      res.clearCookie('role');
-      return res.redirect('/admin/auth/login');
-    } else {
-      console.log('Token de sessão valido');
-      req.user = user.matricula;
-      req.admin = true;
-      next();
-    }
-  })
-}
-
-const admin_not_authenticated = (req, res, next) => {
-  const token = cookieToDict(req.headers.cookie)?.Authorization;
-  if (token) return res.redirect('/admin/home');
-  req.admin = true;
   next();
 }
 
@@ -73,8 +44,6 @@ const cookieToDict = (cookie) => {
 module.exports = {
   authenticated,
   not_authenticated,
-  admin_authenticated,
-  admin_not_authenticated,
   generateAccessToken,
   cookieToDict,
 }

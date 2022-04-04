@@ -5,9 +5,9 @@ import { UnderlinedTabs } from "../../components/tabs";
 import Widget from "../../components/widget";
 import List1 from "../../components/d-board/lists/list-1";
 import { get } from '../../lib/api';
-import Cookies from 'js-cookie';
 import { useRouter } from "next/router";
 import Router from "next/router";
+import Agenda from "../../components/agenda/index";
 
 const Conta = ({ usuario, curso }) => {
   return (
@@ -18,11 +18,6 @@ const Conta = ({ usuario, curso }) => {
           <tr key='nome'>
             <td> <b>Nome</b> </td>
             <td>{usuario.nome}</td>
-          </tr>
-
-          <tr key='cpf'>
-            <td> <b>CPF</b> </td>
-            <td>{usuario.cpf}</td>
           </tr>
 
           <tr key='matricula'>
@@ -52,7 +47,7 @@ const Redes = () => {
   )
 }
 
-const ListarProficiencia = ({ disciplinas }) => {
+const ListarDisciplinas = ({ disciplinas }) => {
   return (
     <>
       <List1 items={disciplinas?.map((item) => {
@@ -64,41 +59,15 @@ const ListarProficiencia = ({ disciplinas }) => {
   );
 };
 
-const Perfil = ({ usuario, cursos, disciplinas, improf }) => {
+const Perfil = ({ usuario, cursos, prof, improf, horarios, agenda }) => {
   const { query } = useRouter();
   const curso = cursos.find(curso => curso.sigla == usuario.sigla_curso);
   const tabs = [
     { title: 'Conta', index: 0, content: <Conta usuario={usuario} curso={curso} /> },
-    { title: 'Horarios', index: 1 },
-    { title: 'Redes Sociais', index: 1, content: <Redes /> },
-    { title: 'Proficiencias', index: 2, content: <ListarProficiencia disciplinas={disciplinas} /> },
-    { title: 'Improficiencias', index: 3, content: <ListarProficiencia disciplinas={improf} /> },
+    { title: 'Agenda', index: 1, content: <Agenda diasUteis={horarios} agenda={agenda} /> },
+    { title: 'Redes Sociais', index: 2, content: <Redes /> },
+    { title: 'Proficiencias', index: 3, content: <ListarDisciplinas disciplinas={prof} /> },
   ];
-
-  const actions = (
-    query.matricula === Cookies.get('user') ?
-      <button
-        onClick={() => {
-          Router.push('/perfil/atualizar');
-        }}
-        className="btn btn-default bg-blue-500 hover:bg-blue-600 text-white btn-rounded btn-icon">
-        Atualizar Perfil
-      </button> :
-      <>
-        <button
-          onClick={() => {
-            Router.push(`/denunciar/${query.matricula}`);
-          }}
-          className="btn btn-default bg-red-500 hover:bg-red-600 text-white btn-rounded btn-icon">
-          Denunciar Perfil
-        </button>
-        <button className="btn btn-default bg-blue-500 hover:bg-blue-600 text-white btn-rounded btn-icon">
-          Solicitar Ajuda
-        </button>
-      </>
-
-
-  );
 
   return (
     <>
@@ -107,16 +76,32 @@ const Perfil = ({ usuario, cursos, disciplinas, improf }) => {
           Computoria: Perfil
         </title>
       </Head>
-      <SectionTitle title='Visualizar' subtitle="Perfil" actions={actions} />
-
+      <SectionTitle title='Visualizar' subtitle="Perfil" actions={
+        <button
+          onClick={() => {
+            Router.push(`/denunciar/${query.matricula}`);
+          }}
+          className="btn btn-default bg-red-500 hover:bg-red-600 text-white btn-rounded btn-icon">
+          Denunciar Perfil
+        </button>
+      } />
       <Widget>
-        <div className="flex flex-row m-4">
-          <img src='/images/avatar_default.png' alt='Foto usuário' className='rounded-full ring-blue' />
-          <div className="pl-4">
-            <p className="text-xl font-bold">{usuario.nome}</p>
-            <p className="text-xs uppercase font-light text-white">{curso.nome}</p>
+        <div className="w-full mb-6 pt-3">
+          <div className="flex flex-row items-center justify-start mb-4 pl-4">
+            <img src='/images/avatar_default.png' alt='Foto usuário' className='rounded-full ring-blue' />
+            <div className="px-4">
+              <p className="text-xl font-bold">{usuario.nome}</p>
+              <p className="text-xs uppercase font-light text-white">{curso.nome}</p>
+            </div>
+            <button
+              onClick={() => {
+                Router.push(`/agendar/${query.matricula}`);
+              }}
+              className="btn btn-default bg-blue-500 hover:bg-blue-600 text-white btn-rounded btn-icon">
+              Solicitar Ajuda
+            </button>
           </div>
-        </div>
+        </div >
         <UnderlinedTabs tabs={tabs} />
       </Widget>
     </>
@@ -134,15 +119,19 @@ export const getServerSideProps = async (context) => {
   const response3 = await get(`/api/proficiencia/listar/${context.params.matricula}`, {
     headers: req.headers
   });
-  const response4 = await get(`/api/improficiencia/listar`, {
-    headers: { cookie: req.headers.cookie }
+  const response4 = await get(`/api/disponibilidade/listar/${context.params.matricula}`, {
+    headers: req.headers
+  });
+  const response5 = await get(`/api/ajuda/listar/${context.params.matricula}`, {
+    headers: req.headers
   });
   return {
     props: {
       usuario: response1.data.usuario,
       cursos: response2.data.cursos,
-      disciplinas: response3.data.disciplinas,
-      improf: response4.data.disciplinas,
+      prof: response3.data.disciplinas,
+      horarios: response4.data.horarios,
+      agenda: response5.data.agenda,
     },
   }
 }

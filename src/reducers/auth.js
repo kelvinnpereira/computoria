@@ -1,32 +1,32 @@
 import cookieCutter from "cookie-cutter";
 
-const initialState = { user: "", token: "", role: "usuario", };
+const initialState = { matricula: "", token: "", cargo: "usuario", };
 
 const auth = (state = initialState, { type, auth }) => {
   switch (type) {
     case "LOGIN":
       cookieCutter.set("Authorization", `${auth.token}`, { path: "/" });
-      cookieCutter.set("user", auth.user, { path: "/" });
-      cookieCutter.set("role", auth.role, { path: "/" });
+      cookieCutter.set("matricula", auth.matricula, { path: "/" });
+      cookieCutter.set("cargo", auth.cargo, { path: "/" });
       return {
         token: auth.token,
-        user: auth.user,
-        role: auth.role,
+        matricula: auth.matricula,
+        cargo: auth.cargo,
       };
     case "LOGOUT":
       cookieCutter.set("Authorization", "", { expires: new Date(0) });
-      cookieCutter.set("user", "", { expires: new Date(0) });
-      cookieCutter.set("role", "", { expires: new Date(0) });
+      cookieCutter.set("matricula", "", { expires: new Date(0) });
+      cookieCutter.set("cargo", "", { expires: new Date(0) });
       return {
         token: null,
-        user: null,
-        role: null,
+        matricula: null,
+        cargo: null,
       };
     case "RESTORE":
       return {
         token: cookieCutter.get("Authorization"),
-        user: cookieCutter.get("user"),
-        role: cookieCutter.get("role"),
+        matricula: cookieCutter.get("matricula"),
+        cargo: cookieCutter.get("cargo"),
       };
     default:
       return state;

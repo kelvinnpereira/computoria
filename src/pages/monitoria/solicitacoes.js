@@ -37,7 +37,7 @@ export default ListarSolicitacoes;
 
 export const getServerSideProps = async (context) => {
   const { req, res } = context;
-  const response = await get(`/api/monitoria/solicitacoes/`, {
+  const response = await get(`/api/monitoria/solicitacoes_usuario/`, {
     headers: req.headers
   });
   return {

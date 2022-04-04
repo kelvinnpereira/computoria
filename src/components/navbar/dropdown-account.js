@@ -13,8 +13,8 @@ const DropdownAccount = ({ emailCount }) => {
     shallowEqual
   );
 
-  // const avatarImg = auth?.user
-  //   ? `${HOST}/media/avatar_${auth?.user.replace(".", "_")}.jpg`
+  // const avatarImg = auth?.matricula
+  //   ? `${HOST}/media/avatar_${auth?.matricula.replace(".", "_")}.jpg`
   //   : "/images/avatar_default.png";
 
   const avatarImg = "/images/avatar_default.png";

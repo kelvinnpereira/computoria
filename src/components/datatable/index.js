@@ -23,7 +23,7 @@ const DefaultColumnFilter = ({
 }
 
 const defaultFilter = (rows, id, filterValue) => {
-  return rows.filter((row) => row.values[id].props.children.toLowerCase().includes(filterValue));
+  return rows.filter((row) => row.values[id].toLowerCase().includes(filterValue));
 }
 
 const Datatable = ({ columns, data }) => {

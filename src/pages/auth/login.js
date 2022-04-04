@@ -18,8 +18,8 @@ const LogIn = () => {
       type: "LOGIN",
       auth: {
         token: data.token,
-        user: data.user,
-        role: 'usuario',
+        matricula: data.matricula,
+        cargo: data.cargo,
       }
     });
     Router.push('/home');
@@ -35,7 +35,7 @@ const LogIn = () => {
     if (typeof err !== "undefined" && err.error) {
       setErrorMessage(err.error);
     } else {
-      setErrorMessage("User or password incorrect");
+      setErrorMessage("Usuario e/ou senha incorretos");
     }
   };
 

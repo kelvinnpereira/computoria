@@ -6,16 +6,16 @@ import Logo from "./logo";
 import Cookies from 'js-cookie';
 
 const LeftSidebar = () => {
-  const { navigation, navigation_admin } = useSelector(
+  const { navigation, navigation_coordenador } = useSelector(
     state => ({
       navigation: state.navigation,
-      navigation_admin: state.navigation_admin,
+      navigation_coordenador: state.navigation_coordenador,
     }),
     shallowEqual
   );
   const [nav, setNav] = useState([]);
   useEffect(() => {
-    setNav(Cookies.get('role') === 'admin' ? navigation_admin : navigation);
+    setNav(Cookies.get('cargo') === 'coordenador' ? navigation_coordenador : navigation);
   })
   return (
     <div className="left-sidebar left-sidebar-1">

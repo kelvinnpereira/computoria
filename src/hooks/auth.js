@@ -14,7 +14,7 @@ export const useRequest = (success, error, url) => {
     }
   };
 
-  return [isLoading, setRequest];
+  return [isLoading, setRequest, setIsLoading];
 };
 
 export const useCsrf = () => {

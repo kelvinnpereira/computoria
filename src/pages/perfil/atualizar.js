@@ -1,9 +1,9 @@
 import Head from "next/head";
 import Router from "next/router";
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { useRequest } from "../../hooks/auth";
-import { cookieToDict, get } from '../../lib/api';
+import { get } from '../../lib/api';
 
 import SectionTitle from "../../components/section/section-title";
 import { UnderlinedTabs } from "../../components/tabs";
@@ -12,11 +12,22 @@ import Modal from "../../components/modals";
 import Email from "../../components/perfil/email";
 import Conta from "../../components/perfil/conta";
 import Senha from "../../components/perfil/senha";
+import Horarios from "../../components/horarios/pick";
 
-
-const Atualizar = ({ usuario, cursos }) => {
+const Atualizar = ({ usuario, cursos, horarios }) => {
   const [errorMessage, setErrorMessage] = useState("");
   const [showModal, setModal] = useState(false);
+
+  useEffect(() => {
+    let url = window.location.href;
+    let index = url.indexOf('#');
+    if (index !== -1) {
+      let item = document.getElementById(url.substring(index));
+      if (item) {
+        item.click();
+      }
+    }
+  })
 
   const sucessBody = () => {
     return (
@@ -46,6 +57,7 @@ const Atualizar = ({ usuario, cursos }) => {
 
   const onAction = () => {
     setModal(true);
+    setIsLoading(false);
   }
 
   const onError = (err) => {
@@ -58,25 +70,55 @@ const Atualizar = ({ usuario, cursos }) => {
   };
 
   const [isLoadingConta, atualizarConta] = useRequest(onAction, onError, '/api/atualizar_conta');
+  const [isLoadingHorarios, atualizarHorarios, setIsLoading] = useRequest(onAction, onError, '/api/disponibilidade/adicionar');
   const [isLoadingEmail, atualizarEmail] = useRequest(onAction, onError, '/api/atualizar_email');
   const [isLoadingSenha, atualizarSenha] = useRequest(onAction, onError, '/api/atualizar_senha');
 
   const curso = cursos.find(curso => curso.sigla == usuario.sigla_curso)
   const tabs = [
     {
-      title: 'Conta', index: 0, content: <Conta setAction={atualizarConta} isLoading={isLoadingConta}
-        message={errorMessage} usuario={usuario} cursos={cursos} />
+      title: 'Conta',
+      index: 0,
+      content:
+        <Conta
+          setAction={atualizarConta}
+          isLoading={isLoadingConta}
+          message={errorMessage}
+          usuario={usuario}
+          cursos={cursos}
+        />
     },
     {
-      title: 'Horarios', index: 1
+      title: 'Horarios',
+      index: 1,
+      content:
+        <Horarios
+          horarios={horarios}
+          setAction={atualizarHorarios}
+          isLoading={isLoadingHorarios}
+          message={errorMessage}
+        />
     },
     {
-      title: 'Email', index: 2, content: <Email setAction={atualizarEmail} isLoading={isLoadingEmail}
-        message={errorMessage} usuario={usuario} />
+      title: 'Email',
+      index: 2,
+      content:
+        <Email
+          setAction={atualizarEmail}
+          isLoading={isLoadingEmail}
+          message={errorMessage}
+          usuario={usuario}
+        />
     },
     {
-      title: 'Senha', index: 3, content: <Senha setAction={atualizarSenha} isLoading={isLoadingSenha}
-        message={errorMessage} />
+      title: 'Senha',
+      index: 3,
+      content:
+        <Senha
+          setAction={atualizarSenha}
+          isLoading={isLoadingSenha}
+          message={errorMessage}
+        />
     }
   ];
 
@@ -108,15 +150,18 @@ export default Atualizar;
 
 export const getServerSideProps = async (context) => {
   const { req, res } = context;
-  const cookie = cookieToDict(req.headers.cookie);
-  const response1 = await get(`/api/usuario/${cookie.user}`, {
+  const response1 = await get(`/api/usuario`, {
     headers: req.headers
   });
   const response2 = await get('/api/cursos');
+  const response3 = await get('/api/disponibilidade/listar', {
+    headers: req.headers
+  });
   return {
     props: {
       usuario: response1.data.usuario,
       cursos: response2.data.cursos,
+      horarios: response3.data.horarios,
     },
   }
 }

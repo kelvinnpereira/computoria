@@ -42,9 +42,7 @@ const Email = ({ message = null, setAction, isLoading, usuario }) => {
                     value: 10,
                     message: 'Seu E-mail deve ter pelo menos 10 caracteres'
                   },
-                  validate: (value) => {
-                    return email.validate(value) || "E-mail inválido"
-                  }
+                  validate: (value) => email.validate(value) || "E-mail inválido"
                 })}
                 defaultValue={usuario.email}
                 name="email_atual"
@@ -67,9 +65,7 @@ const Email = ({ message = null, setAction, isLoading, usuario }) => {
                     value: 10,
                     message: 'Seu E-mail deve ter pelo menos 10 caracteres'
                   },
-                  validate: (value) => {
-                    return email.validate(value) || "E-mail inválido"
-                  }
+                  validate: (value) => email.validate(value) || "E-mail inválido"
                 })}
                 name="novo_email"
                 type="text"

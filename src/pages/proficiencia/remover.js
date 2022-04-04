@@ -5,7 +5,7 @@ import Widget from "../../components/widget";
 import { useRequest } from "@src/hooks/auth";
 import Form from "../../components/disciplina/remover/form";
 import { useState } from "react";
-import { get,cookieToDict } from '../../lib/api';
+import { get } from '../../lib/api';
 import Modal from '../../components/modals';
 import Router from "next/router";
 
@@ -73,8 +73,7 @@ export default RemoverProficiencia;
 
 export const getServerSideProps = async (context) => {
   const { req, res } = context;
-  const cookie = cookieToDict(req.headers.cookie);
-  const response = await get(`/api/proficiencia/listar/${cookie.user}`, { 
+  const response = await get(`/api/proficiencia/listar`, {
     headers: req.headers
   });
   return {

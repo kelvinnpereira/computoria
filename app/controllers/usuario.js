@@ -1,12 +1,13 @@
 const models = require('../models/index');
 const sequelize = models.sequelize;
 const Usuario = models.usuario;
+const Denuncia = models.denuncia;
 const bcrypt = require('bcryptjs');
 const auth = require('./token_auth');
 
 const tutores = async (req, res) => {
-  if (req.route.methods.get && req.params?.disciplina) {
-    const disciplina = req.params.disciplina;
+  if (req.route.methods.get) {
+    const disciplina = req.params?.disciplina;
     await sequelize.query(`\
       SELECT
         c.nome AS curso, u.nome AS usuario, matricula, media
@@ -15,7 +16,7 @@ const tutores = async (req, res) => {
           DISTINCT(cpf) AS cpf 
         FROM 
           proficiencia 
-        ${disciplina !== 'all' ? `WHERE sigla_disciplina = \'${disciplina}\'` : ''}) AS prof
+        ${disciplina ? `WHERE sigla_disciplina = \'${disciplina}\'` : ''}) AS prof
         INNER JOIN
           usuario AS u
         ON
@@ -47,8 +48,8 @@ const tutores = async (req, res) => {
 }
 
 const tutores_por_disciplina = async (req, res) => {
-  if (req.route.methods.get && req.params?.disciplina) {
-    const disciplina = req.params.disciplina;
+  if (req.route.methods.get) {
+    const disciplina = req.params?.disciplina;
     await sequelize.query(`\
     SELECT 
       curso, 
@@ -78,7 +79,7 @@ const tutores_por_disciplina = async (req, res) => {
         prof.sigla_disciplina = d.sigla AND
         prof.cpf = u.cpf AND
         c.sigla = sigla_curso 
-        ${disciplina !== 'all' ? `AND sigla_disciplina = \'${disciplina}\'` : ''}
+        ${disciplina ? `AND sigla_disciplina = \'${disciplina}\'` : ''}
         ) AS user 
     LEFT JOIN
       (SELECT 
@@ -110,17 +111,16 @@ const tutores_por_disciplina = async (req, res) => {
 }
 
 const usuario = async (req, res) => {
-  if (req.route.methods.get && req.params?.matricula) {
+  if (req.route.methods.get) {
+    const [attributes, matricula] = req.params?.matricula
+      ?
+      [['nome', 'matricula', 'email', 'sigla_curso',], req.params?.matricula]
+      :
+      [{ exclude: ['senha'] }, req.matricula];
     await Usuario.findOne({
-      attributes: [
-        'nome',
-        'cpf',
-        'matricula',
-        'email',
-        'sigla_curso',
-      ],
+      attributes: attributes,
       where: {
-        matricula: req.params.matricula
+        matricula: matricula
       }
     }).then((usuario) => {
       if (usuario) {
@@ -149,16 +149,16 @@ const atualizar_conta = async (req, res) => {
       sigla_curso: req.body.curso,
     }, {
       where: {
-        matricula: req.user
+        matricula: req.matricula
       }
     }).then((usuario) => {
       if (usuario && usuario.length > 0 && usuario[0] !== 0) {
         console.log('Update conta');
-        res.cookie('Authorization', auth.generateAccessToken({ 
+        res.cookie('Authorization', auth.generateAccessToken({
           matricula: req.body.matricula,
-          role: req.admin ? 'admin' : 'usuario',
+          cargo: usuario.cargo,
         }));
-        res.cookie('user', req.body.matricula);
+        res.cookie('matricula', req.body.matricula);
         res.status(200).send({});
       } else {
         console.log('Usuario não encontrado');
@@ -198,11 +198,11 @@ const atualizar_senha = async (req, res) => {
   if (req.route.methods.post && req.body) {
     await Usuario.findOne({
       where: {
-        matricula: req.user,
+        matricula: req.matricula,
       }
-    }).then((user) => {
-      if (user) {
-        bcrypt.compare(req.body.senha_atual, user.senha, (err, ok) => {
+    }).then((usuario) => {
+      if (usuario) {
+        bcrypt.compare(req.body.senha_atual, usuario.senha, (err, ok) => {
           if (ok) {
             bcrypt.genSalt(10, function (err, salt) {
               bcrypt.hash(req.body.nova_senha, salt, async (err, hash) => {
@@ -211,7 +211,7 @@ const atualizar_senha = async (req, res) => {
                     senha: hash,
                   }, {
                     where: {
-                      cpf: user.cpf
+                      cpf: usuario.cpf
                     }
                   }).then((sucess) => {
                     console.log('Senha alterada com sucesso');
@@ -243,11 +243,34 @@ const atualizar_senha = async (req, res) => {
   }
 }
 
+const denunciar = async (req, res) => {
+  if (req.route.methods.post && req.body && req.params?.matricula) {
+    console.log(req.body);
+    const user1 = await Usuario.findOne({ where: { matricula: req.params.matricula } })
+    const user2 = await Usuario.findOne({ where: { matricula: req.matricula } })
+    await Denuncia.create({
+      denunciado: user1.cpf,
+      denunciador: user2.cpf,
+      status: '',
+      comentario: req.body.comentario
+    }).then((denuncia) => {
+      console.log('Denuncia enviada com sucesso');
+      res.status(200).send({ message: 'Denuncia enviada com sucesso' });
+    }).catch((error) => {
+      console.log(error);
+      res.status(500).send({ error: 'Usuario não encontrado' });
+    })
+  } else {
+    res.status(500).send({ error: 'not logged in or no a get resquest' })
+  }
+}
+
 module.exports = {
   tutores,
   tutores_por_disciplina,
   usuario,
   atualizar_conta,
   atualizar_email,
-  atualizar_senha
+  atualizar_senha,
+  denunciar
 }

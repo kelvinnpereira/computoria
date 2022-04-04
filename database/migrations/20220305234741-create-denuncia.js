@@ -1,34 +1,29 @@
 'use strict';
+
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    return queryInterface.createTable('admin', {
-      cpf: {
-        allowNull: false,
+    return queryInterface.createTable('denuncia', {
+      id: {
         primaryKey: true,
-        unique: true,
+        autoIncrement: true,
+        allowNull: false,
+        type: Sequelize.INTEGER,
+      },
+      denunciado: {
+        allowNull: false,
         type: Sequelize.STRING,
       },
-      matricula: {
+      denunciador: {
         allowNull: false,
-        unique: true,
         type: Sequelize.STRING,
       },
-      nome: {
+      status: {
         allowNull: false,
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
-      email: {
-        allowNull: false,
-        unique: true,
-        type: Sequelize.STRING
-      },
-      senha: {
-        allowNull: false,
-        type: Sequelize.STRING
-      },
-      sigla_curso: {
-        allowNull: false,
-        type: Sequelize.STRING
+      comentario: {
+        allowNull: true,
+        type: Sequelize.STRING,
       },
       created_at: {
         allowNull: false,
@@ -43,6 +38,6 @@ module.exports = {
     });
   },
   down: (queryInterface, Sequelize) => {
-    return queryInterface.dropTable('admin');
+    return queryInterface.dropTable('denuncia');
   }
 };

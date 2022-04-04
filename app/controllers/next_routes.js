@@ -1,6 +1,5 @@
 const models = require('../models/index');
 const MudarSenha = models.mudar_senha;
-const MudarSenhaAdmin = models.mudar_senha_admin;
 
 const next = require('next');
 const app = next({ dev: false });
@@ -14,7 +13,7 @@ const handler = async (req, res) => {
 const restart = async (req, res) => {
     if (req.route.methods.get && req.params?.token) {
         let token = req.params.token;
-        let request = await (req.admin ? MudarSenhaAdmin : MudarSenha).findOne({
+        let request = await MudarSenha.findOne({
             where: {
                 token: token,
             }
@@ -32,7 +31,8 @@ const restart = async (req, res) => {
 
 const logout = async (req, res) => {
     res.clearCookie('Authorization');
-    res.clearCookie('user');
+    res.clearCookie('matricula');
+    res.clearCookie('cargo');
     handle(req, res);
 }
 

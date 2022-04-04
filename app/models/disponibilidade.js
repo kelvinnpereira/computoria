@@ -6,10 +6,15 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING
     },
     dia: {
+      primaryKey: true,
       type: DataTypes.INTEGER,
       validate: {
         isIn: [[0, 1, 2, 3, 4, 5, 6]]
       },
+    },
+    hora_indice: {
+      primaryKey: true,
+      type: DataTypes.INTEGER,
     },
     hora_inicio: {
       type: DataTypes.STRING,

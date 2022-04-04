@@ -16,7 +16,6 @@ const Layouts = ({children}) => {
       '/create-account',
       '/email-confirmation',
       '/auth/logout',
-      '/admin/auth/logout',
       '/reset-password',
       '/forgot-password',
       '/lock-screen',
@@ -24,8 +23,7 @@ const Layouts = ({children}) => {
       '/error-page',
       '/coming-soon'
     ].includes(pathname) ||
-    pathname.startsWith('/auth/restart/') || 
-    pathname.startsWith('/admin/auth/restart/')
+    pathname.startsWith('/auth/restart/')
   ) {
     return <Centered>{children}</Centered>
   } else if (
@@ -37,9 +35,6 @@ const Layouts = ({children}) => {
       '/auth/login', 
       '/auth/signup', 
       '/auth/forgot',
-      '/admin/auth/login', 
-      '/admin/auth/signup', 
-      '/admin/auth/forgot'
     ].includes(pathname)
   ) {
     return <Empty>{children}</Empty>

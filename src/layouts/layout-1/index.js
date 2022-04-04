@@ -22,7 +22,7 @@ const Layout1 = ({ children }) => {
 
   useEffect(() => {
     dispatch({ type: "RESTORE_PALETTE" });
-    if (!auth?.user) {
+    if (!auth?.matricula) {
       dispatch({ type: "RESTORE" });
     }
   }, []);
