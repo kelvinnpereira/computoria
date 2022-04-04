@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useRouter } from "next/router";
+import Router, {  useRouter } from "next/router";
 import Head from "next/head";
 
 import Form from "../../components/denunciar/form";
@@ -25,7 +25,7 @@ const Denunciar = ({ usuario }) => {
     if (typeof err !== "undefined" && err.error) {
       setErrorMessage(err.error);
     } else {
-      setErrorMessage("User or password incorrect");
+      setErrorMessage("Usuario e/ou senha incorretos");
     }
   };
 

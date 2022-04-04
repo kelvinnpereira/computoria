@@ -25,6 +25,12 @@ module.exports = (sequelize, DataTypes) => {
     },
     sigla_curso: {
       type: DataTypes.STRING
+    },
+    cargo: {
+      type: DataTypes.STRING,
+      validate: {
+        isIn: [['usuario', 'coordenador']]
+      },
     }
   }, {
     underscored: true,

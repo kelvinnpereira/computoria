@@ -3,17 +3,18 @@
 module.exports = {
   up: (queryInterface, Sequelize) => {
     return queryInterface.createTable('disponibilidade', {
-      id: {
-        primaryKey: true,
-        autoIncrement: true,
-        allowNull: false,
-        type: Sequelize.INTEGER,
-      },
       cpf: {
+        primaryKey: true,
         allowNull: false,
         type: Sequelize.STRING,
       },
       dia: {
+        primaryKey: true,
+        allowNull: false,
+        type: Sequelize.INTEGER,
+      },
+      hora_indice: {
+        primaryKey: true,
         allowNull: false,
         type: Sequelize.INTEGER,
       },

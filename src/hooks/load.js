@@ -22,7 +22,7 @@ export const useLoad = (uri, dataDispatch = null) => {
     setIsLoading(true);
     const response = await get(`${uri}?${query}`);
     setIsLoading(false);
-    if (response.status === 401 && !auth?.user) {
+    if (response.status === 401 && !auth?.matricula) {
       dispatch({ type: "LOGOUT" });
       Router.push("/auth/login");
       return;

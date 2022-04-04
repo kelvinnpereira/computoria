@@ -13,11 +13,11 @@ const AccountLinks = ({ emailCount }) => {
   );
   const [items, setItems] = useState([]);
   useEffect(() => {
-    setItems(Cookies.get('role') === 'admin'
+    setItems(Cookies.get('cargo') === 'coordenador'
       ?
       [
         {
-          url: "/admin/home",
+          url: "/home",
           icon: <FiMail size={18} className="stroke-current" />,
           name: "Inbox",
           badge: emailCount ? ({
@@ -26,20 +26,20 @@ const AccountLinks = ({ emailCount }) => {
           }) : null
         },
         {
-          url: "/admin/perfil",
+          url: "/perfil",
           icon: <FiUser size={18} className="stroke-current" />,
           name: "Perfil",
           badge: null
         },
         {
-          url: "/admin/home",
+          url: "/home",
           icon: <FiSettings
             className="stroke-current" />,
           name: "Admin",
           badge: null
         },
         {
-          url: "/admin/auth/logout",
+          url: "/auth/logout",
           icon: <FiLogIn size={18} className="stroke-current" />,
           name: "Logout",
           badge: null

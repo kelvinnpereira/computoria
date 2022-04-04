@@ -38,7 +38,7 @@ const Form = ({ message = null, setSubmit, isLoading, usuario }) => {
               <input
                 name="nome"
                 type="text"
-                className={`form-input ${errors["user"] ? "border-red-500" : ""
+                className={`form-input ${errors["nome"] ? "border-red-500" : ""
                   }`}
                 defaultValue={usuario.nome}
                 readOnly
@@ -50,7 +50,7 @@ const Form = ({ message = null, setSubmit, isLoading, usuario }) => {
               <input
                 name="matricula"
                 type="text"
-                className={`form-input ${errors["user"] ? "border-red-500" : ""
+                className={`form-input ${errors["matricula"] ? "border-red-500" : ""
                   }`}
                 defaultValue={usuario.matricula}
                 readOnly

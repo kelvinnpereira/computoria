@@ -7,6 +7,9 @@
             ],
             "@src/*": [
                 "src/*"
+            ],
+            "@fullcalendar/*": [
+                "node_modules/@fullcalendar/*"
             ]
         },
         "target": "es5",

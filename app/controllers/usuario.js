@@ -116,7 +116,7 @@ const usuario = async (req, res) => {
       ?
       [['nome', 'matricula', 'email', 'sigla_curso',], req.params?.matricula]
       :
-      [{ exclude: ['senha'] }, req.user];
+      [{ exclude: ['senha'] }, req.matricula];
     await Usuario.findOne({
       attributes: attributes,
       where: {
@@ -149,16 +149,16 @@ const atualizar_conta = async (req, res) => {
       sigla_curso: req.body.curso,
     }, {
       where: {
-        matricula: req.user
+        matricula: req.matricula
       }
     }).then((usuario) => {
       if (usuario && usuario.length > 0 && usuario[0] !== 0) {
         console.log('Update conta');
         res.cookie('Authorization', auth.generateAccessToken({
           matricula: req.body.matricula,
-          role: req.admin ? 'admin' : 'usuario',
+          cargo: usuario.cargo,
         }));
-        res.cookie('user', req.body.matricula);
+        res.cookie('matricula', req.body.matricula);
         res.status(200).send({});
       } else {
         console.log('Usuario não encontrado');
@@ -198,11 +198,11 @@ const atualizar_senha = async (req, res) => {
   if (req.route.methods.post && req.body) {
     await Usuario.findOne({
       where: {
-        matricula: req.user,
+        matricula: req.matricula,
       }
-    }).then((user) => {
-      if (user) {
-        bcrypt.compare(req.body.senha_atual, user.senha, (err, ok) => {
+    }).then((usuario) => {
+      if (usuario) {
+        bcrypt.compare(req.body.senha_atual, usuario.senha, (err, ok) => {
           if (ok) {
             bcrypt.genSalt(10, function (err, salt) {
               bcrypt.hash(req.body.nova_senha, salt, async (err, hash) => {
@@ -211,7 +211,7 @@ const atualizar_senha = async (req, res) => {
                     senha: hash,
                   }, {
                     where: {
-                      cpf: user.cpf
+                      cpf: usuario.cpf
                     }
                   }).then((sucess) => {
                     console.log('Senha alterada com sucesso');
@@ -247,7 +247,7 @@ const denunciar = async (req, res) => {
   if (req.route.methods.post && req.body && req.params?.matricula) {
     console.log(req.body);
     const user1 = await Usuario.findOne({ where: { matricula: req.params.matricula } })
-    const user2 = await Usuario.findOne({ where: { matricula: req.user } })
+    const user2 = await Usuario.findOne({ where: { matricula: req.matricula } })
     await Denuncia.create({
       denunciado: user1.cpf,
       denunciador: user2.cpf,

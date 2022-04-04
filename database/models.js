@@ -1,5 +1,4 @@
 module.exports = {
-	admin: require(__dirname + "/../app/models/admin"), 
 	ajuda: require(__dirname + "/../app/models/ajuda"), 
 	area: require(__dirname + "/../app/models/area"), 
 	cargo: require(__dirname + "/../app/models/cargo"), 
@@ -12,7 +11,6 @@ module.exports = {
 	improficiencia: require(__dirname + "/../app/models/improficiencia"), 
 	monitor: require(__dirname + "/../app/models/monitor"), 
 	mudar_senha: require(__dirname + "/../app/models/mudar_senha"), 
-	mudar_senha_admin: require(__dirname + "/../app/models/mudar_senha_admin"), 
 	proficiencia: require(__dirname + "/../app/models/proficiencia"), 
 	usuario: require(__dirname + "/../app/models/usuario"), 
 }
