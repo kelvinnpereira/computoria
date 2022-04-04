@@ -65,7 +65,10 @@ router.post('/api/denunciar/:matricula'          , auth.authenticated, usuarioCo
 //monitor
 router.post('/api/monitoria/inscrever'        , auth.authenticated, mainController.monitoria_inscrever);
 router.get ('/api/monitoria/listar'           , auth.authenticated, mainController.monitoria_listar);
+router.post('/api/monitoria/aceitar'          , auth.authenticated, mainController.monitoria_aceitar);
+router.post('/api/monitoria/remover'          , auth.authenticated, mainController.monitoria_remover);
 router.get ('/api/monitoria/listar/:matricula', auth.authenticated, mainController.monitoria_listar);
+router.get ('/api/monitoria/solicitacoes_usuario', auth.authenticated, mainController.monitoria_solicitacoes_usuario);
 router.get ('/api/monitoria/solicitacoes'     , auth.authenticated, mainController.monitoria_solicitacoes);
 
 //auth
