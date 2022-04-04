@@ -7,7 +7,7 @@ import List1 from "../../components/d-board/lists/list-1";
 import { get } from '../../lib/api';
 import { useRouter } from "next/router";
 import Router from "next/router";
-import Horarios from "../../components/horarios/show";
+import Agenda from "../../components/agenda/index";
 
 const Conta = ({ usuario, curso }) => {
   return (
@@ -59,12 +59,12 @@ const ListarDisciplinas = ({ disciplinas }) => {
   );
 };
 
-const Perfil = ({ usuario, cursos, prof, improf, horarios }) => {
+const Perfil = ({ usuario, cursos, prof, improf, horarios, agenda }) => {
   const { query } = useRouter();
   const curso = cursos.find(curso => curso.sigla == usuario.sigla_curso);
   const tabs = [
     { title: 'Conta', index: 0, content: <Conta usuario={usuario} curso={curso} /> },
-    { title: 'Horarios', index: 1, content: <Horarios horarios={horarios}/> },
+    { title: 'Agenda', index: 1, content: <Agenda diasUteis={horarios} agenda={agenda} /> },
     { title: 'Redes Sociais', index: 2, content: <Redes /> },
     { title: 'Proficiencias', index: 3, content: <ListarDisciplinas disciplinas={prof} /> },
   ];
@@ -122,12 +122,16 @@ export const getServerSideProps = async (context) => {
   const response4 = await get(`/api/disponibilidade/listar/${context.params.matricula}`, {
     headers: req.headers
   });
+  const response5 = await get(`/api/ajuda/listar/${context.params.matricula}`, {
+    headers: req.headers
+  });
   return {
     props: {
       usuario: response1.data.usuario,
       cursos: response2.data.cursos,
       prof: response3.data.disciplinas,
       horarios: response4.data.horarios,
+      agenda: response5.data.agenda,
     },
   }
 }

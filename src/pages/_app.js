@@ -26,6 +26,9 @@ import "../css/components/tabs.css";
 import "../css/components/user-widgets/widget-2.css";
 import "../css/components/user-widgets/widget-4.css";
 import { ContextNotificationProvider } from "../contexts/notification";
+import '@fullcalendar/common/main.css';
+import '@fullcalendar/daygrid/main.css';
+import '@fullcalendar/timegrid/main.css';
 
 Router.events.on("routeChangeStart", () => NProgress.start());
 Router.events.on("routeChangeComplete", () => NProgress.done());

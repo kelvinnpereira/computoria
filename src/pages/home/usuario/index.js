@@ -5,7 +5,7 @@ import Widget from "../../../components/widget";
 import List1 from "../../../components/d-board/lists/list-1";
 import { UnderlinedTabs } from "../../../components/tabs";
 import { get } from "../../../lib/api";
-import Horarios from "../../../components/horarios/show";
+import Agenda from "../../../components/agenda/index";
 
 const ListarProficiencia = ({ disciplinas }) => {
   return (
@@ -19,14 +19,12 @@ const ListarProficiencia = ({ disciplinas }) => {
   );
 };
 
-const Home = ({ usuario, disciplinas, cursos, horarios }) => {
+const Home = ({ usuario, disciplinas, cursos, horarios, agenda }) => {
   const curso = cursos.find(curso => curso.sigla == usuario.sigla_curso);
 
   const tabs = [
-    { title: "Aulas", index: 0 },
-    { title: "Tutorias", index: 1 },
-    { title: "Solicitações", index: 2 },
-    { title: 'Horarios', index: 3, content: <Horarios horarios={horarios} /> },
+    { title: "Agenda", index: 0, content: <Agenda diasUteis={horarios} agenda={agenda} /> },
+    { title: "Solicitações", index: 1 },
   ]
 
   return (
@@ -65,11 +63,15 @@ export const getServerSideProps = async (context) => {
   const response4 = await get('/api/disponibilidade/listar', {
     headers: req.headers
   });
+  const response5 = await get('/api/ajuda/listar', {
+    headers: req.headers
+  });
   if (
     !response1.data?.disciplinas ||
     !response2.data?.usuario ||
     !response3.data?.cursos ||
-    !response4.data?.horarios
+    !response4.data?.horarios || 
+    !response5.data?.agenda
   ) {
     return {
       redirect: {
@@ -84,6 +86,7 @@ export const getServerSideProps = async (context) => {
       usuario: response2.data.usuario,
       cursos: response3.data.cursos,
       horarios: response4.data.horarios,
+      agenda: response5.data.agenda,
     }
   }
 }

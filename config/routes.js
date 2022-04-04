@@ -75,12 +75,12 @@ router.post('/api/auth/forgot'        , auth.not_authenticated, authController.a
 router.post('/api/auth/restart/:token', auth.not_authenticated, authController.api_restart);
 
 //ajuda
-router.get ('/api/ajuda/listar_agenda_tutor/:matricula', auth.authenticated, ajudaController.listar_ajuda_tutor);
-router.get ('/api/ajuda/listar_agenda_aluno/:matricula', auth.authenticated, ajudaController.listar_ajuda_aluno);
-router.post('/api/ajuda/agendar'                       , auth.authenticated, ajudaController.agendar);
-router.get ('/api/disponibilidade/listar'              , auth.authenticated, ajudaController.listar_disponibilidade);
-router.get ('/api/disponibilidade/listar/:matricula'   , auth.authenticated, ajudaController.listar_disponibilidade);
-router.post('/api/disponibilidade/adicionar'           , auth.authenticated, ajudaController.adicionar_disponibilidade);
+router.get ('/api/ajuda/listar'                     , auth.authenticated, ajudaController.listar);
+router.get ('/api/ajuda/listar/:matricula'          , auth.authenticated, ajudaController.listar);
+router.post('/api/ajuda/agendar'                    , auth.authenticated, ajudaController.agendar);
+router.get ('/api/disponibilidade/listar'           , auth.authenticated, ajudaController.listar_disponibilidade);
+router.get ('/api/disponibilidade/listar/:matricula', auth.authenticated, ajudaController.listar_disponibilidade);
+router.post('/api/disponibilidade/adicionar'        , auth.authenticated, ajudaController.adicionar_disponibilidade);
 
 //not found
 router.get ('*', nextController.handler);

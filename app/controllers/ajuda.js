@@ -5,61 +5,37 @@ const Disponibilidade = models.disponibilidade;
 const Sequelize = require('sequelize');
 const Op = Sequelize.Op;
 
-const listar_ajuda_tutor = async (req, res) => {
-  if (req.route.methods.get && req.params?.matricula) {
-    const matricula = req.params.matricula;
+const listar = async (req, res) => {
+  if (req.route.methods.get) {
+    const matricula = req.params?.matricula ? req.params?.matricula : req.matricula;
     const usuario = await Usuario.findOne({
       where: {
         matricula: matricula,
       }
-    })
-    await Ajuda.findAll({
+    });
+    const tutor = await Ajuda.findAll({
       where: {
         tutor: usuario.cpf,
         status: 'agendado',
-      },
-    }).then((agenda) => {
-      if (agenda) {
-        console.log('Listar agenda do tutor');
-        res.status(200).send({ agenda: agenda });
-      } else {
-        console.log('agenda do tutor não encontrada');
-        res.status(500).send({ agenda: [] });
-      }
-    }).catch((error) => {
-      console.log(error);
-      res.status(500).send({ error: error });
-    });
-  } else {
-    res.status(500).send({ error: 'sem parametros matricula' });
-  }
-}
-
-const listar_ajuda_aluno = async (req, res) => {
-  if (req.route.methods.get && req.params?.matricula) {
-    const matricula = req.params.matricula;
-    const usuario = await Usuario.finOne({
-      where: {
-        matricula: matricula,
       }
     })
-    await Ajuda.findAll({
+    const aluno = await Ajuda.findAll({
       where: {
         aluno: usuario.cpf,
         status: 'agendado',
-      },
-    }).then((agenda) => {
-      if (agenda) {
-        console.log('Listar agenda do aluno');
-        res.status(200).send({ agenda: agenda });
-      } else {
-        console.log('agenda do aluno não encontrada');
-        res.status(500).send({ agenda: [] });
       }
-    }).catch((error) => {
-      console.log(error);
-      res.status(500).send({ error: error });
+    })
+    console.log(tutor);
+    const agenda = tutor.concat(aluno).map((item) => {
+      return {
+        tutor: item.tutor === usuario.cpf ? usuario.matricula : undefined,
+        aluno: item.aluno === usuario.cpf ? usuario.matricula : undefined,
+        data_inicio: item.data_inicio,
+        data_fim: item.data_fim,
+      }
     });
+    console.log('Listar agenda');
+    res.status(200).send({ agenda: agenda });
   } else {
     res.status(500).send({ error: 'sem parametros matricula' });
   }
@@ -140,8 +116,7 @@ const adicionar_disponibilidade = async (req, res) => {
 }
 
 module.exports = {
-  listar_ajuda_tutor,
-  listar_ajuda_aluno,
+  listar,
   agendar,
   listar_disponibilidade,
   adicionar_disponibilidade,
