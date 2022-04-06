@@ -27,7 +27,6 @@ const Form = ({ message = null, setSubmit, isLoading, usuario }) => {
         )}
         <form
           onSubmit={handleSubmit((data) => {
-            console.log(data)
             setSubmit(data);
           })}
           className="form flex flex-wrap w-full">

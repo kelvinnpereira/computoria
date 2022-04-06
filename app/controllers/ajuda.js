@@ -2,6 +2,7 @@ const models = require('../models/index');
 const Usuario = models.usuario;
 const Ajuda = models.ajuda;
 const Disponibilidade = models.disponibilidade;
+const Disciplina = models.disciplina;
 const Sequelize = require('sequelize');
 const Op = Sequelize.Op;
 
@@ -25,7 +26,6 @@ const listar = async (req, res) => {
         status: 'agendado',
       }
     })
-    console.log(tutor);
     const agenda = tutor.concat(aluno).map((item) => {
       return {
         tutor: item.tutor === usuario.cpf ? usuario.matricula : undefined,
@@ -42,16 +42,30 @@ const listar = async (req, res) => {
 }
 
 const agendar = async (req, res) => {
-  if (req.route.methods.post) {
-    const usuario1 = await Usuario.finOne({ where: { matricula: req.body?.tutor } })
-    const usuario2 = await Usuario.finOne({ where: { matricula: req.matricula } })
+  if (req.route.methods.post && req.body) {
+    const usuario1 = await Usuario.findOne({ where: { matricula: req.body?.tutor } })
+    const usuario2 = await Usuario.findOne({ where: { matricula: req.matricula } })
+    const disciplina = await Disciplina.findOne({
+      where: {
+        sigla: req.body.disciplina
+      }
+    })
+    if (!disciplina) {
+      return res.status(500).send({ error: 'Selecione uma disciplina' });
+    }
+    const array = req.body.dia.split('-')
     await Ajuda.create({
       tutor: usuario1.cpf,
       aluno: usuario2.cpf,
-      sigla_disciplina: req.body.sigla_disciplina,
-      status: 'solicitado',
-      data_inicio: req.body.data_inicio,
-      data_fim: req.body.data_fim,
+      sigla_disciplina: disciplina.sigla,
+      status: 'agendado',
+      data_inicio: new Date(`${array[2]}-${array[1]}-${array[0]}T${req.body.hora_inicio}`),
+      data_fim: new Date(`${array[2]}-${array[1]}-${array[0]}T${req.body.hora_fim}`),
+    }).then(() => {
+      res.status(200).send({msg: 'ok'});
+    }).catch((error) => {
+      console.log(error.parent.sqlMessage);
+      res.status(500).send({ error: error.parent.sqlMessage });
     })
   } else {
     res.status(500).send({ error: 'error' });

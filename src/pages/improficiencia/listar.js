@@ -15,16 +15,21 @@ const ListarImproficiencia = ({ disciplinas }) => {
       </Head>
       <SectionTitle title="Listar" subtitle="Improficiencia" />
       <Widget>
-        <List1 items={disciplinas?.map((item) => {
-          return {
-            title:
-              <a
-                className='underline decoration-sky'
-                href={`/tutores_disciplina/${item.sigla}`}>
-                {item.sigla + " - " + item.nome}
-              </a>
-          }
-        })} />
+        {disciplinas.length > 0
+          ?
+          <List1 items={disciplinas?.map((item) => {
+            return {
+              title:
+                <a
+                  className='underline decoration-sky'
+                  href={`/tutores_disciplina/${item.sigla}`}>
+                  {item.sigla + " - " + item.nome}
+                </a>
+            }
+          })} />
+          :
+          <p>Voce não tem disciplinas nessa lista</p>
+        }
       </Widget>
     </>
   );

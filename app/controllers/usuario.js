@@ -245,7 +245,6 @@ const atualizar_senha = async (req, res) => {
 
 const denunciar = async (req, res) => {
   if (req.route.methods.post && req.body && req.params?.matricula) {
-    console.log(req.body);
     const user1 = await Usuario.findOne({ where: { matricula: req.params.matricula } })
     const user2 = await Usuario.findOne({ where: { matricula: req.matricula } })
     await Denuncia.create({
