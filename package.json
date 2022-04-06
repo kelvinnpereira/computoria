@@ -5,6 +5,7 @@
   "main": "app.js",
   "scripts": {
     "start": "nodemon app.js",
+    "start_prod": "set NODE_ENV=production && nodemon app.js",
     "next": "next start",
     "dev": "next dev",
     "build": "next build",
