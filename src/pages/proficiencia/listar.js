@@ -15,11 +15,16 @@ const ListarProficiencia = ({ disciplinas }) => {
       </Head>
       <SectionTitle title="Listar" subtitle="Proficiencia" />
       <Widget>
-        <List1 items={disciplinas?.map((item) => {
-          return {
-            title: item.sigla + " - " + item.nome
-          }
-        })} />
+        {disciplinas.length > 0
+          ?
+          <List1 items={disciplinas?.map((item) => {
+            return {
+              title: item.sigla + " - " + item.nome
+            }
+          })} />
+          :
+          <p>Voce não tem disciplinas nessa lista</p>
+        }
       </Widget>
     </>
   );

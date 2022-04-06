@@ -51,7 +51,7 @@ const AceitarMonitor = ({ setAction, isLoading, pendencias }) => {
                         {isLoading
                             ? <FaSpinner className="spin-spinner stroke-current mr-2" />
                             : null}
-                        <p>Adicionar</p>
+                        <p>Aceitar</p>
                     </button>
 
                 </div>
@@ -61,15 +61,3 @@ const AceitarMonitor = ({ setAction, isLoading, pendencias }) => {
 };
 
 export default AceitarMonitor;
-
-export const getServerSideProps = async (context) => {
-    const { req, res } = context;
-    const response1 = await get(`/api/monitoria/solicitacoes`, {
-        headers: req.headers,
-    });
-    return {
-        props: {
-            pendencias: response1.data.pendencias
-        }
-    }
-}

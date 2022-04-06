@@ -343,10 +343,11 @@ const monitoria_solicitacoes = async (req, res) => {
                 monitor, 
                 usuario
             where
-                monitor.cpf = usuario.cpf and monitor.sigla_disciplina = disciplina.sigla;
+                monitor.cpf = usuario.cpf and 
+                monitor.sigla_disciplina = disciplina.sigla and 
+                monitor.aprovado = 0;
         `).then((pendencias) => {
-            console.log('pendencias');
-            console.log(pendencias);
+            console.log('pendencias encontradas');
             res.status(200).send({ pendencias: pendencias?.at(0) });
         }).catch((error) => {
             console.log(error);
@@ -359,7 +360,6 @@ const monitoria_solicitacoes = async (req, res) => {
 
 const monitoria_aceitar = async (req, res) => {
     if (req.route.methods.post) {
-        console.log(req);
         const usuario = await Usuario.findOne({
             where: {
                 matricula: req.body.matricula

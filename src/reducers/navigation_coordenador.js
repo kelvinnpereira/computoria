@@ -28,7 +28,7 @@ const initialState = [
     title: "Coordenador",
     items: [
       {
-        url: "/home",
+        url: "/home/coordenador",
         icon: <FiCompass size={20} />,
         title: "Home",
       },

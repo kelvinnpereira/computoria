@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import Datetime from 'react-datetime'
 
-const Timepicker = ({ label = '', register, name = 'datetime', initialValue = '00:00', valid }) => {
+const Timepicker = ({ label = '', register, register_obj, name = 'datetime', initialValue = '00:00', valid }) => {
   const hour = 'HH:mm'
   const [value, setValue] = useState(initialValue)
 
@@ -24,12 +24,10 @@ const Timepicker = ({ label = '', register, name = 'datetime', initialValue = '0
         input={true}
         inputProps={{
           className: 'form-input',
-          placeholder: `Select time`,
+          placeholder: `Selecione a hora`,
           name: name,
-          ref: register ? register({ 
-            required: false, 
-            validate: (value) => default_valid(value) || 'Horario invalido' 
-          }) : '',
+          ref: register(register_obj),
+          autoComplete:'off'
         }}
         viewMode={'days'}
         onChange={onChange}

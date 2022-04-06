@@ -49,7 +49,7 @@ const Denunciar = ({ usuario }) => {
   const buttonModal = () => {
     return (
       <button
-        onClick={(e) => Router.push('/home')}
+        onClick={(e) => Router.push('/home/usuario')}
         className="btn btn-default btn-rounded bg-blue-500 text-white hover:bg-blue-600 w-full"
         type="button">
         Home

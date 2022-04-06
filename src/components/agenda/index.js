@@ -15,6 +15,7 @@ const Agenda = ({ diasUteis, agenda }) => {
   });
 
   const events = agenda.map((item, id) => {
+    console.log(`start: ${item.data_inicio}, end: ${item.data_fim}`)
     return {
       id: id,
       title: item.tutor ? 'Tutoria': 'Aula',
@@ -25,9 +26,11 @@ const Agenda = ({ diasUteis, agenda }) => {
   });
 
   function renderEventContent(eventInfo) {
+    const start = (new Date(eventInfo.event.start).toLocaleTimeString().slice(0, -3));
+    const end = (new Date(eventInfo.event.end).toLocaleTimeString().slice(0, -3));
     return (
       <>
-        <b>{(new Date(eventInfo.event.start).toLocaleTimeString().slice(0, -3))}</b> <i>{` - ${eventInfo.event.title}`}</i>
+        <b>{`${start} as ${end}`}</b> <i>{` - ${eventInfo.event.title}`}</i>
       </>
     );
   }
