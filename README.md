@@ -16,19 +16,15 @@ Para instalar, buildar, exportar o projeto execute o seguintes comandos em ordem
 ```
 npm install
 ```
-2. Executar as migrations do banco de dados.
+2. Executar todas as operações do banco de dados.
 ```
-npm run migrate
+npm run dball
 ```
-3. Para povoar o banco de dados com as seeds
-```
-npm run seed
-```
-4. Buildar o projeto Next.js
+3. Buildar o projeto Next.js
 ```
 npm run build
 ```
-5. Inicializar o projeto na url http://localhost:3000
+4. Inicializar o projeto na url http://localhost:3000
 ```
 npm start
 ```
