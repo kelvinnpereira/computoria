@@ -20,10 +20,6 @@ export default function palettes (
     case "SET_PALETTE": {
       let stateToStore = { ...getStoragePage(), ...action.palette };
       localStorage.setItem("palette", JSON.stringify(stateToStore));
-      console.log({
-        ...state,
-        ...action.palette
-      });
       return {
         ...state,
         ...action.palette

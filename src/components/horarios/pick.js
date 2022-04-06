@@ -20,6 +20,10 @@ const Horarios = ({ message = null, setAction, isLoading, horarios }) => {
     setCsrf();
   });
 
+  const valid_hour = (current) => {
+    return /^(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$/.test(current);
+  }
+
   return (
     <div className="flex flex-col w-full">
       {message && (
@@ -44,7 +48,7 @@ const Horarios = ({ message = null, setAction, isLoading, horarios }) => {
                 {horarios_array.map((item, i) => {
                   return (
                     <th className='border border-slate-600'>
-                      <label key={`checkbox-${i+1}`}
+                      <label key={`checkbox-${i + 1}`}
                         className="flex justify-between space-x-2">
                         <span className={`${errors[chaves[i]] ? "text-red-500" : ""}`}>
                           {dias[i]}
@@ -75,8 +79,27 @@ const Horarios = ({ message = null, setAction, isLoading, horarios }) => {
                         <td className='border border-slate-700'>
                           <div className="form-label text-white">Horario 1</div>
                           <div className='widget p-4 mb-4 rounded-lg bg-white border border-gray-100 dark:bg-gray-900 dark:border-gray-800'>
-                            <Timepicker datepicker={false} label={'Inicio'} register={register} name={`horarios[${i}][0][inicio]`} />
-                            <Timepicker datepicker={false} label={'Fim'} register={register} name={`horarios[${i}][0][fim]`} />
+
+                            <Timepicker
+                              label={'Inicio'}
+                              register={register}
+                              register_obj={{
+                                required: false,
+                                validate: (value) => valid_hour(value) || 'Horario invalido'
+                              }}
+                              name={`horarios[${i}][0][inicio]`}
+                            />
+
+                            <Timepicker
+                              label={'Fim'}
+                              register={register}
+                              register_obj={{
+                                required: false,
+                                validate: (value) => valid_hour(value) || 'Horario invalido'
+                              }}
+                              name={`horarios[${i}][0][fim]`}
+                            />
+
                           </div>
                         </td>
                       )
@@ -87,8 +110,29 @@ const Horarios = ({ message = null, setAction, isLoading, horarios }) => {
                             <>
                               <div className="form-label text-white">{`Horario ${j + 1}`}</div>
                               <div className='widget p-4 mb-4 rounded-lg bg-white border border-gray-100 dark:bg-gray-900 dark:border-gray-800'>
-                                <Timepicker datepicker={false} label={'Inicio'} register={register} name={`horarios[${i}][${j}][inicio]`} initialValue={hora.hora_inicio} />
-                                <Timepicker datepicker={false} label={'Fim'} register={register} name={`horarios[${i}][${j}][fim]`} initialValue={hora.hora_fim} />
+
+                                <Timepicker
+                                  label={'Inicio'}
+                                  register={register}
+                                  register_obj={{
+                                    required: false,
+                                    validate: (value) => valid_hour(value) || 'Horario invalido'
+                                  }}
+                                  name={`horarios[${i}][${j}][inicio]`}
+                                  initialValue={hora.hora_inicio}
+                                />
+
+                                <Timepicker
+                                  label={'Fim'}
+                                  register={register}
+                                  register_obj={{
+                                    required: false,
+                                    validate: (value) => valid_hour(value) || 'Horario invalido'
+                                  }}
+                                  name={`horarios[${i}][${j}][fim]`}
+                                  initialValue={hora.hora_fim}
+                                />
+
                               </div>
                             </>
                           )

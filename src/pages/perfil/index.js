@@ -54,24 +54,56 @@ const Redes = () => {
 const ListarDisciplinas = ({ disciplinas }) => {
   return (
     <>
-      <List1 items={disciplinas?.map((item) => {
-        return {
-          title: item.sigla + " - " + item.nome
-        }
-      })} />
+      {
+        disciplinas.length > 0
+          ?
+          <List1 items={disciplinas?.map((item) => {
+            return {
+              title: item.sigla + " - " + item.nome
+            }
+          })} />
+          :
+          <p>Você não tem disciplinas nessa lista</p>
+      }
     </>
   );
 };
 
 const Perfil = ({ usuario, cursos, prof, improf, horarios, agenda }) => {
   const curso = cursos.find(curso => curso.sigla == usuario.sigla_curso);
+  let index = 0;
   const tabs = [
-    { title: 'Conta', index: 0, content: <Conta usuario={usuario} curso={curso} /> },
-    { title: 'Agenda', index: 1, content: <Agenda diasUteis={horarios} agenda={agenda} /> },
-    { title: 'Redes Sociais', index: 2, content: <Redes /> },
-    { title: 'Proficiencias', index: 3, content: <ListarDisciplinas disciplinas={prof} /> },
-    { title: 'Improficiencias', index: 4, content: <ListarDisciplinas disciplinas={improf} /> },
-    { title: 'Avaliações', index: 5, content: <></> },
+    {
+      title: 'Conta',
+      index: index++,
+      content:
+        <Conta usuario={usuario} curso={curso} />
+    },
+    {
+      title: 'Redes Sociais',
+      index: index++,
+      content: <Redes />
+    },
+    {
+      title: 'Agenda',
+      index: index++,
+      content: <Agenda diasUteis={horarios} agenda={agenda} />
+    },
+    {
+      title: 'Proficiencias',
+      index: index++,
+      content: <ListarDisciplinas disciplinas={prof} />
+    },
+    {
+      title: 'Improficiencias',
+      index: index++,
+      content: <ListarDisciplinas disciplinas={improf} />
+    },
+    {
+      title: 'Avaliações',
+      index: index++,
+      content: <></>
+    },
   ];
 
   return (

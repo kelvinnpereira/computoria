@@ -50,11 +50,17 @@ const Redes = () => {
 const ListarDisciplinas = ({ disciplinas }) => {
   return (
     <>
-      <List1 items={disciplinas?.map((item) => {
-        return {
-          title: item.sigla + " - " + item.nome
-        }
-      })} />
+      {
+        disciplinas.length > 0
+          ?
+          <List1 items={disciplinas?.map((item) => {
+            return {
+              title: item.sigla + " - " + item.nome
+            }
+          })} />
+          :
+          <p>O aluno não tem disciplinas nessa lista</p>
+      }
     </>
   );
 };
@@ -64,8 +70,8 @@ const Perfil = ({ usuario, cursos, prof, improf, horarios, agenda }) => {
   const curso = cursos.find(curso => curso.sigla == usuario.sigla_curso);
   const tabs = [
     { title: 'Conta', index: 0, content: <Conta usuario={usuario} curso={curso} /> },
-    { title: 'Agenda', index: 1, content: <Agenda diasUteis={horarios} agenda={agenda} /> },
-    { title: 'Redes Sociais', index: 2, content: <Redes /> },
+    { title: 'Redes Sociais', index: 1, content: <Redes /> },
+    { title: 'Agenda', index: 2, content: <Agenda diasUteis={horarios} agenda={agenda} /> },
     { title: 'Proficiencias', index: 3, content: <ListarDisciplinas disciplinas={prof} /> },
   ];
 
@@ -93,13 +99,19 @@ const Perfil = ({ usuario, cursos, prof, improf, horarios, agenda }) => {
               <p className="text-xl font-bold">{usuario.nome}</p>
               <p className="text-xs uppercase font-light text-white">{curso.nome}</p>
             </div>
-            <button
-              onClick={() => {
-                Router.push(`/agendar/${query.matricula}`);
-              }}
-              className="btn btn-default bg-blue-500 hover:bg-blue-600 text-white btn-rounded btn-icon">
-              Solicitar Ajuda
-            </button>
+            {
+              prof.length > 0
+                ?
+                <button
+                  onClick={() => {
+                    Router.push(`/ajuda/agendar/${query.matricula}`);
+                  }}
+                  className="btn btn-default bg-blue-500 hover:bg-blue-600 text-white btn-rounded btn-icon">
+                  Solicitar Ajuda
+                </button>
+                :
+                <></>
+            }
           </div>
         </div >
         <UnderlinedTabs tabs={tabs} />
