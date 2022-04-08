@@ -247,7 +247,7 @@ const monitoria_inscrever = async (req, res) => {
         const pendencias = await Monitor.findAll({
             where: {
                 cpf: usuario.cpf,
-                aprovado: false,
+                status: 'solicitado',
             }
         })
         if (pendencias.length == 0) {
@@ -286,7 +286,7 @@ const monitoria_listar = async (req, res) => {
                 attributes: [],
                 where: {
                     cpf: usuario.cpf,
-                    aprovado: true,
+                    status: 'aprovado',
                 }
             }
         }).then((disciplinas) => {
@@ -315,7 +315,7 @@ const monitoria_solicitacoes_usuario = async (req, res) => {
                 attributes: [],
                 where: {
                     cpf: usuario.cpf,
-                    aprovado: false,
+                    status: 'solicitado',
                 }
             }
         }).then((pendencias) => {
@@ -345,10 +345,11 @@ const monitoria_solicitacoes = async (req, res) => {
             where
                 monitor.cpf = usuario.cpf and 
                 monitor.sigla_disciplina = disciplina.sigla and 
-                monitor.aprovado = 0;
-        `).then((pendencias) => {
+                monitor.status = "solicitado";
+        `).then((solicitacoes) => {
             console.log('pendencias encontradas');
-            res.status(200).send({ pendencias: pendencias?.at(0) });
+            console.log(solicitacoes)
+            res.status(200).send({ solicitacoes: solicitacoes?.at(0) });
         }).catch((error) => {
             console.log(error);
             res.status(500).send({ error: '' })
@@ -359,44 +360,49 @@ const monitoria_solicitacoes = async (req, res) => {
 }
 
 const monitoria_aceitar = async (req, res) => {
-    if (req.route.methods.post) {
+    if (req.route.methods.post && req.body) {
         const usuario = await Usuario.findOne({
             where: {
                 matricula: req.body.matricula
             }
         });
         await Monitor.update({
-            aprovado: true
+            status: 'aprovado'
         }, {
             where: {
-                cpf: usuario.cpf
+                cpf: usuario.cpf,
+                sigla_disciplina: req.body.sigla,
             }
         })
+        res.status(200).send({ msg: 'ok' });
     } else {
         res.status(500).send({ error: 'error' });
     }
 }
 
 const monitoria_remover = async (req, res) => {
-    if (req.route.methods.post) {
+    if (req.route.methods.post && req.body) {
         const usuario = await Usuario.findOne({
             where: {
                 matricula: req.body.matricula
             }
         });
-        await Monitor.destroy({
+        await Monitor.update({
+            status: 'removido'
+        }, {
             where: {
                 cpf: usuario.cpf,
-                aprovado: 1
+                sigla_disciplina: req.body.sigla,
             }
         })
+        res.status(200).send({ msg: 'ok' });
     } else {
         res.status(500).send({ error: 'error' });
     }
 }
 
 const monitoria_listar_aprovados = async (req, res) => {
-    if(req.route.methods.get){
+    if (req.route.methods.get) {
         await sequelize.query(`
             select
                 usuario.nome as nome,
@@ -408,15 +414,17 @@ const monitoria_listar_aprovados = async (req, res) => {
                 monitor,
                 usuario
             where
-                monitor.cpf = usuario.cpf and monitor.sigla_disciplina = disciplina.sigla and monitor.aprovado = 1;
-        `).then((monitores)=>{
-            res.status(200).send({monitores: monitores?.at(0) });
-        }).catch((error)=>{
+                monitor.cpf = usuario.cpf AND 
+                monitor.sigla_disciplina = disciplina.sigla AND 
+                monitor.status = "aprovado";
+        `).then((monitores) => {
+            res.status(200).send({ monitores: monitores?.at(0) });
+        }).catch((error) => {
             console.log('Erro')
-            res.status(500).send({error:''})
+            res.status(500).send({ error: '' })
         });
-    }else{
-        res.status(500).send({error:'Sem monitores cadastrados'});
+    } else {
+        res.status(500).send({ error: 'Sem monitores cadastrados' });
     }
 }
 
