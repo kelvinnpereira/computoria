@@ -13,10 +13,10 @@ module.exports = {
         allowNull: false,
         type: Sequelize.STRING
       },
-      aprovado: {
+      status: {
         allowNull: false,
-        type: Sequelize.BOOLEAN,
-        defaultValue: false,
+        type: Sequelize.STRING,
+        defaultValue: 'solicitado',
       },
       created_at: {
         allowNull: false,
