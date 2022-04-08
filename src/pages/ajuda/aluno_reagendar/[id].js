@@ -1,8 +1,8 @@
 import { useState } from "react";
-import Router, { useRouter } from "next/router";
+import Router from "next/router";
 import Head from "next/head";
 
-import Form from "../../../components/ajuda/form";
+import Form from "../../../components/ajuda/reagendar";
 import Modal from '../../../components/modals';
 import SectionTitle from "../../../components/section/section-title";
 import Widget from "../../../components/widget";
@@ -10,7 +10,7 @@ import Widget from "../../../components/widget";
 import { useRequest } from "../../../hooks/auth";
 import { get } from '../../../lib/api';
 
-const Agendar = ({ tutor, profs, horarios, agenda }) => {
+const Agendar = ({ ajuda, horarios, agenda }) => {
   const [errorMessage, setErrorMessage] = useState("");
   const [showModal, setModal] = useState(false);
 
@@ -28,7 +28,7 @@ const Agendar = ({ tutor, profs, horarios, agenda }) => {
     }
   };
 
-  const [isLoading, setRequest] = useRequest(onAgendar, onError, '/api/ajuda/agendar/');
+  const [isLoading, setRequest] = useRequest(onAgendar, onError, '/api/ajuda/aluno_reagendar');
 
   const sucessBody = () => {
     return (
@@ -75,8 +75,7 @@ const Agendar = ({ tutor, profs, horarios, agenda }) => {
           setSubmit={setRequest}
           isLoading={isLoading}
           message={errorMessage}
-          tutor={tutor}
-          profs={profs}
+          ajuda={ajuda}
           diasUteis={horarios}
           agenda={agenda} />
       </Widget>
@@ -88,27 +87,32 @@ export default Agendar;
 
 export const getServerSideProps = async (context) => {
   const { req, res } = context;
-  const response1 = await get(`/api/usuario/${context.params.matricula}`, {
+  const response = await get(`/api/ajuda/id/${context.params.id}`, {
     headers: req.headers
   });
-  const response2 = await get(`/api/proficiencia/listar/${context.params.matricula}`, {
+  const ajuda = response.data?.ajuda;
+  console.log(ajuda)
+  if (!ajuda) {
+    return {
+      redirect: {
+        permanent: false,
+        destination: "/500"
+      }
+    }
+  }
+  const response1 = await get(`/api/disponibilidade/listar/${ajuda.matricula_tutor}`, {
     headers: req.headers
   });
-  const response3 = await get(`/api/disponibilidade/listar/${context.params.matricula}`, {
+  const response2 = await get('/api/ajuda/agenda', {
     headers: req.headers
   });
-  const response4 = await get('/api/ajuda/agenda', {
-    headers: req.headers
-  });
-  const response5 = await get(`/api/ajuda/agenda/${context.params.matricula}`, {
+  const response3 = await get(`/api/ajuda/agenda/${ajuda.matricula_tutor}`, {
     headers: req.headers
   });
   if (
-    !response1.data?.usuario ||
-    !response2.data?.disciplinas ||
-    !response3.data?.horarios ||
-    !response4.data?.agenda || 
-    !response5.data?.agenda
+    !response1.data?.horarios ||
+    !response2.data?.agenda || 
+    !response3.data?.agenda
   ) {
     return {
       redirect: {
@@ -119,10 +123,9 @@ export const getServerSideProps = async (context) => {
   }
   return {
     props: {
-      tutor: response1.data.usuario,
-      profs: response2.data.disciplinas,
-      horarios: response3.data.horarios,
-      agenda: response4.data.agenda.concat(response5.data.agenda),
+      ajuda: ajuda,
+      horarios: response1.data.horarios,
+      agenda: response2.data.agenda.concat(response3.data.agenda),
     },
   }
 }

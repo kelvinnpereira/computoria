@@ -87,7 +87,7 @@ const Perfil = ({ usuario, cursos, prof, improf, horarios, agenda }) => {
     {
       title: 'Agenda',
       index: index++,
-      content: <Agenda diasUteis={horarios} agenda={agenda} />
+      content: <Agenda usuario={usuario} diasUteis={horarios} agenda={agenda} />
     },
     {
       title: 'Proficiencias',
@@ -155,7 +155,7 @@ export const getServerSideProps = async (context) => {
   const response5 = await get('/api/disponibilidade/listar', {
     headers: req.headers
   });
-  const response6 = await get('/api/ajuda/listar', {
+  const response6 = await get('/api/ajuda/agenda', {
     headers: req.headers
   });
   return {

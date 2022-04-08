@@ -71,7 +71,7 @@ const Perfil = ({ usuario, cursos, prof, improf, horarios, agenda }) => {
   const tabs = [
     { title: 'Conta', index: 0, content: <Conta usuario={usuario} curso={curso} /> },
     { title: 'Redes Sociais', index: 1, content: <Redes /> },
-    { title: 'Agenda', index: 2, content: <Agenda diasUteis={horarios} agenda={agenda} /> },
+    { title: 'Agenda', index: 2, content: <Agenda usuario={usuario} diasUteis={horarios} agenda={agenda} /> },
     { title: 'Proficiencias', index: 3, content: <ListarDisciplinas disciplinas={prof} /> },
   ];
 
@@ -134,7 +134,7 @@ export const getServerSideProps = async (context) => {
   const response4 = await get(`/api/disponibilidade/listar/${context.params.matricula}`, {
     headers: req.headers
   });
-  const response5 = await get(`/api/ajuda/listar/${context.params.matricula}`, {
+  const response5 = await get(`/api/ajuda/agenda/${context.params.matricula}`, {
     headers: req.headers
   });
   return {

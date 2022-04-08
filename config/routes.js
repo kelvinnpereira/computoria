@@ -16,6 +16,10 @@ router.get ('/denunciar/:matricula'          , auth.authenticated, nextControlle
 router.get ('/tutores/:disciplina'           , auth.authenticated, nextController.handler);
 router.get ('/tutores_disciplina'            , auth.authenticated, nextController.handler);
 router.get ('/tutores_disciplina/:disciplina', auth.authenticated, nextController.handler);
+//next /ajuda
+router.post('/ajuda/agendar/:matricula' , auth.authenticated, nextController.handler);
+router.post('/ajuda/aluno_reagendar/:id', auth.authenticated, nextController.handler);
+router.post('/ajuda/tutor_reagendar/:id', auth.authenticated, nextController.handler);
 //next /auth/
 router.get ('/auth/forgot', auth.not_authenticated, nextController.handler);
 router.get ('/auth/login' , auth.not_authenticated, nextController.handler);
@@ -75,13 +79,13 @@ router.post('/api/atualizar_senha'               , auth.authenticated, usuarioCo
 router.post('/api/denunciar/:matricula'          , auth.authenticated, usuarioController.denunciar);
 
 //monitor
-router.post('/api/monitoria/inscrever'        , auth.authenticated, mainController.monitoria_inscrever);
-router.get ('/api/monitoria/listar'           , auth.authenticated, mainController.monitoria_listar);
-router.post('/api/monitoria/aceitar'          , auth.authenticated, mainController.monitoria_aceitar);
-router.post('/api/monitoria/remover'          , auth.authenticated, mainController.monitoria_remover);
-router.get ('/api/monitoria/listar/:matricula', auth.authenticated, mainController.monitoria_listar);
+router.post('/api/monitoria/inscrever'           , auth.authenticated, mainController.monitoria_inscrever);
+router.get ('/api/monitoria/listar'              , auth.authenticated, mainController.monitoria_listar);
+router.post('/api/monitoria/aceitar'             , auth.authenticated, mainController.monitoria_aceitar);
+router.post('/api/monitoria/remover'             , auth.authenticated, mainController.monitoria_remover);
+router.get ('/api/monitoria/listar/:matricula'   , auth.authenticated, mainController.monitoria_listar);
 router.get ('/api/monitoria/solicitacoes_usuario', auth.authenticated, mainController.monitoria_solicitacoes_usuario);
-router.get ('/api/monitoria/solicitacoes'     , auth.authenticated, mainController.monitoria_solicitacoes);
+router.get ('/api/monitoria/solicitacoes'        , auth.authenticated, mainController.monitoria_solicitacoes);
 
 //auth
 router.post('/api/auth/signup'        , auth.not_authenticated, authController.api_signup);
@@ -90,12 +94,19 @@ router.post('/api/auth/forgot'        , auth.not_authenticated, authController.a
 router.post('/api/auth/restart/:token', auth.not_authenticated, authController.api_restart);
 
 //ajuda
-router.get ('/api/ajuda/listar'                     , auth.authenticated, ajudaController.listar);
-router.get ('/api/ajuda/listar/:matricula'          , auth.authenticated, ajudaController.listar);
-router.post('/api/ajuda/agendar'                    , auth.authenticated, ajudaController.agendar);
-router.get ('/api/disponibilidade/listar'           , auth.authenticated, ajudaController.listar_disponibilidade);
-router.get ('/api/disponibilidade/listar/:matricula', auth.authenticated, ajudaController.listar_disponibilidade);
-router.post('/api/disponibilidade/adicionar'        , auth.authenticated, ajudaController.adicionar_disponibilidade);
+router.get ('/api/ajuda/id/:id'                      , auth.authenticated, ajudaController.ajuda);
+router.get ('/api/ajuda/agenda'                      , auth.authenticated, ajudaController.agenda);
+router.get ('/api/ajuda/agenda/:matricula'           , auth.authenticated, ajudaController.agenda);
+router.post('/api/ajuda/agendar'                     , auth.authenticated, ajudaController.agendar);
+router.post('/api/ajuda/aceitar'                     , auth.authenticated, ajudaController.aceitar);
+router.post('/api/ajuda/recusar'                     , auth.authenticated, ajudaController.recusar);
+router.post('/api/ajuda/aluno_cancelar'              , auth.authenticated, ajudaController.aluno_cancelar);
+router.post('/api/ajuda/tutor_cancelar'              , auth.authenticated, ajudaController.tutor_cancelar);
+router.post('/api/ajuda/aluno_reagendar'             , auth.authenticated, ajudaController.aluno_reagendar);
+router.post('/api/ajuda/tutor_reagendar'             , auth.authenticated, ajudaController.tutor_reagendar);
+router.get ('/api/disponibilidade/listar'            , auth.authenticated, ajudaController.listar_disponibilidade);
+router.get ('/api/disponibilidade/listar/:matricula' , auth.authenticated, ajudaController.listar_disponibilidade);
+router.post('/api/disponibilidade/adicionar'         , auth.authenticated, ajudaController.adicionar_disponibilidade);
 
 //not found
 router.get ('*', nextController.handler);
