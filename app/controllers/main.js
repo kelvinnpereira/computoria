@@ -386,11 +386,37 @@ const monitoria_remover = async (req, res) => {
         });
         await Monitor.destroy({
             where: {
-                cpf: usuario.cpf
+                cpf: usuario.cpf,
+                aprovado: 1
             }
         })
     } else {
         res.status(500).send({ error: 'error' });
+    }
+}
+
+const monitoria_listar_aprovados = async (req, res) => {
+    if(req.route.methods.get){
+        await sequelize.query(`
+            select
+                usuario.nome as nome,
+                disciplina.nome as disciplina,
+                disciplina.sigla as sigla,
+                matricula
+            from
+                disciplina,
+                monitor,
+                usuario
+            where
+                monitor.cpf = usuario.cpf and monitor.sigla_disciplina = disciplina.sigla and monitor.aprovado = 1;
+        `).then((monitores)=>{
+            res.status(200).send({monitores: monitores?.at(0) });
+        }).catch((error)=>{
+            console.log('Erro')
+            res.status(500).send({error:''})
+        });
+    }else{
+        res.status(500).send({error:'Sem monitores cadastrados'});
     }
 }
 
@@ -409,4 +435,5 @@ module.exports = {
     monitoria_remover,
     monitoria_solicitacoes,
     monitoria_solicitacoes_usuario,
+    monitoria_listar_aprovados,
 }
