@@ -4,38 +4,86 @@ const Ajuda = models.ajuda;
 const Disponibilidade = models.disponibilidade;
 const Disciplina = models.disciplina;
 const Sequelize = require('sequelize');
+const sequelize = models.sequelize;
 const Op = Sequelize.Op;
 
-const listar = async (req, res) => {
-  if (req.route.methods.get) {
-    const matricula = req.params?.matricula ? req.params?.matricula : req.matricula;
+const ajuda = async (req, res) => {
+  if (req.route.methods.get && req.params.id) {
+    const matricula = req.params?.matricula ? req.params.matricula : req.matricula;
     const usuario = await Usuario.findOne({
       where: {
         matricula: matricula,
       }
     });
-    const tutor = await Ajuda.findAll({
+    const ajuda = await sequelize.query(`
+      SELECT 
+        id, 
+        disciplina.nome as disciplina, 
+        sigla_disciplina, 
+        status,
+        usuario1.nome as nome_tutor,
+        usuario2.nome as nome_aluno,
+        usuario1.matricula as matricula_tutor,
+        usuario2.matricula as matricula_aluno,
+        data_inicio, 
+        data_fim
+      FROM
+        ajuda,
+        usuario as usuario1,
+        usuario as usuario2,
+        disciplina
+      WHERE
+        id = ${req.params.id} AND
+        (ajuda.tutor = ${usuario.cpf} OR ajuda.aluno = ${usuario.cpf}) AND
+        ajuda.tutor = usuario1.cpf AND 
+        ajuda.aluno = usuario2.cpf AND 
+        (ajuda.status = "solicitada" OR ajuda.status = "agendada") AND
+        disciplina.sigla = ajuda.sigla_disciplina;
+    `);
+    console.log('get ajuda');
+    console.log(ajuda?.at(0));
+    res.status(200).send({ ajuda: ajuda?.at(0)?.at(0) });
+  } else {
+    res.status(500).send({ error: 'sem parametros matricula' });
+  }
+}
+
+const agenda = async (req, res) => {
+  if (req.route.methods.get) {
+    const matricula = req.params?.matricula ? req.params.matricula : req.matricula;
+    const usuario = await Usuario.findOne({
       where: {
-        tutor: usuario.cpf,
-        status: 'agendado',
-      }
-    })
-    const aluno = await Ajuda.findAll({
-      where: {
-        aluno: usuario.cpf,
-        status: 'agendado',
-      }
-    })
-    const agenda = tutor.concat(aluno).map((item) => {
-      return {
-        tutor: item.tutor === usuario.cpf ? usuario.matricula : undefined,
-        aluno: item.aluno === usuario.cpf ? usuario.matricula : undefined,
-        data_inicio: item.data_inicio,
-        data_fim: item.data_fim,
+        matricula: matricula,
       }
     });
+    const agenda = await sequelize.query(`
+      SELECT 
+        id, 
+        disciplina.nome as disciplina, 
+        sigla_disciplina, 
+        status,
+        usuario1.nome as nome_tutor,
+        usuario2.nome as nome_aluno,
+        usuario1.matricula as matricula_tutor,
+        usuario2.matricula as matricula_aluno,
+        data_inicio, 
+        data_fim
+      FROM
+        ajuda,
+        usuario as usuario1,
+        usuario as usuario2,
+        disciplina
+      WHERE
+        (
+          (ajuda.tutor = ${usuario.cpf} AND ajuda.tutor = usuario1.cpf AND ajuda.aluno = usuario2.cpf) OR 
+          (ajuda.aluno = ${usuario.cpf} AND ajuda.aluno = usuario2.cpf AND ajuda.tutor = usuario1.cpf)
+        ) AND 
+        (ajuda.status = "solicitada" OR ajuda.status = "agendada") AND
+        disciplina.sigla = ajuda.sigla_disciplina;
+    `);
     console.log('Listar agenda');
-    res.status(200).send({ agenda: agenda });
+    console.log(agenda?.at(0));
+    res.status(200).send({ agenda: agenda?.at(0) });
   } else {
     res.status(500).send({ error: 'sem parametros matricula' });
   }
@@ -58,11 +106,11 @@ const agendar = async (req, res) => {
       tutor: usuario1.cpf,
       aluno: usuario2.cpf,
       sigla_disciplina: disciplina.sigla,
-      status: 'agendado',
+      status: 'solicitada',
       data_inicio: new Date(`${array[2]}-${array[1]}-${array[0]}T${req.body.hora_inicio}`),
       data_fim: new Date(`${array[2]}-${array[1]}-${array[0]}T${req.body.hora_fim}`),
     }).then(() => {
-      res.status(200).send({msg: 'ok'});
+      res.status(200).send({ msg: 'ok' });
     }).catch((error) => {
       console.log(error.parent.sqlMessage);
       res.status(500).send({ error: error.parent.sqlMessage });
@@ -129,9 +177,191 @@ const adicionar_disponibilidade = async (req, res) => {
   }
 }
 
+const aceitar = async (req, res) => {
+  if (req.route.methods.post && req.body) {
+    console.log(req.body)
+    const usuario = await Usuario.findOne({
+      where: {
+        matricula: req.matricula,
+      }
+    });
+    await Ajuda.update({
+      status: 'agendada',
+    }, {
+      where: {
+        id: req.body?.id,
+        tutor: usuario.cpf
+      }
+    }).then((ajuda) => {
+      if (ajuda) {
+        console.log('Ajuda encontrada');
+        res.status(200).send({ msg: 'ok' });
+      } else {
+        console.log('Ajuda não vinculada ao seu nome');
+        res.status(500).send({ error: 'Ajuda não vinculada ao seu nome' });
+      }
+    }).catch((error) => {
+      console.log(error);
+      res.status(500).send({ error: 'error' });
+    })
+  } else {
+    console.log('Não é um post ou req.body nulo');
+    res.status(500).send({ error: 'error' });
+  }
+}
+
+const recusar = async (req, res) => {
+  if (req.route.methods.post && req.body) {
+    const usuario = await Usuario.findOne({
+      where: {
+        matricula: req.matricula,
+      }
+    })
+    await Ajuda.update({
+      status: 'recusada',
+    }, {
+      where: {
+        id: req.body?.id,
+        tutor: usuario.cpf
+      }
+    }).then((ajuda) => {
+      if (ajuda) {
+        res.status(200).send({ msg: 'ok' });
+      } else {
+        res.status(500).send({ error: 'Ajuda não vinculada ao seu nome' });
+      }
+    }).catch((error) => {
+      res.status(500).send({ error: 'error' });
+    })
+  } else {
+    res.status(500).send({ error: 'error' });
+  }
+}
+
+const aluno_cancelar = async (req, res) => {
+  if (req.route.methods.post && req.body) {
+    const usuario = await Usuario.findOne({
+      where: {
+        matricula: req.matricula,
+      }
+    })
+    await Ajuda.update({
+      status: 'cancelada',
+    }, {
+      where: {
+        id: req.body?.id,
+        aluno: usuario.cpf
+      }
+    }).then((ajuda) => {
+      if (ajuda) {
+        res.status(200).send({ msg: 'ok' });
+      } else {
+        res.status(500).send({ error: 'Ajuda não vinculada ao seu nome' });
+      }
+    }).catch((error) => {
+      res.status(500).send({ error: 'error' });
+    })
+  } else {
+    res.status(500).send({ error: 'error' });
+  }
+}
+
+const tutor_cancelar = async (req, res) => {
+  if (req.route.methods.post && req.body) {
+    const usuario = await Usuario.findOne({
+      where: {
+        matricula: req.matricula,
+      }
+    })
+    await Ajuda.update({
+      status: 'cancelada',
+    }, {
+      where: {
+        id: req.body?.id,
+        tutor: usuario.cpf
+      }
+    }).then((ajuda) => {
+      if (ajuda) {
+        res.status(200).send({ msg: 'ok' });
+      } else {
+        res.status(500).send({ error: 'Ajuda não vinculada ao seu nome' });
+      }
+    }).catch((error) => {
+      res.status(500).send({ error: 'error' });
+    })
+  } else {
+    res.status(500).send({ error: 'error' });
+  }
+}
+
+const aluno_reagendar = async (req, res) => {
+  if (req.route.methods.post && req.body) {
+    const usuario = await Usuario.findOne({ where: { matricula: req.matricula } });
+    const ajuda = await Ajuda.findOne({ where: { id: req.body?.id, aluno: usuario.cpf }, });
+    if (ajuda) {
+      ajuda.status = 'cancelada';
+      await ajuda.save();
+    } else {
+      return;
+    }
+    const array = req.body.dia.split('-')
+    await Ajuda.create({
+      tutor: ajuda.tutor,
+      aluno: ajuda.aluno,
+      sigla_disciplina: ajuda.sigla_disciplina,
+      status: 'solicitada',
+      data_inicio: new Date(`${array[2]}-${array[1]}-${array[0]}T${req.body.hora_inicio}`),
+      data_fim: new Date(`${array[2]}-${array[1]}-${array[0]}T${req.body.hora_fim}`),
+    }).then(() => {
+      res.status(200).send({ msg: 'ok' });
+    }).catch((error) => {
+      console.log(error.parent.sqlMessage);
+      res.status(500).send({ error: error.parent.sqlMessage });
+    })
+  } else {
+    res.status(500).send({ error: 'error' });
+  }
+}
+
+const tutor_reagendar = async (req, res) => {
+  if (req.route.methods.post && req.body) {
+    const usuario = await Usuario.findOne({ where: { matricula: req.matricula } });
+    const ajuda = await Ajuda.findOne({ where: { id: req.body?.id, tutor: usuario.cpf }, });
+    if (ajuda) {
+      ajuda.status = 'cancelada';
+      await ajuda.save();
+    } else {
+      return;
+    }
+    const array = req.body.dia.split('-')
+    await Ajuda.create({
+      tutor: ajuda.tutor,
+      aluno: ajuda.aluno,
+      sigla_disciplina: ajuda.sigla_disciplina,
+      status: 'solicitada',
+      data_inicio: new Date(`${array[2]}-${array[1]}-${array[0]}T${req.body.hora_inicio}`),
+      data_fim: new Date(`${array[2]}-${array[1]}-${array[0]}T${req.body.hora_fim}`),
+    }).then(() => {
+      res.status(200).send({ msg: 'ok' });
+    }).catch((error) => {
+      console.log(error.parent.sqlMessage);
+      res.status(500).send({ error: error.parent.sqlMessage });
+    })
+  } else {
+    res.status(500).send({ error: 'error' });
+  }
+}
+
 module.exports = {
-  listar,
+  ajuda,
+  agenda,
   agendar,
   listar_disponibilidade,
   adicionar_disponibilidade,
+  aceitar,
+  recusar,
+  aluno_cancelar,
+  tutor_cancelar,
+  aluno_reagendar,
+  tutor_reagendar,
 }
