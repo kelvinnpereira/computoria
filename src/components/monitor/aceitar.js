@@ -40,7 +40,6 @@ const AceitarMonitor = ({ setAction, isLoading, pendencias }) => {
         );
     }
 
-
     if (pendencias) {
         return (
             <>
@@ -108,3 +107,4 @@ const AceitarMonitor = ({ setAction, isLoading, pendencias }) => {
 };
 
 export default AceitarMonitor;
+

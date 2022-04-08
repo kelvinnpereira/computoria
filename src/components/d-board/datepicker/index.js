@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import Datetime from 'react-datetime'
 import moment from 'moment';
 
-const Datepicker = () => {
+const Datepicker = ({ label = '' , name = 'date', register, register_obj, timepicker = false, valid}) => {
   const day = 'DD-MM-YYYY';
   const hour = 'HH:mm'
   const format = `${day} ${hour}`;
@@ -12,28 +12,28 @@ const Datepicker = () => {
     setValue(v)
   }
 
-  const valid = function (current) {
+  const default_valid = function (current) {
     const yesterday = moment().subtract(1, 'day');
     return current.isAfter(yesterday);
   };
   return (
     <div className="form-element">
-      <span className="text-sm text-default">
-        <span>Date picker</span>
-        {value && <span>: {value.format(format)}</span>}
-      </span>
+      <div className="form-label text-white">{label}</div>
       <Datetime
         defaultValue={new Date()}
         dateFormat={day}
-        timeFormat={hour}
+        timeFormat={timepicker ? hour : false}
         input={true}
         inputProps={{
           className: 'form-input',
-          placeholder: 'Select date'
+          placeholder: 'Select date',
+          name: name,
+          ref: register(register_obj),
+          autoComplete: 'off'
         }}
         viewMode={'days'}
         onChange={onChange}
-        isValidDate={valid}
+        isValidDate={default_valid}
       />
     </div>
   )

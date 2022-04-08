@@ -17,7 +17,7 @@ const AccountLinks = ({ emailCount }) => {
       ?
       [
         {
-          url: "/home",
+          url: "/home/coordenador",
           icon: <FiMail size={18} className="stroke-current" />,
           name: "Inbox",
           badge: emailCount ? ({
@@ -32,7 +32,7 @@ const AccountLinks = ({ emailCount }) => {
           badge: null
         },
         {
-          url: "/home",
+          url: "/home/coordenador",
           icon: <FiSettings
             className="stroke-current" />,
           name: "Admin",
@@ -48,7 +48,7 @@ const AccountLinks = ({ emailCount }) => {
       :
       [
         {
-          url: "/home",
+          url: "/home/usuario",
           icon: <FiMail size={18} className="stroke-current" />,
           name: "Inbox",
           badge: emailCount ? ({
@@ -63,7 +63,7 @@ const AccountLinks = ({ emailCount }) => {
           badge: null
         },
         {
-          url: "/home",
+          url: "/home/usuario",
           icon: <FiSettings
             className="stroke-current" />,
           name: "Admin",

@@ -22,23 +22,35 @@ router.get ('/auth/login' , auth.not_authenticated, nextController.handler);
 router.get ('/auth/logout', auth.authenticated    , nextController.logout);
 router.get ('/auth/signup', auth.not_authenticated, nextController.handler);
 //next /auth/restart
-router.get ('/auth/restart/:token'      , auth.not_authenticated, nextController.restart);
+router.get ('/auth/restart/:token', auth.not_authenticated, nextController.restart);
+//next /denunciar
+router.get ('/denunciar/:matricula', auth.not_authenticated, nextController.restart);
+//next /home/coordenador
+router.get ('/home/coordenador', auth.authenticated, nextController.handler);
+//next /home/usuario
+router.get ('/home/usuario', auth.authenticated, nextController.handler);
 //next /improficiencia/
 router.get ('/improficiencia/adicionar', auth.authenticated, nextController.handler);
 router.get ('/improficiencia/remover'  , auth.authenticated, nextController.handler);
 router.get ('/improficiencia/listar'   , auth.authenticated, nextController.handler);
-//next /proficiencia/
-router.get ('/proficiencia/adicionar'  , auth.authenticated, nextController.handler);
-router.get ('/proficiencia/remover'    , auth.authenticated, nextController.handler);
-router.get ('/proficiencia/listar'     , auth.authenticated, nextController.handler);
-//next /perfil/
-router.get ('/perfil/atualizar'        , auth.authenticated, nextController.handler);
-router.get ('/perfil'                  , auth.authenticated, nextController.handler);
-router.get ('/perfil/:matricula'       , auth.authenticated, nextController.handler);
 //next monitoria
 router.post('/monitoria/inscrever'        , auth.authenticated, nextController.handler);
 router.post('/monitoria/listar'           , auth.authenticated, nextController.handler);
 router.post('/monitoria/solicitacoes'     , auth.authenticated, nextController.handler);
+//next /perfil/
+router.get ('/perfil/:matricula'       , auth.authenticated, nextController.handler);
+router.get ('/perfil/atualizar'        , auth.authenticated, nextController.handler);
+router.get ('/perfil'                  , auth.authenticated, nextController.handler);
+//next /proficiencia/
+router.get ('/proficiencia/adicionar'  , auth.authenticated, nextController.handler);
+router.get ('/proficiencia/listar'     , auth.authenticated, nextController.handler);
+router.get ('/proficiencia/remover'    , auth.authenticated, nextController.handler);
+//next /tutores
+router.get ('/tutores/:disciplina', auth.authenticated, nextController.handler);
+router.get ('/tutores'            , auth.authenticated, nextController.handler);
+//next /tutores_disciplina
+router.get ('/tutores_disciplina/:disciplina', auth.authenticated, nextController.handler);
+router.get ('/tutores_disciplina'            , auth.authenticated, nextController.handler);
 
 //main
 router.get ('/api/cursos'                        , mainController.cursos);

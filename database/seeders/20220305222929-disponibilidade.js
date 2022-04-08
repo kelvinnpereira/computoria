@@ -48,6 +48,42 @@ module.exports = {
         created_at: new Date(new Date() + "+0"),
         updated_at: new Date(new Date() + "+0")
       },
+      {
+        cpf: '13466113008',
+        dia: 1,
+        hora_indice: 0,
+        hora_inicio: '12:00',
+        hora_fim: '22:00',
+        created_at: new Date(new Date() + "+0"),
+        updated_at: new Date(new Date() + "+0")
+      },
+      {
+        cpf: '13466113008',
+        dia: 2,
+        hora_indice: 0,
+        hora_inicio: '12:00',
+        hora_fim: '22:00',
+        created_at: new Date(new Date() + "+0"),
+        updated_at: new Date(new Date() + "+0")
+      },
+      {
+        cpf: '13466113008',
+        dia: 3,
+        hora_indice: 0,
+        hora_inicio: '12:00',
+        hora_fim: '22:00',
+        created_at: new Date(new Date() + "+0"),
+        updated_at: new Date(new Date() + "+0")
+      },
+      {
+        cpf: '13466113008',
+        dia: 4,
+        hora_indice: 0,
+        hora_inicio: '12:00',
+        hora_fim: '22:00',
+        created_at: new Date(new Date() + "+0"),
+        updated_at: new Date(new Date() + "+0")
+      },
     ], {});
   },
 
