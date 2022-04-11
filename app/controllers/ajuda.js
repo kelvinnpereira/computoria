@@ -352,6 +352,12 @@ const tutor_reagendar = async (req, res) => {
   }
 }
 
+const avaliar = (req, res) => {
+    if(req.route.methods.get) {
+      res.render()
+    }
+}
+
 module.exports = {
   ajuda,
   agenda,

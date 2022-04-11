@@ -16,6 +16,7 @@ router.get ('/denunciar/:matricula'          , auth.authenticated, nextControlle
 router.get ('/tutores/:disciplina'           , auth.authenticated, nextController.handler);
 router.get ('/tutores_disciplina'            , auth.authenticated, nextController.handler);
 router.get ('/tutores_disciplina/:disciplina', auth.authenticated, nextController.handler);
+router.get ('/avaliar'                       , auth.authenticated, nextController.handler);
 //next /ajuda
 router.post('/ajuda/agendar/:matricula' , auth.authenticated, nextController.handler);
 router.post('/ajuda/aluno_reagendar/:id', auth.authenticated, nextController.handler);
