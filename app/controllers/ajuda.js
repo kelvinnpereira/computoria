@@ -338,7 +338,7 @@ const tutor_reagendar = async (req, res) => {
       tutor: ajuda.tutor,
       aluno: ajuda.aluno,
       sigla_disciplina: ajuda.sigla_disciplina,
-      status: 'solicitada',
+      status: 'agendada',
       data_inicio: new Date(`${array[2]}-${array[1]}-${array[0]}T${req.body.hora_inicio}`),
       data_fim: new Date(`${array[2]}-${array[1]}-${array[0]}T${req.body.hora_fim}`),
     }).then(() => {

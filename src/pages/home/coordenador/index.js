@@ -44,9 +44,9 @@ const Home = ({ solicitacoes, monitores }) => {
 
   const onAction = (data) => {
     setModal(true);
-    window.setInterval(() => {
-      window.location.reload();
-    }, 3000);
+    // window.setInterval(() => {
+    //   window.location.reload();
+    // }, 3000);
   }
 
   const onError = (err) => {
