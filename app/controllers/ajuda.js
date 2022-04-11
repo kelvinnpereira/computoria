@@ -41,7 +41,6 @@ const ajuda = async (req, res) => {
         disciplina.sigla = ajuda.sigla_disciplina;
     `);
     console.log('get ajuda');
-    console.log(ajuda?.at(0));
     res.status(200).send({ ajuda: ajuda?.at(0)?.at(0) });
   } else {
     res.status(500).send({ error: 'sem parametros matricula' });
@@ -67,7 +66,11 @@ const agenda = async (req, res) => {
         usuario1.matricula as matricula_tutor,
         usuario2.matricula as matricula_aluno,
         data_inicio, 
-        data_fim
+        data_fim,
+        nota_aluno,
+        nota_tutor,
+        comentario_aluno,
+        comentario_tutor
       FROM
         ajuda,
         usuario as usuario1,
@@ -78,11 +81,9 @@ const agenda = async (req, res) => {
           (ajuda.tutor = ${usuario.cpf} AND ajuda.tutor = usuario1.cpf AND ajuda.aluno = usuario2.cpf) OR 
           (ajuda.aluno = ${usuario.cpf} AND ajuda.aluno = usuario2.cpf AND ajuda.tutor = usuario1.cpf)
         ) AND 
-        (ajuda.status = "solicitada" OR ajuda.status = "agendada") AND
         disciplina.sigla = ajuda.sigla_disciplina;
     `);
     console.log('Listar agenda');
-    console.log(agenda?.at(0));
     res.status(200).send({ agenda: agenda?.at(0) });
   } else {
     res.status(500).send({ error: 'sem parametros matricula' });
@@ -179,7 +180,6 @@ const adicionar_disponibilidade = async (req, res) => {
 
 const aceitar = async (req, res) => {
   if (req.route.methods.post && req.body) {
-    console.log(req.body)
     const usuario = await Usuario.findOne({
       where: {
         matricula: req.matricula,
@@ -338,7 +338,7 @@ const tutor_reagendar = async (req, res) => {
       tutor: ajuda.tutor,
       aluno: ajuda.aluno,
       sigla_disciplina: ajuda.sigla_disciplina,
-      status: 'solicitada',
+      status: 'agendada',
       data_inicio: new Date(`${array[2]}-${array[1]}-${array[0]}T${req.body.hora_inicio}`),
       data_fim: new Date(`${array[2]}-${array[1]}-${array[0]}T${req.body.hora_fim}`),
     }).then(() => {

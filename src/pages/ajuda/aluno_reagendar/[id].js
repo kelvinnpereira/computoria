@@ -2,7 +2,7 @@ import { useState } from "react";
 import Router from "next/router";
 import Head from "next/head";
 
-import Form from "../../../components/ajuda/reagendar";
+import Form from "../../../components/ajuda/aluno_reagendar";
 import Modal from '../../../components/modals';
 import SectionTitle from "../../../components/section/section-title";
 import Widget from "../../../components/widget";
@@ -60,10 +60,10 @@ const Agendar = ({ ajuda, horarios, agenda }) => {
     <>
       <Head>
         <title>
-          Computoria: Agendar Ajuda
+          Computoria: Reagendar Ajuda
         </title>
       </Head>
-      <SectionTitle title='Ajuda' subtitle="Agendar" />
+      <SectionTitle title='Ajuda' subtitle="Reagendar" />
       <Widget>
         <Modal
           title={'Computoria'}
@@ -91,7 +91,6 @@ export const getServerSideProps = async (context) => {
     headers: req.headers
   });
   const ajuda = response.data?.ajuda;
-  console.log(ajuda)
   if (!ajuda) {
     return {
       redirect: {

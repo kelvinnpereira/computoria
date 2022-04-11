@@ -2,7 +2,7 @@
 
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    return queryInterface.createTable('improficiencia', {
+    return queryInterface.createTable('especialidade', {
       sigla_disciplina: {
         primaryKey: true,
         allowNull: false,
@@ -26,6 +26,6 @@ module.exports = {
     });
   },
   down: (queryInterface, Sequelize) => {
-    return queryInterface.dropTable('improficiencia');
+    return queryInterface.dropTable('especialidade');
   }
 };
