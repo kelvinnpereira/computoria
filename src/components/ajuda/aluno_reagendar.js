@@ -135,7 +135,7 @@ const Form = ({ message = null, setSubmit, isLoading, ajuda, diasUteis, agenda }
                 className={` w-full form-select ${errors["disciplina"] ? "border border-red-500" : ""
                   }`}
               >
-                <option key="0" value={ajuda.sigla_disciplina}>
+                <option selected key="0" value={ajuda.sigla_disciplina}>
                   {ajuda.sigla_disciplina + ' - ' + ajuda.disciplina}
                 </option>
               </select>

@@ -2,7 +2,7 @@ import { useState } from "react";
 import Router from "next/router";
 import Head from "next/head";
 
-import Form from "../../../components/ajuda/aluno_reagendar";
+import Form from "../../../components/ajuda/tutor_reagendar";
 import Modal from '../../../components/modals';
 import SectionTitle from "../../../components/section/section-title";
 import Widget from "../../../components/widget";
@@ -28,7 +28,7 @@ const Agendar = ({ ajuda, horarios, agenda }) => {
     }
   };
 
-  const [isLoading, setRequest] = useRequest(onAgendar, onError, '/api/ajuda/aluno_reagendar');
+  const [isLoading, setRequest] = useRequest(onAgendar, onError, '/api/ajuda/tutor_reagendar');
 
   const sucessBody = () => {
     return (
