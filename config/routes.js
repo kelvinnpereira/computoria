@@ -12,6 +12,7 @@ router.get ('/'                              , auth.authenticated, nextControlle
 router.get ('/home'                          , auth.authenticated, nextController.handler);
 router.get ('/invalid'                       , auth.not_authenticated, nextController.handler);
 router.get ('/tutores'                       , auth.authenticated, nextController.handler);
+router.get ('/avaliar'                       , auth.authenticated, nextController.handler);
 //next /ajuda
 router.post('/ajuda/agendar/:matricula' , auth.authenticated, nextController.handler);
 router.post('/ajuda/aluno_reagendar/:id', auth.authenticated, nextController.handler);
