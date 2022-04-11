@@ -5,8 +5,8 @@ const Usuario = models.usuario;
 const Curso = models.curso;
 const Disciplina = models.disciplina;
 const DisciplinaCurso = models.disciplina_curso;
-const Proficiencia = models.proficiencia;
-const Improficiencia = models.improficiencia;
+const Especialidade = models.especialidade;
+const Dificuldade = models.dificuldade;
 const Monitor = models.monitor;
 const sequelize = models.sequelize;
 
@@ -61,7 +61,7 @@ const disciplinas = async (req, res) => {
     }
 }
 
-const api_proficiencia = async (req, res) => {
+const api_especialidade = async (req, res) => {
     if (req.route.methods.get) {
         const matricula = req.params?.matricula ? req.params?.matricula : req.matricula
         const usuario = await Usuario.findOne({
@@ -76,7 +76,7 @@ const api_proficiencia = async (req, res) => {
                 }
             },
             include: {
-                model: Proficiencia,
+                model: Especialidade,
                 attributes: [],
                 where: {
                     cpf: {
@@ -95,7 +95,7 @@ const api_proficiencia = async (req, res) => {
     }
 }
 
-const api_proficiencia_adicionar = async (req, res) => {
+const api_especialidade_adicionar = async (req, res) => {
     if (req.route.methods.post && req.body?.disciplinas) {
         if (req.body.disciplinas.length > 10) {
             return res.status(500).send({ error: 'Muitas disciplinas selecionadas' });
@@ -105,7 +105,7 @@ const api_proficiencia_adicionar = async (req, res) => {
                 matricula: req.matricula
             }
         });
-        await Proficiencia.bulkCreate(
+        await Especialidade.bulkCreate(
             req.body.disciplinas.map((value) => {
                 return {
                     cpf: usuario.cpf,
@@ -115,21 +115,21 @@ const api_proficiencia_adicionar = async (req, res) => {
         ).then(() => {
             res.status(200).send({ msg: 'ok' });
         }).catch(() => {
-            res.status(500).send({ error: 'Umas das disciplinas selecionadas já estão em sua lista de proficiência' })
+            res.status(500).send({ error: 'Umas das disciplinas selecionadas já estão em sua lista de especialidades' })
         });
     } else {
         res.status(500).send({ error: 'Nenhuma disciplina selecionada' });
     }
 }
 
-const api_proficiencia_remover = async (req, res) => {
+const api_especialidade_remover = async (req, res) => {
     if (req.route.methods.post && req.body?.disciplinas) {
         const usuario = await Usuario.findOne({
             where: {
                 matricula: req.matricula
             }
         });
-        await Proficiencia.destroy({
+        await Especialidade.destroy({
             where: {
                 cpf: usuario.cpf,
                 sigla_disciplina: [
@@ -144,14 +144,14 @@ const api_proficiencia_remover = async (req, res) => {
             res.status(200).send({ msg: 'ok' });
         }).catch((error) => {
             console.log(error);
-            res.status(500).send({ error: 'Umas das disciplinas selecionadas não estão em sua lista de proficiência' })
+            res.status(500).send({ error: 'Umas das disciplinas selecionadas não estão em sua lista de especialidades' })
         });
     } else {
         res.status(500).send({ error: 'Nenhuma disciplina selecionada' });
     }
 }
 
-const api_improficiencia = async (req, res) => {
+const api_dificuldade = async (req, res) => {
     if (req.route.methods.get) {
         const usuario = await Usuario.findOne({
             where: {
@@ -165,7 +165,7 @@ const api_improficiencia = async (req, res) => {
                 }
             },
             include: {
-                model: Improficiencia,
+                model: Dificuldade,
                 attributes: [],
                 where: {
                     cpf: {
@@ -181,7 +181,7 @@ const api_improficiencia = async (req, res) => {
     }
 }
 
-const api_improficiencia_adicionar = async (req, res) => {
+const api_dificuldade_adicionar = async (req, res) => {
     if (req.route.methods.post && req.body?.disciplinas) {
         if (req.body.disciplinas.length > 10) {
             return res.status(500).send({ error: 'Muitas disciplinas selecionadas' });
@@ -191,7 +191,7 @@ const api_improficiencia_adicionar = async (req, res) => {
                 matricula: req.matricula
             }
         });
-        await Improficiencia.bulkCreate(
+        await Dificuldade.bulkCreate(
             req.body.disciplinas.map((value) => {
                 return {
                     cpf: usuario.cpf,
@@ -201,21 +201,21 @@ const api_improficiencia_adicionar = async (req, res) => {
         ).then(() => {
             res.status(200).send({ msg: 'ok' });
         }).catch(() => {
-            res.status(500).send({ error: 'Umas das disciplinas selecionadas já estão em sua lista de improficiência' })
+            res.status(500).send({ error: 'Umas das disciplinas selecionadas já estão em sua lista de dificuldades' })
         });
     } else {
         res.status(500).send({ error: 'Nenhuma disciplina selecionada' });
     }
 }
 
-const api_improficiencia_remover = async (req, res) => {
+const api_dificuldade_remover = async (req, res) => {
     if (req.route.methods.post && req.body?.disciplinas) {
         const usuario = await Usuario.findOne({
             where: {
                 matricula: req.matricula
             }
         });
-        await Improficiencia.destroy({
+        await Dificuldade.destroy({
             where: {
                 cpf: usuario.cpf,
                 sigla_disciplina: [
@@ -230,7 +230,7 @@ const api_improficiencia_remover = async (req, res) => {
             res.status(200).send({ msg: 'ok' });
         }).catch((error) => {
             console.log(error);
-            res.status(500).send({ error: 'Umas das disciplinas selecionadas não estão em sua lista de improficiência' })
+            res.status(500).send({ error: 'Umas das disciplinas selecionadas não estão em sua lista de dificuldades' })
         });
     } else {
         res.status(500).send({ error: 'Nenhuma disciplina selecionada' });
@@ -257,7 +257,7 @@ const monitoria_inscrever = async (req, res) => {
             }).then(() => {
                 res.status(200).send({ msg: 'ok' });
             }).catch(() => {
-                res.status(500).send({ error: 'Umas das disciplinas selecionadas já estão em sua lista de proficiência!' })
+                res.status(500).send({ error: 'Umas das disciplinas selecionadas já estão em sua lista de especialidades!' })
             });
         } else {
             res.status(500).send({ error: 'Você tem solicitações de monitoria pendentes!' })
@@ -429,12 +429,12 @@ const monitoria_listar_aprovados = async (req, res) => {
 module.exports = {
     cursos,
     disciplinas,
-    api_proficiencia,
-    api_proficiencia_adicionar,
-    api_proficiencia_remover,
-    api_improficiencia,
-    api_improficiencia_adicionar,
-    api_improficiencia_remover,
+    api_especialidade,
+    api_especialidade_adicionar,
+    api_especialidade_remover,
+    api_dificuldade,
+    api_dificuldade_adicionar,
+    api_dificuldade_remover,
     monitoria_inscrever,
     monitoria_listar,
     monitoria_aceitar,

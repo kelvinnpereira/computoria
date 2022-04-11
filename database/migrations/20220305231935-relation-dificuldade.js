@@ -2,20 +2,20 @@
 
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    return queryInterface.addConstraint('proficiencia', {
+    return queryInterface.addConstraint('dificuldade', {
       type: 'foreign key',
       fields: ['sigla_disciplina'],
-      name: 'proficiencia_sigla_disciplina_fk',
+      name: 'dificuldade_sigla_disciplina_fk',
       references: {
         table: 'disciplina',
         field: 'sigla'
       },
       onDelete: 'cascade',
       onUpdate: 'cascade'
-    }).then(() => queryInterface.addConstraint('proficiencia', {
+    }).then(() => queryInterface.addConstraint('dificuldade', {
       type: 'foreign key',
       fields: ['cpf'],
-      name: 'proficiencia_cpf_fk',
+      name: 'dificuldade_cpf_fk',
       references: {
         table: 'usuario',
         field: 'cpf'
@@ -27,9 +27,9 @@ module.exports = {
 
   down: (queryInterface, Sequelize) => {
     return queryInterface.removeConstraint(
-      'proficiencia',
-      'proficiencia_sigla_disciplina_fk',
-      'proficiencia_cpf_fk'
+      'dificuldade',
+      'dificuldade_sigla_disciplina_fk',
+      'dificuldade_cpf_fk'
     );
   }
 };

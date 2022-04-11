@@ -15,12 +15,12 @@ const tutores = async (req, res) => {
         (SELECT 
           DISTINCT(cpf) AS cpf 
         FROM 
-          proficiencia 
-        ${disciplina ? `WHERE sigla_disciplina = \'${disciplina}\'` : ''}) AS prof
+          especialidade 
+        ${disciplina ? `WHERE sigla_disciplina = \'${disciplina}\'` : ''}) AS espec
         INNER JOIN
           usuario AS u
         ON
-          prof.cpf = u.cpf
+          espec.cpf = u.cpf
         INNER JOIN
           curso AS c
         ON
@@ -73,28 +73,28 @@ const tutores_por_disciplina = async (req, res) => {
         matricula,
         cat.nome AS categoria,
         d.nome AS disciplina,
-        prof.sigla_disciplina as prof_sigla,
+        especialidade.sigla_disciplina as especialidade_sigla,
         u.cpf AS cpf_user 
       FROM
-        proficiencia AS prof, 
+        especialidade, 
         disciplina AS d, 
         categoria AS cat,
         usuario AS u,
         curso AS c
       WHERE
         id_categoria = cat.id AND 
-        prof.sigla_disciplina = d.sigla AND
-        prof.cpf = u.cpf AND
+        especialidade.sigla_disciplina = d.sigla AND
+        especialidade.cpf = u.cpf AND
         c.sigla = sigla_curso 
         ${disciplina ? `AND sigla_disciplina = \'${disciplina}\'` : ''}
         ) AS user 
     LEFT JOIN
       (SELECT 
-        improficiencia.sigla_disciplina AS improf_sigla, 
-        COUNT(improficiencia.sigla_disciplina) AS pontuacao  
-      FROM improficiencia) AS improf 
+        dificuldade.sigla_disciplina AS dif_sigla, 
+        COUNT(dificuldade.sigla_disciplina) AS pontuacao  
+      FROM dificuldade) AS dif 
     ON 
-      improf_sigla = prof_sigla
+      dif_sigla = especialidade_sigla
     LEFT JOIN
       (SELECT 
         tutor, 

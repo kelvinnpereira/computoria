@@ -7,7 +7,7 @@ import Datepicker from '../d-board/datepicker';
 import Timepicker from '../d-board/timepicker';
 import moment from "moment";
 
-const Form = ({ message = null, setSubmit, isLoading, tutor, profs, diasUteis, agenda }) => {
+const Form = ({ message = null, setSubmit, isLoading, tutor, especialidades, diasUteis, agenda }) => {
   const [csrf, setCsrf] = useCsrf(null);
   const { handleSubmit, errors, register, watch } = useForm();
 
@@ -138,7 +138,7 @@ const Form = ({ message = null, setSubmit, isLoading, tutor, profs, diasUteis, a
                 <option disabled selected value>
                   -- Selecione uma Disciplina --
                 </option>
-                {profs.map((option, i) => (
+                {especialidades.map((option, i) => (
                   <option key={i} value={option.sigla}>
                     {option.sigla + ' - ' + option.nome}
                   </option>

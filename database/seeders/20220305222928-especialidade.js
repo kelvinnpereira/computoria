@@ -2,7 +2,7 @@
 
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    return queryInterface.bulkInsert('proficiencia', [
+    return queryInterface.bulkInsert('especialidade', [
       {
         "sigla_disciplina": "ICC002",
         cpf: "55381028075",
@@ -61,6 +61,6 @@ module.exports = {
   },
 
   down: (queryInterface, Sequelize) => {
-    return queryInterface.bulkDelete('proficiencia', {}, {});
+    return queryInterface.bulkDelete('especialidade', {}, {});
   }
 };

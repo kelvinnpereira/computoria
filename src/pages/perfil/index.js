@@ -70,7 +70,7 @@ const ListarDisciplinas = ({ disciplinas }) => {
   );
 };
 
-const Perfil = ({ usuario, cursos, prof, improf, horarios, agenda }) => {
+const Perfil = ({ usuario, cursos, especialidades, dificuldades, horarios, agenda }) => {
   const curso = cursos.find(curso => curso.sigla == usuario.sigla_curso);
   let index = 0;
   const aluno = agenda?.filter(item => item.status === 'concluida' && item.matricula_aluno === usuario.matricula);
@@ -95,14 +95,14 @@ const Perfil = ({ usuario, cursos, prof, improf, horarios, agenda }) => {
       content: <Agenda usuario={usuario} diasUteis={horarios} agenda={agenda} />
     },
     {
-      title: 'Proficiencias',
+      title: 'Especialidades',
       index: index++,
-      content: <ListarDisciplinas disciplinas={prof} />
+      content: <ListarDisciplinas disciplinas={especialidades} />
     },
     {
-      title: 'Improficiencias',
+      title: 'Dificuldades',
       index: index++,
-      content: <ListarDisciplinas disciplinas={improf} />
+      content: <ListarDisciplinas disciplinas={dificuldades} />
     },
     {
       title: 'Avaliações como Tutor',
@@ -172,10 +172,10 @@ export const getServerSideProps = async (context) => {
     headers: req.headers
   });
   const response2 = await get('/api/cursos');
-  const response3 = await get(`/api/proficiencia/listar`, {
+  const response3 = await get(`/api/especialidade/listar`, {
     headers: req.headers
   });
-  const response4 = await get(`/api/improficiencia/listar`, {
+  const response4 = await get(`/api/dificuldade/listar`, {
     headers: req.headers
   });
   const response5 = await get('/api/disponibilidade/listar', {
@@ -188,8 +188,8 @@ export const getServerSideProps = async (context) => {
     props: {
       usuario: response1.data.usuario,
       cursos: response2.data.cursos,
-      prof: response3.data.disciplinas,
-      improf: response4.data.disciplinas,
+      especialidades: response3.data.disciplinas,
+      dificuldades: response4.data.disciplinas,
       horarios: response5.data.horarios,
       agenda: response6.data.agenda
     },

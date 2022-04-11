@@ -10,7 +10,7 @@ import Widget from "../../../components/widget";
 import { useRequest } from "../../../hooks/auth";
 import { get } from '../../../lib/api';
 
-const Agendar = ({ tutor, profs, horarios, agenda }) => {
+const Agendar = ({ tutor, especialidades, horarios, agenda }) => {
   const [errorMessage, setErrorMessage] = useState("");
   const [showModal, setModal] = useState(false);
 
@@ -76,7 +76,7 @@ const Agendar = ({ tutor, profs, horarios, agenda }) => {
           isLoading={isLoading}
           message={errorMessage}
           tutor={tutor}
-          profs={profs}
+          especialidades={especialidades}
           diasUteis={horarios}
           agenda={agenda} />
       </Widget>
@@ -91,7 +91,7 @@ export const getServerSideProps = async (context) => {
   const response1 = await get(`/api/usuario/${context.params.matricula}`, {
     headers: req.headers
   });
-  const response2 = await get(`/api/proficiencia/listar/${context.params.matricula}`, {
+  const response2 = await get(`/api/especialidade/listar/${context.params.matricula}`, {
     headers: req.headers
   });
   const response3 = await get(`/api/disponibilidade/listar/${context.params.matricula}`, {
@@ -120,7 +120,7 @@ export const getServerSideProps = async (context) => {
   return {
     props: {
       tutor: response1.data.usuario,
-      profs: response2.data.disciplinas,
+      especialidades: response2.data.disciplinas,
       horarios: response3.data.horarios,
       agenda: response4.data.agenda.concat(response5.data.agenda),
     },

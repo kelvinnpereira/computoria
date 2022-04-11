@@ -28,34 +28,34 @@ const initialState = [
     title: "Disciplinas",
     items: [
       {
-        url: "/proficiencia/adicionar",
+        url: "/especialidade/adicionar",
         icon: <FiCompass size={20}/>,
-        title: "Adicionar Proficiencia",
+        title: "Adicionar Especialidade",
       },
       {
-        url: "/proficiencia/remover",
+        url: "/especialidade/remover",
         icon: <HiOutlineDocumentSearch size={20}/>,
-        title: "Remover Proficiencia",
+        title: "Remover Especialidade",
       },
       {
-        url: "/proficiencia/listar",
+        url: "/especialidade/listar",
         icon: <CgTemplate size={20}/>,
-        title: "Listar Proficiencia",
+        title: "Listar Especialidade",
       },
       {
-        url: "/improficiencia/adicionar",
+        url: "/dificuldade/adicionar",
         icon: <CgListTree size={20}/>,
-        title: "Adicionar Improficiencia",
+        title: "Adicionar Dificuldade",
       },
       {
-        url: "/improficiencia/remover",
+        url: "/dificuldade/remover",
         icon: <FaRocket size={20}/>,
-        title: "Remover improficiencia",
+        title: "Remover Dificuldade",
       },
       {
-        url: "/improficiencia/listar",
+        url: "/dificuldade/listar",
         icon: <MdBusiness size={20}/>,
-        title: "Listar improficiencia",
+        title: "Listar Dificuldade",
       }
     ]
   },
