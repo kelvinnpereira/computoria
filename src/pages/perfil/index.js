@@ -107,7 +107,7 @@ const Perfil = ({ usuario, cursos, especialidades, dificuldades, horarios, agend
     {
       title: 'Avaliações como Tutor',
       index: index++,
-      content: <Avaliações items={agenda.map((item) => {
+      content: <Avaliações items={tutor.map((item) => {
         return {
           comentario: item.comentario_aluno,
           data: (new Date(item.data_inicio)).toLocaleDateString(),
@@ -120,7 +120,7 @@ const Perfil = ({ usuario, cursos, especialidades, dificuldades, horarios, agend
     {
       title: 'Avaliações como Aluno',
       index: index++,
-      content: <Avaliações items={agenda.map((item) => {
+      content: <Avaliações items={aluno.map((item) => {
         return {
           comentario: item.comentario_tutor,
           data: (new Date(item.data_inicio)).toLocaleDateString(),
