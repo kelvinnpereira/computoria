@@ -123,12 +123,6 @@ const ListarTutores = ({ tutores }) => {
       filter: 'includes',
     },
     {
-      Header: 'Categoria',
-      accessor: 'categoria',
-      Filter: categoriaFilter,
-      filter: 'includes',
-    },
-    {
       Header: 'Média',
       accessor: 'media',
       Filter: <></>,
@@ -153,7 +147,7 @@ const ListarTutores = ({ tutores }) => {
         </a>,
       curso: item.curso,
       categoria: item.categoria,
-      media: item.media,
+      media: Number(item.media).toFixed(2),
       pontuacao: item.pontuacao,
     }
   });

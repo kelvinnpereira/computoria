@@ -8,6 +8,7 @@ import { get } from '../../lib/api';
 import { useRouter } from "next/router";
 import Router from "next/router";
 import Agenda from "../../components/agenda/index";
+import Avaliações from '../../components/d-board/lists/avaliacoes';
 
 const Conta = ({ usuario, curso }) => {
   return (
@@ -68,11 +69,41 @@ const ListarDisciplinas = ({ disciplinas }) => {
 const Perfil = ({ usuario, cursos, prof, improf, horarios, agenda }) => {
   const { query } = useRouter();
   const curso = cursos.find(curso => curso.sigla == usuario.sigla_curso);
+  const aluno = agenda?.filter(item => item.status === 'concluida' && item.matricula_aluno === usuario.matricula);
+  const tutor = agenda?.filter(item => item.status === 'concluida' && item.matricula_tutor === usuario.matricula);
+  const media_aluno = aluno?.length === 0 ? 0 : aluno.map(item => item.nota_tutor).reduce((a, b) => a + b, 0) / aluno.length;
+  const media_tutor = tutor?.length === 0 ? 0 : tutor.map(item => item.nota_aluno).reduce((a, b) => a + b, 0) / tutor.length;
   const tabs = [
     { title: 'Conta', index: 0, content: <Conta usuario={usuario} curso={curso} /> },
     { title: 'Redes Sociais', index: 1, content: <Redes /> },
     { title: 'Agenda', index: 2, content: <Agenda usuario={usuario} diasUteis={horarios} agenda={agenda} /> },
     { title: 'Proficiencias', index: 3, content: <ListarDisciplinas disciplinas={prof} /> },
+    {
+      title: 'Avaliações como Tutor',
+      index: 4,
+      content: <Avaliações items={agenda.map((item) => {
+        return {
+          comentario: item.comentario_aluno,
+          data: (new Date(item.data_inicio)).toLocaleDateString(),
+          nota: item.nota_aluno,
+          status: item.status,
+        }
+      })}
+      media={media_tutor} />
+    },
+    {
+      title: 'Avaliações como Aluno',
+      index: 5,
+      content: <Avaliações items={agenda.map((item) => {
+        return {
+          comentario: item.comentario_tutor,
+          data: (new Date(item.data_inicio)).toLocaleDateString(),
+          nota: item.nota_tutor,
+          status: item.status,
+        }
+      })} 
+      media={media_aluno} />
+    },
   ];
 
   return (

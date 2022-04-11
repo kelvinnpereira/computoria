@@ -45,12 +45,14 @@ const Form = ({ message = null, setSubmit, isLoading, tutor, profs, diasUteis, a
 
   const availableHourStart = (hora) => {
     for (const item of agenda) {
-      const start = new Date(item.data_inicio).toLocaleTimeString().slice(0, -3);
-      const end = new Date(item.data_fim).toLocaleTimeString().slice(0, -3);
-      const day = moment(document.getElementsByName('dia')[0].value, "DD-MM-YYYY").date();
-      const item_day = new Date(item.data_inicio).getDate();
-      if (item_day === day && (hora >= start && hora <= end)) {
-        return false;
+      if (item.status === 'solicitada' || item.status === 'agendada') {
+        const start = new Date(item.data_inicio).toLocaleTimeString().slice(0, -3);
+        const end = new Date(item.data_fim).toLocaleTimeString().slice(0, -3);
+        const day = moment(document.getElementsByName('dia')[0].value, "DD-MM-YYYY").date();
+        const item_day = new Date(item.data_inicio).getDate();
+        if (item_day === day && (hora >= start && hora <= end)) {
+          return false;
+        }
       }
     }
     return true;
@@ -58,13 +60,15 @@ const Form = ({ message = null, setSubmit, isLoading, tutor, profs, diasUteis, a
 
   const availableHourEnd = (hora) => {
     for (const item of agenda) {
-      const start = new Date(item.data_inicio).toLocaleTimeString().slice(0, -3);
-      const end = new Date(item.data_fim).toLocaleTimeString().slice(0, -3);
-      const day = moment(document.getElementsByName('dia')[0].value, "DD-MM-YYYY").date();
-      const item_day = new Date(item.data_inicio).getDate();
-      const hora_inicio = document.getElementsByName('hora_inicio')[0].value;
-      if (item_day === day && (hora_inicio < start && hora >= start) ) {
-        return false;
+      if (item.status === 'solicitada' || item.status === 'agendada') {
+        const start = new Date(item.data_inicio).toLocaleTimeString().slice(0, -3);
+        const end = new Date(item.data_fim).toLocaleTimeString().slice(0, -3);
+        const day = moment(document.getElementsByName('dia')[0].value, "DD-MM-YYYY").date();
+        const item_day = new Date(item.data_inicio).getDate();
+        const hora_inicio = document.getElementsByName('hora_inicio')[0].value;
+        if (item_day === day && (hora_inicio < start && hora >= start) ) {
+          return false;
+        }
       }
     }
     return true;

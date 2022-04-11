@@ -70,7 +70,7 @@ const initialState = [
       {
         url: "/tutores_disciplina",
         icon: <HiOutlineDocumentSearch size={20}/>,
-        title: "Listar por disciplina",
+        title: "Ranking",
       },
     ]
   },

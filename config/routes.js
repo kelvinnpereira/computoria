@@ -12,10 +12,6 @@ router.get ('/'                              , auth.authenticated, nextControlle
 router.get ('/home'                          , auth.authenticated, nextController.handler);
 router.get ('/invalid'                       , auth.not_authenticated, nextController.handler);
 router.get ('/tutores'                       , auth.authenticated, nextController.handler);
-router.get ('/denunciar/:matricula'          , auth.authenticated, nextController.handler);
-router.get ('/tutores/:disciplina'           , auth.authenticated, nextController.handler);
-router.get ('/tutores_disciplina'            , auth.authenticated, nextController.handler);
-router.get ('/tutores_disciplina/:disciplina', auth.authenticated, nextController.handler);
 //next /ajuda
 router.post('/ajuda/agendar/:matricula' , auth.authenticated, nextController.handler);
 router.post('/ajuda/aluno_reagendar/:id', auth.authenticated, nextController.handler);
@@ -28,7 +24,7 @@ router.get ('/auth/signup', auth.not_authenticated, nextController.handler);
 //next /auth/restart
 router.get ('/auth/restart/:token', auth.not_authenticated, nextController.restart);
 //next /denunciar
-router.get ('/denunciar/:matricula', auth.not_authenticated, nextController.restart);
+router.get ('/denunciar/:matricula', auth.authenticated, nextController.handler);
 //next /home/coordenador
 router.get ('/home/coordenador', auth.authenticated, nextController.handler);
 //next /home/usuario

@@ -91,7 +91,6 @@ export const getServerSideProps = async (context) => {
     headers: req.headers
   });
   const ajuda = response.data?.ajuda;
-  console.log(ajuda)
   if (!ajuda) {
     return {
       redirect: {

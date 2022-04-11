@@ -26,7 +26,14 @@ const tutores = async (req, res) => {
         ON
           sigla = sigla_curso
         LEFT JOIN
-          (SELECT tutor, AVG(nota_aluno) AS media FROM ajuda GROUP BY tutor) AS ajuda_table
+          (SELECT 
+            tutor, 
+            AVG(nota_aluno) AS media 
+          FROM 
+            ajuda
+          WHERE 
+            status = 'concluida' 
+          GROUP BY tutor) AS ajuda_table
         ON
           tutor = u.cpf
       ;
@@ -89,7 +96,14 @@ const tutores_por_disciplina = async (req, res) => {
     ON 
       improf_sigla = prof_sigla
     LEFT JOIN
-      (SELECT tutor, AVG(nota_aluno) AS media FROM ajuda GROUP BY tutor) AS ajuda_table
+      (SELECT 
+        tutor, 
+        AVG(nota_aluno) AS media 
+      FROM 
+        ajuda 
+      WHERE 
+        status = 'concluida' 
+      GROUP BY tutor) AS ajuda_table
     ON
       tutor = cpf_user
       ;

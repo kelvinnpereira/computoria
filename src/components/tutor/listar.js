@@ -84,7 +84,7 @@ const ListarTutores = ({ tutores }) => {
           {item.usuario}
         </a>,
       curso: item.curso,
-      media: item.media,
+      media: Number(item.media).toFixed(2),
     }
   });
 

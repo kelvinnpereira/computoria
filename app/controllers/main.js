@@ -320,7 +320,6 @@ const monitoria_solicitacoes_usuario = async (req, res) => {
             }
         }).then((pendencias) => {
             console.log('pendencias');
-            console.log(pendencias);
             res.status(200).send({ pendencias: pendencias });
         }).catch(() => {
             res.status(500).send({ error: '' })
@@ -348,7 +347,6 @@ const monitoria_solicitacoes = async (req, res) => {
                 monitor.status = "solicitado";
         `).then((solicitacoes) => {
             console.log('pendencias encontradas');
-            console.log(solicitacoes)
             res.status(200).send({ solicitacoes: solicitacoes?.at(0) });
         }).catch((error) => {
             console.log(error);

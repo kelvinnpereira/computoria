@@ -7,6 +7,7 @@ import List1 from "../../components/d-board/lists/list-1";
 import { get } from '../../lib/api';
 import Router from "next/router";
 import Agenda from "../../components/agenda/index";
+import Avaliações from '../../components/d-board/lists/avaliacoes';
 
 const Conta = ({ usuario, curso }) => {
   return (
@@ -72,6 +73,10 @@ const ListarDisciplinas = ({ disciplinas }) => {
 const Perfil = ({ usuario, cursos, prof, improf, horarios, agenda }) => {
   const curso = cursos.find(curso => curso.sigla == usuario.sigla_curso);
   let index = 0;
+  const aluno = agenda?.filter(item => item.status === 'concluida' && item.matricula_aluno === usuario.matricula);
+  const tutor = agenda?.filter(item => item.status === 'concluida' && item.matricula_tutor === usuario.matricula);
+  const media_aluno = aluno?.length === 0 ? 0 : aluno.map(item => item.nota_tutor).reduce((a, b) => a + b, 0) / aluno.length;
+  const media_tutor = tutor?.length === 0 ? 0 : tutor.map(item => item.nota_aluno).reduce((a, b) => a + b, 0) / tutor.length;
   const tabs = [
     {
       title: 'Conta',
@@ -100,9 +105,30 @@ const Perfil = ({ usuario, cursos, prof, improf, horarios, agenda }) => {
       content: <ListarDisciplinas disciplinas={improf} />
     },
     {
-      title: 'Avaliações',
+      title: 'Avaliações como Tutor',
       index: index++,
-      content: <></>
+      content: <Avaliações items={agenda.map((item) => {
+        return {
+          comentario: item.comentario_aluno,
+          data: (new Date(item.data_inicio)).toLocaleDateString(),
+          nota: item.nota_aluno,
+          status: item.status,
+        }
+      })}
+        media={media_tutor} />
+    },
+    {
+      title: 'Avaliações como Aluno',
+      index: index++,
+      content: <Avaliações items={agenda.map((item) => {
+        return {
+          comentario: item.comentario_tutor,
+          data: (new Date(item.data_inicio)).toLocaleDateString(),
+          nota: item.nota_tutor,
+          status: item.status,
+        }
+      })}
+        media={media_aluno} />
     },
   ];
 
