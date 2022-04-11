@@ -14,8 +14,7 @@ const Agenda = ({ usuario, diasUteis, agenda }) => {
     }
   });
 
-  const events = agenda?.map((item, id) => {
-    console.log(`start: ${item.data_inicio}, end: ${item.data_fim}`)
+  const events = agenda?.filter(item => item.status === 'agendada' || item.status === 'solicitada').map((item, id) => {
     return {
       id: id,
       title: usuario.matricula === item.matricula_tutor ? 'Tutoria ' + item.status: 'Aula ' + item.status,

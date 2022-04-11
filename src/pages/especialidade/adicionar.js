@@ -9,7 +9,7 @@ import { get } from '../../lib/api';
 import Modal from '../../components/modals';
 import Router from "next/router";
 
-const AdicionarProficiencia = ({ cursos }) => {
+const AdicionarEspecialidade = ({ cursos }) => {
   const [errorMessage, setErrorMessage] = useState("");
   const [showModal, setModal] = useState(false);
 
@@ -28,7 +28,7 @@ const AdicionarProficiencia = ({ cursos }) => {
   }
 
   const onClick = (e) => {
-    Router.push('/proficiencia/listar');
+    Router.push('/especialidade/listar');
   }
 
   const buttonModal = () => {
@@ -50,16 +50,16 @@ const AdicionarProficiencia = ({ cursos }) => {
     }
   };
 
-  const [isLoading, setRequest] = useRequest(onAction, onError, '/api/proficiencia/adicionar');
+  const [isLoading, setRequest] = useRequest(onAction, onError, '/api/especialidade/adicionar');
 
   return (
     <>
       <Head>
         <title>
-          Computoria: Adicionar Proficiencia
+          Computoria: Adicionar Especialidade
         </title>
       </Head>
-      <SectionTitle title="Adicionar" subtitle="Proficiencia" />
+      <SectionTitle title="Adicionar" subtitle="Especialidade" />
       <Widget>
         <Modal title={'Computoria'} body={sucessBody()} open={showModal} setOpen={setModal} btns={buttonModal()} />
         <Form setAction={setRequest} isLoading={isLoading}
@@ -69,7 +69,7 @@ const AdicionarProficiencia = ({ cursos }) => {
   );
 };
 
-export default AdicionarProficiencia;
+export default AdicionarEspecialidade;
 
 export const getServerSideProps = async (context) => {
   const response = await get('/api/cursos');
