@@ -37,7 +37,6 @@ const ajuda = async (req, res) => {
         (ajuda.tutor = ${usuario.cpf} OR ajuda.aluno = ${usuario.cpf}) AND
         ajuda.tutor = usuario1.cpf AND 
         ajuda.aluno = usuario2.cpf AND 
-        (ajuda.status = "solicitada" OR ajuda.status = "agendada") AND
         disciplina.sigla = ajuda.sigla_disciplina;
     `);
     console.log('get ajuda');
@@ -55,7 +54,16 @@ const agenda = async (req, res) => {
         matricula: matricula,
       }
     });
-    const agenda = await sequelize.query(`
+    await Ajuda.update({
+      status: 'concluida'
+    }, {
+      where: {
+        data_fim: {
+          [Op.lt]: new Date(),
+        }
+      }
+    });
+    let agenda = await sequelize.query(`
       SELECT 
         id, 
         disciplina.nome as disciplina, 
@@ -302,7 +310,7 @@ const aluno_reagendar = async (req, res) => {
       ajuda.status = 'cancelada';
       await ajuda.save();
     } else {
-      return;
+      return res.status(500).send({ error: 'error' });;
     }
     const array = req.body.dia.split('-')
     await Ajuda.create({
@@ -331,7 +339,7 @@ const tutor_reagendar = async (req, res) => {
       ajuda.status = 'cancelada';
       await ajuda.save();
     } else {
-      return;
+      return res.status(500).send({ error: 'error' });;
     }
     const array = req.body.dia.split('-')
     await Ajuda.create({
@@ -352,10 +360,40 @@ const tutor_reagendar = async (req, res) => {
   }
 }
 
-const avaliar = (req, res) => {
-    if(req.route.methods.get) {
-      res.render()
+const avaliar = async (req, res) => {
+  if (req.route.methods.post && req.body) {
+    const usuario = await Usuario.findOne({ where: { matricula: req.matricula } });
+    const ajuda = await Ajuda.findOne({ where: { id: req.body?.id, }, });
+    let update = {};
+    console.log(req.body);
+    if (ajuda.tutor === usuario.cpf && ajuda.nota_tutor === null) {
+      update = {
+        nota_tutor: parseInt(req.body.nota),
+        comentario_tutor: req.body.comentario,
+      };
+    } else if (ajuda.aluno === usuario.cpf && ajuda.nota_aluno === null) {
+      update = {
+        nota_aluno: parseInt(req.body.nota),
+        comentario_aluno: req.body.comentario,
+      };
+    } else {
+      return res.status(500).send({ error: 'Usuario não pode avaliar essa ajuda' });
     }
+    console.log(update);
+    await Ajuda.update(update, {
+      where: {
+        id: req.body?.id,
+      }
+    }).then((ajuda) => {
+      console.log(ajuda);
+      res.status(200).send({ msg: 'ok' });
+    }).catch((error) => {
+      console.log(error.parent.sqlMessage);
+      res.status(500).send({ error: error.parent.sqlMessage });
+    })
+  } else {
+    res.status(500).send({ error: 'error' });
+  }
 }
 
 module.exports = {
@@ -370,4 +408,5 @@ module.exports = {
   tutor_cancelar,
   aluno_reagendar,
   tutor_reagendar,
+  avaliar,
 }

@@ -4,7 +4,7 @@ import SectionTitle from "../../components/section/section-title";
 import { UnderlinedTabs } from "../../components/tabs";
 import Widget from "../../components/widget";
 import List1 from "../../components/d-board/lists/list-1";
-import { get } from '../../lib/api';
+import { get, cookieToDict } from '../../lib/api';
 import { useRouter } from "next/router";
 import Router from "next/router";
 import Agenda from "../../components/agenda/index";
@@ -69,8 +69,8 @@ const ListarDisciplinas = ({ disciplinas }) => {
 const Perfil = ({ usuario, cursos, especialidades, horarios, agenda }) => {
   const { query } = useRouter();
   const curso = cursos.find(curso => curso.sigla == usuario.sigla_curso);
-  const aluno = agenda?.filter(item => item.status === 'concluida' && item.matricula_aluno === usuario.matricula);
-  const tutor = agenda?.filter(item => item.status === 'concluida' && item.matricula_tutor === usuario.matricula);
+  const aluno = agenda?.filter(item => item.status === 'concluida' && item.matricula_aluno === usuario.matricula && item.nota_tutor !== null);
+  const tutor = agenda?.filter(item => item.status === 'concluida' && item.matricula_tutor === usuario.matricula && item.nota_aluno !== null);
   const media_aluno = aluno?.length === 0 ? 0 : aluno.map(item => item.nota_tutor).reduce((a, b) => a + b, 0) / aluno.length;
   const media_tutor = tutor?.length === 0 ? 0 : tutor.map(item => item.nota_aluno).reduce((a, b) => a + b, 0) / tutor.length;
   const tabs = [
@@ -81,7 +81,7 @@ const Perfil = ({ usuario, cursos, especialidades, horarios, agenda }) => {
     {
       title: 'Avaliações como Tutor',
       index: 4,
-      content: <Avaliações items={agenda.map((item) => {
+      content: <Avaliações items={tutor.map((item) => {
         return {
           comentario: item.comentario_aluno,
           data: (new Date(item.data_inicio)).toLocaleDateString(),
@@ -94,7 +94,7 @@ const Perfil = ({ usuario, cursos, especialidades, horarios, agenda }) => {
     {
       title: 'Avaliações como Aluno',
       index: 5,
-      content: <Avaliações items={agenda.map((item) => {
+      content: <Avaliações items={aluno.map((item) => {
         return {
           comentario: item.comentario_tutor,
           data: (new Date(item.data_inicio)).toLocaleDateString(),
@@ -155,6 +155,15 @@ export default Perfil;
 
 export const getServerSideProps = async (context) => {
   const { req, res } = context;
+  const cookie = cookieToDict(req.headers.cookie);
+  if (cookie.matricula === context.params.matricula) {
+    return {
+      redirect: {
+        permanent: false,
+        destination: "/perfil"
+      }
+    }
+  }
   const response1 = await get(`/api/usuario/${context.params.matricula}`, {
     headers: req.headers
   });

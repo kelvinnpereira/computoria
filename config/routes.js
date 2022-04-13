@@ -105,6 +105,7 @@ router.post('/api/ajuda/tutor_reagendar'             , auth.authenticated, ajuda
 router.get ('/api/disponibilidade/listar'            , auth.authenticated, ajudaController.listar_disponibilidade);
 router.get ('/api/disponibilidade/listar/:matricula' , auth.authenticated, ajudaController.listar_disponibilidade);
 router.post('/api/disponibilidade/adicionar'         , auth.authenticated, ajudaController.adicionar_disponibilidade);
+router.post('/api/ajuda/avaliar'                     , auth.authenticated, ajudaController.avaliar);
 
 //not found
 router.get ('*', nextController.handler);
