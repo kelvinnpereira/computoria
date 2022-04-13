@@ -69,8 +69,8 @@ const ListarDisciplinas = ({ disciplinas }) => {
 const Perfil = ({ usuario, cursos, especialidades, horarios, agenda }) => {
   const { query } = useRouter();
   const curso = cursos.find(curso => curso.sigla == usuario.sigla_curso);
-  const aluno = agenda?.filter(item => item.status === 'concluida' && item.matricula_aluno === usuario.matricula);
-  const tutor = agenda?.filter(item => item.status === 'concluida' && item.matricula_tutor === usuario.matricula);
+  const aluno = agenda?.filter(item => item.status === 'concluida' && item.matricula_aluno === usuario.matricula && item.nota_tutor !== null);
+  const tutor = agenda?.filter(item => item.status === 'concluida' && item.matricula_tutor === usuario.matricula && item.nota_aluno !== null);
   const media_aluno = aluno?.length === 0 ? 0 : aluno.map(item => item.nota_tutor).reduce((a, b) => a + b, 0) / aluno.length;
   const media_tutor = tutor?.length === 0 ? 0 : tutor.map(item => item.nota_aluno).reduce((a, b) => a + b, 0) / tutor.length;
   const tabs = [

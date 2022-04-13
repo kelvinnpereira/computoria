@@ -27,7 +27,10 @@ const Form = ({ message = null, setSubmit, isLoading, usuario }) => {
         )}
         <form
           onSubmit={handleSubmit((data) => {
-            setSubmit(data);
+            setSubmit({
+              ...data,
+              comentario: document.getElementsByName('comentario')[0]?.value,
+            });
           })}
           className="form flex flex-wrap w-full">
           <div className="w-full">

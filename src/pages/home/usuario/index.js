@@ -8,6 +8,7 @@ import SolicitacoesRecebidas from "../../../components/solicitacoes/recebidas";
 import SolicitacoesEnviadas from "../../../components/solicitacoes/enviadas";
 import Aulas from "../../../components/ajuda/aula";
 import Tutorias from "../../../components/ajuda/tutoria";
+import Historico from "../../../components/ajuda/historico";
 import Modal from '../../../components/modals';
 
 import { get } from "../../../lib/api";
@@ -75,8 +76,7 @@ const Home = ({ usuario, cursos, horarios, agenda }) => {
       content: <Agenda usuario={usuario} diasUteis={horarios} agenda={agenda} />
     },
     {
-      title:
-        "Aulas Agendadas",
+      title: "Aulas Agendadas",
       index: 1,
       content: <Aulas
         usuario={usuario}
@@ -84,8 +84,7 @@ const Home = ({ usuario, cursos, horarios, agenda }) => {
         cancelar={setAlunoCancelar} />
     },
     {
-      title:
-        "Tutorias Agendadas",
+      title: "Tutorias Agendadas",
       index: 2,
       content: <Tutorias
         usuario={usuario}
@@ -93,8 +92,7 @@ const Home = ({ usuario, cursos, horarios, agenda }) => {
         cancelar={setTutorCancelar} />
     },
     {
-      title:
-        "Solicitações de Ajudas Enviadas",
+      title: "Solicitações de Ajudas Enviadas",
       index: 3,
       content: <SolicitacoesEnviadas
         usuario={usuario}
@@ -102,14 +100,20 @@ const Home = ({ usuario, cursos, horarios, agenda }) => {
         cancelar={setAlunoCancelar} />
     },
     {
-      title:
-        "Solicitações de Ajudas Recebidas",
+      title: "Solicitações de Ajudas Recebidas",
       index: 4,
       content: <SolicitacoesRecebidas
         usuario={usuario}
         agenda={agenda}
         aceitar={setRequestAceitar}
         recusar={setRequestRemover} />
+    },
+    {
+      title: "Historico de Ajudas",
+      index: 5,
+      content: <Historico
+        usuario={usuario}
+        agenda={agenda} />
     },
   ]
 
