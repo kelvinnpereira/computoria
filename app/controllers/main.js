@@ -254,10 +254,12 @@ const monitoria_inscrever = async (req, res) => {
             await Monitor.create({
                 cpf: usuario.cpf,
                 sigla_disciplina: req.body?.disciplina
-            }).then(() => {
+            }).then((monitor) => {
+                console.log(monitor);
                 res.status(200).send({ msg: 'ok' });
-            }).catch(() => {
-                res.status(500).send({ error: 'Umas das disciplinas selecionadas já estão em sua lista de especialidades!' })
+            }).catch((error) => {
+                console.log(error);
+                res.status(500).send({ error: 'Umas das disciplinas selecionadas já estão em sua lista de monitoria!' })
             });
         } else {
             res.status(500).send({ error: 'Você tem solicitações de monitoria pendentes!' })

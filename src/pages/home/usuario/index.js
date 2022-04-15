@@ -13,7 +13,7 @@ import Modal from '../../../components/modals';
 
 import { get } from "../../../lib/api";
 import { useRequest } from "../../../hooks/auth";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Router from "next/router";
 
 const sucessBody = () => {
@@ -42,10 +42,34 @@ const buttonModal = () => {
   );
 }
 
+const avaliacaoBody = (usuario, agenda) => {
+  return (
+    <div class="relative p-4 w-full text-center">
+      <div class="flex flex-col w-full mb-4">
+        <div class="text-lg mb-2 font-bold">Você tem avaliações pendentes. Gostaria de avaliar o tutor agora?</div>
+        Obs: Não é possível marcar outra ajuda com avaliações pendentes.
+      </div>
+      <Historico usuario={usuario} agenda={agenda} width='w-full' />
+    </div>
+  )
+}
+
+const avaliacaoButton = () => {
+  return (
+    <button
+      onClick={(e) => window.location.reload()}
+      className="btn btn-default btn-rounded bg-blue-500 text-white hover:bg-blue-600 w-full"
+      type="button">
+      Agora Não
+    </button>
+  );
+}
+
 const Home = ({ usuario, cursos, horarios, agenda }) => {
   const curso = cursos.find(curso => curso.sigla == usuario.sigla_curso);
   const [errorMessage, setErrorMessage] = useState("");
   const [showModal, setModal] = useState(false);
+  const [showModalAvaliacao, setModalAvaliacao] = useState(false);
 
   const onAction = (data) => {
     setModal(true);
@@ -68,6 +92,8 @@ const Home = ({ usuario, cursos, horarios, agenda }) => {
   const [isLoadingRemover, setRequestRemover] = useRequest(onAction, onError, '/api/ajuda/recusar');
   const [isLoadingAlunoCancelar, setAlunoCancelar] = useRequest(onAction, onError, '/api/ajuda/aluno_cancelar');
   const [isLoadingTutorCancelar, setTutorCancelar] = useRequest(onAction, onError, '/api/ajuda/tutor_cancelar');
+  const [isLoadingPopup, setPopup] = useRequest((data) => console.log('sucess popup'), (data) => console.log('error popup'), '/api/ajuda/popup');
+  const concluida = agenda?.filter(item => item.status == 'concluida' && usuario.matricula === item.matricula_aluno && item.nota_aluno === null)
 
   const tabs = [
     {
@@ -115,7 +141,14 @@ const Home = ({ usuario, cursos, horarios, agenda }) => {
         usuario={usuario}
         agenda={agenda} />
     },
-  ]
+  ];
+
+  useEffect(() => {
+    if (concluida.length > 0 && concluida[0].mostrar_popup) {
+      setModalAvaliacao(true);
+      setPopup({id: concluida[0].id});
+    }
+  }, [])
 
   return (
     <>
@@ -132,6 +165,13 @@ const Home = ({ usuario, cursos, horarios, agenda }) => {
           open={showModal}
           setOpen={setModal}
           btns={buttonModal()} />
+        <Modal
+          title={'Avaliações pendentes'}
+          body={avaliacaoBody(usuario, concluida)}
+          open={showModalAvaliacao}
+          setOpen={setModalAvaliacao}
+          btns={avaliacaoButton()}
+          maxWidth="w-1/3" />
         <div className="flex flex-row m-4">
           <img src='/images/avatar_default.png' alt='Foto usuário' className='rounded-full ring-blue' />
           <div className="pl-4">

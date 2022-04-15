@@ -26,7 +26,8 @@ const ajuda = async (req, res) => {
         usuario1.matricula as matricula_tutor,
         usuario2.matricula as matricula_aluno,
         data_inicio, 
-        data_fim
+        data_fim,
+        mostrar_popup
       FROM
         ajuda,
         usuario as usuario1,
@@ -78,7 +79,8 @@ const agenda = async (req, res) => {
         nota_aluno,
         nota_tutor,
         comentario_aluno,
-        comentario_tutor
+        comentario_tutor,
+        mostrar_popup
       FROM
         ajuda,
         usuario as usuario1,
@@ -89,7 +91,8 @@ const agenda = async (req, res) => {
           (ajuda.tutor = ${usuario.cpf} AND ajuda.tutor = usuario1.cpf AND ajuda.aluno = usuario2.cpf) OR 
           (ajuda.aluno = ${usuario.cpf} AND ajuda.aluno = usuario2.cpf AND ajuda.tutor = usuario1.cpf)
         ) AND 
-        disciplina.sigla = ajuda.sigla_disciplina;
+        disciplina.sigla = ajuda.sigla_disciplina
+      ORDER BY id DESC;
     `);
     console.log('Listar agenda');
     res.status(200).send({ agenda: agenda?.at(0) });
@@ -396,6 +399,26 @@ const avaliar = async (req, res) => {
   }
 }
 
+const popup = async (req, res) => {
+  if (req.route.methods.post && req.body) {
+    await Ajuda.update({
+      mostrar_popup: false
+    }, {
+      where: {
+        id: req.body.id,
+      }
+    }).then((ajuda) => {
+      console.log(ajuda);
+      res.status(200).send({msg: 'ok'});
+    }).catch((error) => {
+      console.log(error);
+      res.status(500).send({error: 'error'});
+    })
+  } else {
+    res.status(500).send({error: 'error'});
+  }
+}
+
 module.exports = {
   ajuda,
   agenda,
@@ -409,4 +432,5 @@ module.exports = {
   aluno_reagendar,
   tutor_reagendar,
   avaliar,
+  popup,
 }

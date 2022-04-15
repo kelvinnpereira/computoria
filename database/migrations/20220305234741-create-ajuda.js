@@ -49,6 +49,11 @@ module.exports = {
         allowNull: true,
         type: Sequelize.STRING,
       },
+      mostrar_popup: {
+        allowNull: false,
+        type: Sequelize.BOOLEAN,
+        defaultValue: true,
+      },
       created_at: {
         allowNull: false,
         type: Sequelize.DATE,
