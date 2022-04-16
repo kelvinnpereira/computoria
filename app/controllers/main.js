@@ -69,27 +69,31 @@ const api_especialidade = async (req, res) => {
                 matricula: matricula
             }
         });
-        await Disciplina.findAll({
-            where: {
-                sigla: {
-                    [Op.eq]: Sequelize.col('sigla_disciplina')
-                }
-            },
-            include: {
-                model: Especialidade,
-                attributes: [],
+        if (usuario) {
+            await Disciplina.findAll({
                 where: {
-                    cpf: {
-                        [Op.eq]: usuario.cpf
+                    sigla: {
+                        [Op.eq]: Sequelize.col('sigla_disciplina')
+                    }
+                },
+                include: {
+                    model: Especialidade,
+                    attributes: [],
+                    where: {
+                        cpf: {
+                            [Op.eq]: usuario.cpf
+                        }
                     }
                 }
-            }
-        }).then((disciplinas) => {
-            res.status(200).send({ disciplinas: disciplinas });
-        }).catch((error) => {
-            console.log(error);
-            res.status(500).send({ error: error });
-        });
+            }).then((disciplinas) => {
+                res.status(200).send({ disciplinas: disciplinas });
+            }).catch((error) => {
+                console.log(error);
+                res.status(500).send({ error: error });
+            });
+        } else {
+            res.status(500).send({error: 'usuario não econtrado'});
+        }
     } else {
         res.status(500).send({ error: 'Not loged in or not a get request' });
     }
@@ -158,24 +162,28 @@ const api_dificuldade = async (req, res) => {
                 matricula: req.matricula
             }
         });
-        await Disciplina.findAll({
-            where: {
-                sigla: {
-                    [Op.eq]: Sequelize.col('sigla_disciplina')
-                }
-            },
-            include: {
-                model: Dificuldade,
-                attributes: [],
+        if (usuario) {
+            await Disciplina.findAll({
                 where: {
-                    cpf: {
-                        [Op.eq]: usuario.cpf
+                    sigla: {
+                        [Op.eq]: Sequelize.col('sigla_disciplina')
+                    }
+                },
+                include: {
+                    model: Dificuldade,
+                    attributes: [],
+                    where: {
+                        cpf: {
+                            [Op.eq]: usuario.cpf
+                        }
                     }
                 }
-            }
-        }).then((disciplinas) => {
-            res.status(200).send({ disciplinas: disciplinas });
-        });
+            }).then((disciplinas) => {
+                res.status(200).send({ disciplinas: disciplinas });
+            });
+        } else {
+            res.status(500).send({error: 'usuariuo não encontrado'});
+        }
     } else {
         res.status(500).send({ error: 'Not loged in or not a get request' });
     }
@@ -277,23 +285,27 @@ const monitoria_listar = async (req, res) => {
                 matricula: matricula
             }
         });
-        await Disciplina.findAll({
-            where: {
-                sigla: {
-                    [Op.eq]: Sequelize.col('sigla_disciplina')
-                }
-            },
-            include: {
-                model: Monitor,
-                attributes: [],
+        if (usuario) {
+            await Disciplina.findAll({
                 where: {
-                    cpf: usuario.cpf,
-                    status: 'aprovado',
+                    sigla: {
+                        [Op.eq]: Sequelize.col('sigla_disciplina')
+                    }
+                },
+                include: {
+                    model: Monitor,
+                    attributes: [],
+                    where: {
+                        cpf: usuario.cpf,
+                        status: 'aprovado',
+                    }
                 }
-            }
-        }).then((disciplinas) => {
-            res.status(200).send({ disciplinas: disciplinas });
-        });
+            }).then((disciplinas) => {
+                res.status(200).send({ disciplinas: disciplinas });
+            });
+        } else {
+            res.status(500).send({ error: 'usuario não encontrado' });
+        }
     } else {
         res.status(500).send({ error: 'Not loged in or not a get request' });
     }

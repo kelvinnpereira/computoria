@@ -15,33 +15,37 @@ const ajuda = async (req, res) => {
         matricula: matricula,
       }
     });
-    const ajuda = await sequelize.query(`
-      SELECT 
-        id, 
-        disciplina.nome as disciplina, 
-        sigla_disciplina, 
-        status,
-        usuario1.nome as nome_tutor,
-        usuario2.nome as nome_aluno,
-        usuario1.matricula as matricula_tutor,
-        usuario2.matricula as matricula_aluno,
-        data_inicio, 
-        data_fim,
-        mostrar_popup
-      FROM
-        ajuda,
-        usuario as usuario1,
-        usuario as usuario2,
-        disciplina
-      WHERE
-        id = ${req.params.id} AND
-        (ajuda.tutor = ${usuario.cpf} OR ajuda.aluno = ${usuario.cpf}) AND
-        ajuda.tutor = usuario1.cpf AND 
-        ajuda.aluno = usuario2.cpf AND 
-        disciplina.sigla = ajuda.sigla_disciplina;
-    `);
-    console.log('get ajuda');
-    res.status(200).send({ ajuda: ajuda?.at(0)?.at(0) });
+    if (usuario) {
+      const ajuda = await sequelize.query(`
+        SELECT 
+          id, 
+          disciplina.nome as disciplina, 
+          sigla_disciplina, 
+          status,
+          usuario1.nome as nome_tutor,
+          usuario2.nome as nome_aluno,
+          usuario1.matricula as matricula_tutor,
+          usuario2.matricula as matricula_aluno,
+          data_inicio, 
+          data_fim,
+          mostrar_popup
+        FROM
+          ajuda,
+          usuario as usuario1,
+          usuario as usuario2,
+          disciplina
+        WHERE
+          id = ${req.params.id} AND
+          (ajuda.tutor = ${usuario.cpf} OR ajuda.aluno = ${usuario.cpf}) AND
+          ajuda.tutor = usuario1.cpf AND 
+          ajuda.aluno = usuario2.cpf AND 
+          disciplina.sigla = ajuda.sigla_disciplina;
+      `);
+      console.log('get ajuda');
+      res.status(200).send({ ajuda: ajuda?.at(0)?.at(0) });
+    } else {
+      res.status(500).send({ error: 'usuario não encontrado' });
+    }
   } else {
     res.status(500).send({ error: 'sem parametros matricula' });
   }
@@ -64,38 +68,42 @@ const agenda = async (req, res) => {
         }
       }
     });
-    let agenda = await sequelize.query(`
-      SELECT 
-        id, 
-        disciplina.nome as disciplina, 
-        sigla_disciplina, 
-        status,
-        usuario1.nome as nome_tutor,
-        usuario2.nome as nome_aluno,
-        usuario1.matricula as matricula_tutor,
-        usuario2.matricula as matricula_aluno,
-        data_inicio, 
-        data_fim,
-        nota_aluno,
-        nota_tutor,
-        comentario_aluno,
-        comentario_tutor,
-        mostrar_popup
-      FROM
-        ajuda,
-        usuario as usuario1,
-        usuario as usuario2,
-        disciplina
-      WHERE
-        (
-          (ajuda.tutor = ${usuario.cpf} AND ajuda.tutor = usuario1.cpf AND ajuda.aluno = usuario2.cpf) OR 
-          (ajuda.aluno = ${usuario.cpf} AND ajuda.aluno = usuario2.cpf AND ajuda.tutor = usuario1.cpf)
-        ) AND 
-        disciplina.sigla = ajuda.sigla_disciplina
-      ORDER BY id DESC;
-    `);
-    console.log('Listar agenda');
-    res.status(200).send({ agenda: agenda?.at(0) });
+    if (usuario) {
+      let agenda = await sequelize.query(`
+        SELECT 
+          id, 
+          disciplina.nome as disciplina, 
+          sigla_disciplina, 
+          status,
+          usuario1.nome as nome_tutor,
+          usuario2.nome as nome_aluno,
+          usuario1.matricula as matricula_tutor,
+          usuario2.matricula as matricula_aluno,
+          data_inicio, 
+          data_fim,
+          nota_aluno,
+          nota_tutor,
+          comentario_aluno,
+          comentario_tutor,
+          mostrar_popup
+        FROM
+          ajuda,
+          usuario as usuario1,
+          usuario as usuario2,
+          disciplina
+        WHERE
+          (
+            (ajuda.tutor = ${usuario.cpf} AND ajuda.tutor = usuario1.cpf AND ajuda.aluno = usuario2.cpf) OR 
+            (ajuda.aluno = ${usuario.cpf} AND ajuda.aluno = usuario2.cpf AND ajuda.tutor = usuario1.cpf)
+          ) AND 
+          disciplina.sigla = ajuda.sigla_disciplina
+        ORDER BY id DESC;
+      `);
+      console.log('Listar agenda');
+      res.status(200).send({ agenda: agenda?.at(0) });
+    } else {
+      res.status(500).send({ error: 'usuario não encontrado' });
+    }
   } else {
     res.status(500).send({ error: 'sem parametros matricula' });
   }
@@ -140,17 +148,21 @@ const listar_disponibilidade = async (req, res) => {
         matricula: matricula
       }
     });
-    await Disponibilidade.findAll({
-      where: {
-        cpf: usuario.cpf,
-      }
-    }).then((disponibilidade) => {
-      console.log('disponibilidades encontradas');
-      res.status(200).send({ horarios: disponibilidade });
-    }).catch((error) => {
-      console.log(error);
-      res.status(500).send({ error: 'error' })
-    });
+    if (usuario) {
+      await Disponibilidade.findAll({
+        where: {
+          cpf: usuario.cpf,
+        }
+      }).then((disponibilidade) => {
+        console.log('disponibilidades encontradas');
+        res.status(200).send({ horarios: disponibilidade });
+      }).catch((error) => {
+        console.log(error);
+        res.status(500).send({ error: 'error' })
+      });
+    } else {
+      res.status(500).send({ error: 'usuario não encontrado' });
+    }
   } else {
     res.status(500).send({ error: 'error' });
   }
@@ -409,13 +421,13 @@ const popup = async (req, res) => {
       }
     }).then((ajuda) => {
       console.log(ajuda);
-      res.status(200).send({msg: 'ok'});
+      res.status(200).send({ msg: 'ok' });
     }).catch((error) => {
       console.log(error);
-      res.status(500).send({error: 'error'});
+      res.status(500).send({ error: 'error' });
     })
   } else {
-    res.status(500).send({error: 'error'});
+    res.status(500).send({ error: 'error' });
   }
 }
 
