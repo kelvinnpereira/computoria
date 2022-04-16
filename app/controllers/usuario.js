@@ -259,22 +259,26 @@ const atualizar_senha = async (req, res) => {
 
 const denunciar = async (req, res) => {
   if (req.route.methods.post && req.body && req.params?.matricula) {
-    const user1 = await Usuario.findOne({ where: { matricula: req.params.matricula } })
-    const user2 = await Usuario.findOne({ where: { matricula: req.matricula } })
-    await Denuncia.create({
-      denunciado: user1.cpf,
-      denunciador: user2.cpf,
-      status: '',
-      comentario: req.body.comentario
-    }).then((denuncia) => {
-      console.log('Denuncia enviada com sucesso');
-      res.status(200).send({ message: 'Denuncia enviada com sucesso' });
-    }).catch((error) => {
-      console.log(error);
-      res.status(500).send({ error: 'Usuario não encontrado' });
-    })
+    const user1 = await Usuario.findOne({ where: { matricula: req.params.matricula } });
+    const user2 = await Usuario.findOne({ where: { matricula: req.matricula } });
+    if (user1 && user2) {
+      await Denuncia.create({
+        denunciado: user1.cpf,
+        denunciador: user2.cpf,
+        status: '',
+        comentario: req.body.comentario
+      }).then((denuncia) => {
+        console.log('Denuncia enviada com sucesso');
+        res.status(200).send({ message: 'Denuncia enviada com sucesso' });
+      }).catch((error) => {
+        console.log(error);
+        res.status(500).send({ error: 'Usuario não encontrado' });
+      });
+    } else {
+      res.status(500).send({ error: 'usuarios não encontrados' });
+    }
   } else {
-    res.status(500).send({ error: 'not logged in or no a get resquest' })
+    res.status(500).send({ error: 'not logged in or no a get resquest' });
   }
 }
 
