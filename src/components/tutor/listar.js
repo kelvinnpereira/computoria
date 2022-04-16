@@ -58,7 +58,7 @@ const ListarTutores = ({ tutores }) => {
       accessor: 'nome',
       Filter: nomeFilter,
       filter: (rows, id, filterValue) => {
-        return rows.filter((row) => row.values[id].props.children.toLowerCase().includes(filterValue));
+        return rows.filter((row) => row.values[id].props.children.toLowerCase().includes(filterValue.toLowerCase()));
       }
     },
     {

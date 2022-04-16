@@ -1,5 +1,5 @@
 import Alert from "../alerts";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { FaSpinner } from "react-icons/fa";
 import { useCsrf } from "../../hooks/auth";
@@ -7,6 +7,7 @@ import Timepicker from '../d-board/timepicker/index';
 
 const Horarios = ({ message = null, setAction, isLoading, horarios }) => {
   const [csrf, setCsrf] = useCsrf(null);
+  const [errorMsg, setErrorMsg] = useState(null);
   const { handleSubmit, errors, register } = useForm();
 
   let horarios_array = [[], [], [], [], [], [], []];
@@ -26,18 +27,20 @@ const Horarios = ({ message = null, setAction, isLoading, horarios }) => {
 
   return (
     <div className="flex flex-col w-full">
-      {message && (
+      {(message || errorMsg) && (
         <div className="w-full mb-4">
           <Alert
             color="bg-transparent border-red-500 text-red-500"
             borderLeft
             raised>
             {message}
+            {errorMsg}
           </Alert>
         </div>
       )}
       <form
         onSubmit={handleSubmit((data) => {
+          setErrorMsg(null);
           setAction(data);
         })}
         className="form flex flex-wrap w-full">
@@ -54,6 +57,7 @@ const Horarios = ({ message = null, setAction, isLoading, horarios }) => {
                           {dias[i]}
                         </span>
                         <input
+                          id={chaves[i]}
                           ref={register({
                             required: true
                           })}
@@ -95,7 +99,15 @@ const Horarios = ({ message = null, setAction, isLoading, horarios }) => {
                               register={register}
                               register_obj={{
                                 required: false,
-                                validate: (value) => valid_hour(value) || 'Horario invalido'
+                                validate: (value) => {
+                                  const checked = document.getElementById(chaves[i]).checked;
+                                  const inicio = document.getElementsByName(`horarios[${i}][0][inicio]`)[0].value;
+                                  const fim = value;
+                                  const valid = (!checked || (valid_hour(fim) && inicio < fim));
+                                  const msg = 'Horario invalido em ' + dias[i];
+                                  if (!valid) setErrorMsg(msg);
+                                  return valid || msg;
+                                }
                               }}
                               name={`horarios[${i}][0][fim]`}
                             />
@@ -127,7 +139,15 @@ const Horarios = ({ message = null, setAction, isLoading, horarios }) => {
                                   register={register}
                                   register_obj={{
                                     required: false,
-                                    validate: (value) => valid_hour(value) || 'Horario invalido'
+                                    validate: (value) => {
+                                      const checked = document.getElementById(chaves[i]).checked;
+                                      const inicio = document.getElementsByName(`horarios[${i}][${j}][inicio]`)[0].value;
+                                      const fim = value;
+                                      const valid = (!checked || (valid_hour(fim) && inicio < fim));
+                                      const msg = 'Horario invalido em ' + dias[i];
+                                      if (!valid) setErrorMsg(msg);
+                                      return valid || msg;
+                                    }
                                   }}
                                   name={`horarios[${i}][${j}][fim]`}
                                   initialValue={hora.hora_fim}
