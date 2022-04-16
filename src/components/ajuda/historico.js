@@ -1,6 +1,6 @@
 import Router from "next/router";
 
-const Historico = ({ usuario, agenda }) => {
+const Historico = ({ usuario, agenda, width = 'w-1/3' }) => {
   const semanas = [
     'Domingo',
     'Segunda-Feira',
@@ -59,7 +59,7 @@ const Historico = ({ usuario, agenda }) => {
             btn_denunciar = 'Denunciar Aluno';
           }
           return (
-            <div className='w-1/3 widget p-4 mb-4 rounded-lg bg-white border border-gray-100 dark:bg-gray-900 dark:border-gray-800'>
+            <div className={`${width} widget p-4 mb-4 rounded-lg bg-white border border-gray-100 dark:bg-gray-900 dark:border-gray-800`}>
               <div className="flex items-center">
                 <img src='/images/avatar_default.png' alt='Foto usuário' className='rounded-full ring-blue' />
                 <div className="pl-4">

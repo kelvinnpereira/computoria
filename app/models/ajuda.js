@@ -38,6 +38,9 @@ module.exports = (sequelize, DataTypes) => {
     comentario_tutor: {
       type: DataTypes.STRING,
     },
+    mostrar_popup: {
+      type: DataTypes.BOOLEAN,
+    },
   }, {
     underscored: true,
     freezeTableName: true,

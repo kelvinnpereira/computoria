@@ -3,6 +3,7 @@ module.exports = {
 	area: require(__dirname + "/../app/models/area"), 
 	cargo: require(__dirname + "/../app/models/cargo"), 
 	categoria: require(__dirname + "/../app/models/categoria"), 
+	certificado: require(__dirname + "/../app/models/certificado"), 
 	curso: require(__dirname + "/../app/models/curso"), 
 	denuncia: require(__dirname + "/../app/models/denuncia"), 
 	dificuldade: require(__dirname + "/../app/models/dificuldade"), 
