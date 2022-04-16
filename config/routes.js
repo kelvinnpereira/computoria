@@ -5,6 +5,7 @@ const authController = require('../app/controllers/auth');
 const usuarioController = require('../app/controllers/usuario');
 const nextController = require('../app/controllers/next_routes');
 const ajudaController = require('../app/controllers/ajuda');
+const certificadoController = require('../app/controllers/certificado');
 const auth = require('../app/controllers/token_auth');
 
 //next
@@ -107,6 +108,11 @@ router.get ('/api/disponibilidade/listar/:matricula' , auth.authenticated, ajuda
 router.post('/api/disponibilidade/adicionar'         , auth.authenticated, ajudaController.adicionar_disponibilidade);
 router.post('/api/ajuda/avaliar'                     , auth.authenticated, ajudaController.avaliar);
 router.post('/api/ajuda/popup'                       , auth.authenticated, ajudaController.popup);
+
+//certificado
+router.get ('/api/certificado/horas'    , auth.authenticated, certificadoController.horas);
+router.get ('/api/certificado/listar'   , auth.authenticated, certificadoController.listar);
+router.post('/api/certificado/solicitar', auth.authenticated, certificadoController.solicitar);
 
 //not found
 router.get ('*', nextController.handler);

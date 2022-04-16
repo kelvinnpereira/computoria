@@ -92,7 +92,7 @@ module.exports = {
       {
         tutor: '55381028075',
         aluno: '13466113008',
-        sigla_disciplina: 'ICC002',
+        sigla_disciplina: 'ICC003',
         status: 'concluida',
         data_inicio: new Date('2022', (new Date()).getMonth(), (new Date()).getDate()+2, '14', '0'),
         data_fim: new Date('2022', (new Date()).getMonth(), (new Date()).getDate()+2, '16', '30'),
