@@ -46,7 +46,7 @@ const Form = ({ message = null, setAction, isLoading, cursos }) => {
                 onChange={async (event) => {
                   let response = await get('/api/disciplinas/' + event.target.value);
                   if (response?.data?.disciplinas) {
-                    setDisciplinas(response.data.disciplinas);
+                    setDisciplinas(response.data.disciplinas.filter(item => item.sigla.startsWith('ICC')));
                   }
                 }}
               >

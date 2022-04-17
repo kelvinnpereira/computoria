@@ -38,8 +38,8 @@ module.exports = (sequelize, DataTypes) => {
   });
   usuario.associate = function (models) {
     usuario.belongsTo(models.curso, { foreignKey: 'sigla_curso' });
-    usuario.hasMany(models.proficiencia, { foreignKey: 'cpf' });
-    usuario.hasMany(models.improficiencia, { foreignKey: 'cpf' });
+    usuario.hasMany(models.especialidade, { foreignKey: 'cpf' });
+    usuario.hasMany(models.dificuldade, { foreignKey: 'cpf' });
     usuario.hasMany(models.monitor, { foreignKey: 'cpf' });
     usuario.hasMany(models.mudar_senha, { foreignKey: 'cpf' });
     usuario.hasMany(models.ajuda, { foreignKey: 'tutor' });

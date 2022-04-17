@@ -49,7 +49,7 @@ const Modal = ({
           <div className="relative p-4 flex-auto">
             <div className="flex items-start justify-start p-2 space-x-4">
               <div className="flex flex-col w-full">
-                <div className="text-lg mb-2 font-bold">{title}</div>
+                <div className="text-xl mb-2 font-bold text-center">{title}</div>
                 {body}
               </div>
             </div>

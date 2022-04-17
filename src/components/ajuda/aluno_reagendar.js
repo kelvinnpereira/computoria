@@ -7,7 +7,7 @@ import Datepicker from '../d-board/datepicker';
 import Timepicker from '../d-board/timepicker';
 import moment from "moment";
 
-const Form = ({ message = null, setSubmit, isLoading, tutor, especialidades, diasUteis, agenda }) => {
+const Form = ({ message = null, setSubmit, isLoading, ajuda, diasUteis, agenda }) => {
   const [csrf, setCsrf] = useCsrf(null);
   const { handleSubmit, errors, register, watch } = useForm();
 
@@ -66,7 +66,7 @@ const Form = ({ message = null, setSubmit, isLoading, tutor, especialidades, dia
         const day = moment(document.getElementsByName('dia')[0].value, "DD-MM-YYYY").date();
         const item_day = new Date(item.data_inicio).getDate();
         const hora_inicio = document.getElementsByName('hora_inicio')[0].value;
-        if (item_day === day && (hora_inicio < start && hora >= start) ) {
+        if (item_day === day && (hora_inicio < start && hora >= start)) {
           return false;
         }
       }
@@ -95,7 +95,7 @@ const Form = ({ message = null, setSubmit, isLoading, tutor, especialidades, dia
           onSubmit={handleSubmit((data) => {
             setSubmit({
               ...data,
-              tutor: tutor.matricula
+              id: ajuda.id,
             });
           })}
           className="form flex flex-wrap w-full">
@@ -108,7 +108,7 @@ const Form = ({ message = null, setSubmit, isLoading, tutor, especialidades, dia
                 type="text"
                 className={`form-input ${errors["nome"] ? "border-red-500" : ""
                   }`}
-                defaultValue={tutor.nome}
+                defaultValue={ajuda.nome_tutor}
                 readOnly
               />
             </div>
@@ -120,7 +120,7 @@ const Form = ({ message = null, setSubmit, isLoading, tutor, especialidades, dia
                 type="text"
                 className={`form-input ${errors["matricula"] ? "border-red-500" : ""
                   }`}
-                defaultValue={tutor.matricula}
+                defaultValue={ajuda.matricula_tutor}
                 readOnly
               />
             </div>
@@ -135,14 +135,9 @@ const Form = ({ message = null, setSubmit, isLoading, tutor, especialidades, dia
                 className={` w-full form-select ${errors["disciplina"] ? "border border-red-500" : ""
                   }`}
               >
-                <option disabled selected value>
-                  -- Selecione uma Disciplina --
+                <option selected key="0" value={ajuda.sigla_disciplina}>
+                  {ajuda.sigla_disciplina + ' - ' + ajuda.disciplina}
                 </option>
-                {especialidades.map((option, i) => (
-                  <option key={i} value={option.sigla}>
-                    {option.sigla + ' - ' + option.nome}
-                  </option>
-                ))}
               </select>
               {errors["disciplina"] && (
                 <div className="form-error">{errors["disciplina"].message}</div>

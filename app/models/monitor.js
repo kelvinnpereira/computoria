@@ -9,8 +9,11 @@ module.exports = (sequelize, DataTypes) => {
       primaryKey: true,
       type: DataTypes.STRING
     },
-    aprovado: {
-      type: DataTypes.BOOLEAN
+    status: {
+      type: DataTypes.STRING,
+      validate: {
+        isIn: [['solicitado', 'aprovado', 'recusado', 'removido']]
+      },
     },
   }, {
     underscored: true,

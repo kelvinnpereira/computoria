@@ -5,7 +5,7 @@ import dayGridPlugin from "@fullcalendar/daygrid";
 import interactionPlugin from "@fullcalendar/interaction";
 import timeGridPlugin from "@fullcalendar/timegrid";
 
-const Agenda = ({ diasUteis, agenda }) => {
+const Agenda = ({ usuario, diasUteis, agenda }) => {
   const businessHours = diasUteis.map((item) => {
     return {
       daysOfWeek: [item.dia],
@@ -14,14 +14,13 @@ const Agenda = ({ diasUteis, agenda }) => {
     }
   });
 
-  const events = agenda.map((item, id) => {
-    console.log(`start: ${item.data_inicio}, end: ${item.data_fim}`)
+  const events = agenda?.filter(item => item.status === 'agendada' || item.status === 'solicitada').map((item, id) => {
     return {
       id: id,
-      title: item.tutor ? 'Tutoria': 'Aula',
+      title: usuario.matricula === item.matricula_tutor ? 'Tutoria ' + item.status: 'Aula ' + item.status,
       start: item.data_inicio,
       end: item.data_fim,
-      color: item.tutor ? 'red': 'green',
+      color: usuario.matricula === item.matricula_tutor ? 'red': 'green',
     }
   });
 

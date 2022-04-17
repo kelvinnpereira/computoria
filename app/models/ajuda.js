@@ -17,7 +17,7 @@ module.exports = (sequelize, DataTypes) => {
     status: {
       type: DataTypes.STRING,
       validate: {
-        isIn: [['solicitado', 'agendado', 'concluido']]
+        isIn: [['solicitada', 'agendada', 'concluida', 'recusada', 'cancelada']]
       },
     },
     data_inicio: {
@@ -37,6 +37,9 @@ module.exports = (sequelize, DataTypes) => {
     },
     comentario_tutor: {
       type: DataTypes.STRING,
+    },
+    mostrar_popup: {
+      type: DataTypes.BOOLEAN,
     },
   }, {
     underscored: true,

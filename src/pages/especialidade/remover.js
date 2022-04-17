@@ -9,7 +9,7 @@ import { get } from '../../lib/api';
 import Modal from '../../components/modals';
 import Router from "next/router";
 
-const RemoverImproficiencia = ({ disciplinas }) => {
+const RemoverEspecialidade = ({ disciplinas }) => {
   const [errorMessage, setErrorMessage] = useState("");
   const [showModal, setModal] = useState(false);
 
@@ -28,7 +28,7 @@ const RemoverImproficiencia = ({ disciplinas }) => {
   }
 
   const onClick = (e) => {
-    Router.push('/improficiencia/listar');
+    Router.push('/especialidade/listar');
   }
 
   const buttonModal = () => {
@@ -50,16 +50,16 @@ const RemoverImproficiencia = ({ disciplinas }) => {
     }
   };
 
-  const [isLoading, setRequest] = useRequest(onAction, onError, '/api/improficiencia/remover');
+  const [isLoading, setRequest] = useRequest(onAction, onError, '/api/especialidade/remover');
 
   return (
     <>
       <Head>
         <title>
-          Computoria: Remover Improficiencia
+          Computoria: Remover Especialidade
         </title>
       </Head>
-      <SectionTitle title="Remover" subtitle="Improficiencia" />
+      <SectionTitle title="Remover" subtitle="Especialidade" />
       <Widget>
         <Modal title={'Computoria'} body={sucessBody()} open={showModal} setOpen={setModal} btns={buttonModal()} />
         <Form setAction={setRequest} isLoading={isLoading}
@@ -69,11 +69,13 @@ const RemoverImproficiencia = ({ disciplinas }) => {
   );
 };
 
-export default RemoverImproficiencia;
+export default RemoverEspecialidade;
 
 export const getServerSideProps = async (context) => {
   const { req, res } = context;
-  const response = await get('/api/improficiencia/listar', { headers: req.headers });
+  const response = await get(`/api/especialidade/listar`, {
+    headers: req.headers
+  });
   return {
     props: { disciplinas: response.data.disciplinas },
   }

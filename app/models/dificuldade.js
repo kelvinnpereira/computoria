@@ -1,6 +1,6 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
-  const proficiencia = sequelize.define('proficiencia', {
+  const dificuldade = sequelize.define('dificuldade', {
     sigla_disciplina: {
       primaryKey: true,
       type: DataTypes.STRING
@@ -13,9 +13,9 @@ module.exports = (sequelize, DataTypes) => {
     underscored: true,
     freezeTableName: true,
   });
-  proficiencia.associate = function (models) {
-    proficiencia.belongsTo(models.disciplina, { foreignKey: 'sigla_disciplina' });
-    proficiencia.belongsTo(models.usuario, { foreignKey: 'cpf' });
+  dificuldade.associate = function (models) {
+    dificuldade.belongsTo(models.disciplina, { foreignKey: 'sigla_disciplina' });
+    dificuldade.belongsTo(models.usuario, { foreignKey: 'cpf' });
   };
-  return proficiencia;
+  return dificuldade;
 };

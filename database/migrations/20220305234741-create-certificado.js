@@ -2,21 +2,20 @@
 
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    return queryInterface.createTable('monitor', {
-      sigla_disciplina: {
+    return queryInterface.createTable('certificado', {
+      id: {
         primaryKey: true,
+        autoIncrement: true,
         allowNull: false,
-        type: Sequelize.STRING
+        type: Sequelize.INTEGER,
       },
-      cpf: {
-        primaryKey: true,
-        allowNull: false,
-        type: Sequelize.STRING
-      },
-      status: {
+      monitor: {
         allowNull: false,
         type: Sequelize.STRING,
-        defaultValue: 'solicitado',
+      },
+      sigla_disciplina: {
+        allowNull: false,
+        type: Sequelize.STRING,
       },
       created_at: {
         allowNull: false,
@@ -31,6 +30,6 @@ module.exports = {
     });
   },
   down: (queryInterface, Sequelize) => {
-    return queryInterface.dropTable('monitor');
+    return queryInterface.dropTable('certificado');
   }
 };

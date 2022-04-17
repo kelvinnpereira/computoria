@@ -113,19 +113,13 @@ const ListarTutores = ({ tutores }) => {
       accessor: 'nome',
       Filter: nomeFilter,
       filter: (rows, id, filterValue) => {
-        return rows.filter((row) => row.values[id].props.children.toLowerCase().includes(filterValue));
+        return rows.filter((row) => row.values[id].props.children.toLowerCase().includes(filterValue.toLowerCase()));
       }
     },
     {
       Header: 'Curso',
       accessor: 'curso',
       Filter: cursoFilter,
-      filter: 'includes',
-    },
-    {
-      Header: 'Categoria',
-      accessor: 'categoria',
-      Filter: categoriaFilter,
       filter: 'includes',
     },
     {
@@ -153,7 +147,7 @@ const ListarTutores = ({ tutores }) => {
         </a>,
       curso: item.curso,
       categoria: item.categoria,
-      media: item.media,
+      media: Number(item.media).toFixed(2),
       pontuacao: item.pontuacao,
     }
   });

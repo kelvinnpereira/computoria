@@ -15,18 +15,25 @@ const tutores = async (req, res) => {
         (SELECT 
           DISTINCT(cpf) AS cpf 
         FROM 
-          proficiencia 
-        ${disciplina ? `WHERE sigla_disciplina = \'${disciplina}\'` : ''}) AS prof
+          especialidade 
+        ${disciplina ? `WHERE sigla_disciplina = \'${disciplina}\'` : ''}) AS espec
         INNER JOIN
           usuario AS u
         ON
-          prof.cpf = u.cpf
+          espec.cpf = u.cpf
         INNER JOIN
           curso AS c
         ON
           sigla = sigla_curso
         LEFT JOIN
-          (SELECT tutor, AVG(nota_aluno) AS media FROM ajuda GROUP BY tutor) AS ajuda_table
+          (SELECT 
+            tutor, 
+            AVG(nota_aluno) AS media 
+          FROM 
+            ajuda
+          WHERE 
+            status = 'concluida' 
+          GROUP BY tutor) AS ajuda_table
         ON
           tutor = u.cpf
       ;
@@ -66,30 +73,37 @@ const tutores_por_disciplina = async (req, res) => {
         matricula,
         cat.nome AS categoria,
         d.nome AS disciplina,
-        prof.sigla_disciplina as prof_sigla,
+        especialidade.sigla_disciplina as especialidade_sigla,
         u.cpf AS cpf_user 
       FROM
-        proficiencia AS prof, 
+        especialidade, 
         disciplina AS d, 
         categoria AS cat,
         usuario AS u,
         curso AS c
       WHERE
         id_categoria = cat.id AND 
-        prof.sigla_disciplina = d.sigla AND
-        prof.cpf = u.cpf AND
+        especialidade.sigla_disciplina = d.sigla AND
+        especialidade.cpf = u.cpf AND
         c.sigla = sigla_curso 
         ${disciplina ? `AND sigla_disciplina = \'${disciplina}\'` : ''}
         ) AS user 
     LEFT JOIN
       (SELECT 
-        improficiencia.sigla_disciplina AS improf_sigla, 
-        COUNT(improficiencia.sigla_disciplina) AS pontuacao  
-      FROM improficiencia) AS improf 
+        dificuldade.sigla_disciplina AS dif_sigla, 
+        COUNT(dificuldade.sigla_disciplina) AS pontuacao  
+      FROM dificuldade) AS dif 
     ON 
-      improf_sigla = prof_sigla
+      dif_sigla = especialidade_sigla
     LEFT JOIN
-      (SELECT tutor, AVG(nota_aluno) AS media FROM ajuda GROUP BY tutor) AS ajuda_table
+      (SELECT 
+        tutor, 
+        AVG(nota_aluno) AS media 
+      FROM 
+        ajuda 
+      WHERE 
+        status = 'concluida' 
+      GROUP BY tutor) AS ajuda_table
     ON
       tutor = cpf_user
       ;
@@ -245,22 +259,26 @@ const atualizar_senha = async (req, res) => {
 
 const denunciar = async (req, res) => {
   if (req.route.methods.post && req.body && req.params?.matricula) {
-    const user1 = await Usuario.findOne({ where: { matricula: req.params.matricula } })
-    const user2 = await Usuario.findOne({ where: { matricula: req.matricula } })
-    await Denuncia.create({
-      denunciado: user1.cpf,
-      denunciador: user2.cpf,
-      status: '',
-      comentario: req.body.comentario
-    }).then((denuncia) => {
-      console.log('Denuncia enviada com sucesso');
-      res.status(200).send({ message: 'Denuncia enviada com sucesso' });
-    }).catch((error) => {
-      console.log(error);
-      res.status(500).send({ error: 'Usuario não encontrado' });
-    })
+    const user1 = await Usuario.findOne({ where: { matricula: req.params.matricula } });
+    const user2 = await Usuario.findOne({ where: { matricula: req.matricula } });
+    if (user1 && user2) {
+      await Denuncia.create({
+        denunciado: user1.cpf,
+        denunciador: user2.cpf,
+        status: '',
+        comentario: req.body.comentario
+      }).then((denuncia) => {
+        console.log('Denuncia enviada com sucesso');
+        res.status(200).send({ message: 'Denuncia enviada com sucesso' });
+      }).catch((error) => {
+        console.log(error);
+        res.status(500).send({ error: 'Usuario não encontrado' });
+      });
+    } else {
+      res.status(500).send({ error: 'usuarios não encontrados' });
+    }
   } else {
-    res.status(500).send({ error: 'not logged in or no a get resquest' })
+    res.status(500).send({ error: 'not logged in or no a get resquest' });
   }
 }
 

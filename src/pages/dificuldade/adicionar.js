@@ -3,13 +3,13 @@ import Head from "next/head";
 import SectionTitle from "../../components/section/section-title";
 import Widget from "../../components/widget";
 import { useRequest } from "@src/hooks/auth";
-import Form from "../../components/disciplina/remover/form";
+import Form from "../../components/disciplina/adicionar/form";
 import { useState } from "react";
 import { get } from '../../lib/api';
 import Modal from '../../components/modals';
 import Router from "next/router";
 
-const RemoverProficiencia = ({ disciplinas }) => {
+const AdicionarDificuldade = ({ cursos }) => {
   const [errorMessage, setErrorMessage] = useState("");
   const [showModal, setModal] = useState(false);
 
@@ -22,13 +22,13 @@ const RemoverProficiencia = ({ disciplinas }) => {
           </svg>
         </span>
         <div class="flex flex-col w-full mb-4">
-          <div class="text-lg mb-2 font-bold">Disciplina(s) removidas(s) com sucesso</div>
+          <div class="text-lg mb-2 font-bold">Disciplina(s) adicionada(s) com sucesso</div>
         </div>
       </div>)
   }
 
   const onClick = (e) => {
-    Router.push('/proficiencia/listar');
+    Router.push('/dificuldade/listar');
   }
 
   const buttonModal = () => {
@@ -50,33 +50,30 @@ const RemoverProficiencia = ({ disciplinas }) => {
     }
   };
 
-  const [isLoading, setRequest] = useRequest(onAction, onError, '/api/proficiencia/remover');
+  const [isLoading, setRequest] = useRequest(onAction, onError, '/api/dificuldade/adicionar');
 
   return (
     <>
       <Head>
         <title>
-          Computoria: Remover Proficiencia
+          Computoria: Adicionar Dificuldade
         </title>
       </Head>
-      <SectionTitle title="Remover" subtitle="Proficiencia" />
+      <SectionTitle title="Adicionar" subtitle="Dificuldade" />
       <Widget>
         <Modal title={'Computoria'} body={sucessBody()} open={showModal} setOpen={setModal} btns={buttonModal()} />
         <Form setAction={setRequest} isLoading={isLoading}
-          message={errorMessage} disciplinas={disciplinas} />
+          message={errorMessage} cursos={cursos} />
       </Widget>
     </>
   );
 };
 
-export default RemoverProficiencia;
+export default AdicionarDificuldade;
 
 export const getServerSideProps = async (context) => {
-  const { req, res } = context;
-  const response = await get(`/api/proficiencia/listar`, {
-    headers: req.headers
-  });
+  const response = await get('/api/cursos');
   return {
-    props: { disciplinas: response.data.disciplinas },
+    props: { cursos: response.data.cursos },
   }
 }
