@@ -4,7 +4,7 @@ import Widget from "../../components/widget";
 import ListarTutores from '../../components/tutor/listar_por_disciplina';
 import { get } from '../../lib/api';
 
-const Tutores = ({ tutores }) => {
+const Tutores = ({ tutores, disciplina }) => {
   const map = new Map();
   tutores = tutores.filter((item) => {
     if (!map.has(item.disciplina)) {
@@ -18,10 +18,10 @@ const Tutores = ({ tutores }) => {
     <>
       <Head>
         <title>
-          Computoria: Ranking
+          Computoria: Ranking da disciplina {disciplina.nome}
         </title>
       </Head>
-      <SectionTitle subtitle="Ranking" />
+      <SectionTitle subtitle={`Ranking da disciplina ${disciplina.nome}`} />
       <Widget>
         <ListarTutores tutores={tutores} />
       </Widget>
@@ -40,7 +40,8 @@ export const getServerSideProps = async (context) => {
   const response2 = await get(`/api/monitores_disciplina/${context.params.disciplina}`, {
     headers: req.headers
   });
-  if (!response1.data?.tutores || !response2.data?.monitores) {
+  const response3 = await get(`/api/disciplina/${context.params.disciplina}`);
+  if (!response1.data?.tutores || !response2.data?.monitores || !response3.data?.disciplina) {
     return {
       redirect: {
         permanent: false,
@@ -49,6 +50,9 @@ export const getServerSideProps = async (context) => {
     }
   }
   return {
-    props: { tutores: response1.data.tutores.concat(response2.data.monitores) },
+    props: { 
+      tutores: response1.data.tutores.concat(response2.data.monitores),
+      disciplina: response3.data.disciplina
+    },
   }
 }

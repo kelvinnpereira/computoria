@@ -18,10 +18,10 @@ const Tutores = ({ tutores }) => {
     <>
       <Head>
         <title>
-          Computoria: Ranking
+          Computoria: Ranking Geral
         </title>
       </Head>
-      <SectionTitle subtitle="Ranking" />
+      <SectionTitle subtitle="Ranking Geral" />
       <Widget>
         <ListarTutores tutores={tutores} />
       </Widget>
