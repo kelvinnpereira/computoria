@@ -1,5 +1,5 @@
 import Alert from "../alerts";
-import React, { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { FaSpinner } from "react-icons/fa";
 import { useCsrf } from "../../hooks/auth";
@@ -7,12 +7,17 @@ import Datepicker from '../d-board/datepicker';
 import Timepicker from '../d-board/timepicker';
 import moment from "moment";
 
-const Form = ({ message = null, setSubmit, isLoading, tutor, especialidades, diasUteis, agenda }) => {
+const Form = ({ message = null, setSubmit, isLoading, tutor, especialidades, diasUteis, agenda, usuario }) => {
   const [csrf, setCsrf] = useCsrf(null);
   const { handleSubmit, errors, register, watch } = useForm();
+  const concluida = agenda?.filter(item => item.status == 'concluida' && usuario.matricula === item.matricula_aluno && item.nota_aluno === null)
+  const [msgPendencias, setMsgPendencias] = useState(null);
 
-  React.useEffect(() => {
+  useEffect(() => {
     setCsrf();
+    if (concluida?.length > 0) {
+      setMsgPendencias('Agendamento não disponivel, você tem avaliações pendentes!');
+    }
   });
 
   const isBusinessDay = (date) => {
@@ -83,22 +88,25 @@ const Form = ({ message = null, setSubmit, isLoading, tutor, especialidades, dia
   return (
     <>
       <div className="flex flex-col" style={{ width: "550px" }}>
-        {message && (
+        {(message || msgPendencias) && (
           <div className="w-full mb-4">
             <Alert
               color="bg-transparent border-red-500 text-red-500"
               borderLeft
               raised>
               {message}
+              {msgPendencias}
             </Alert>
           </div>
         )}
         <form
           onSubmit={handleSubmit((data) => {
-            setSubmit({
-              ...data,
-              tutor: tutor.matricula
-            });
+            if (concluida?.length === 0) {
+              setSubmit({
+                ...data,
+                tutor: tutor.matricula
+              });
+            }
           })}
           className="form flex flex-wrap w-full">
           <div className="w-full">
