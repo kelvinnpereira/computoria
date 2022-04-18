@@ -43,11 +43,11 @@ const Conta = ({ usuario, curso }) => {
   )
 }
 
-const Redes = () => {
-  return (
-    <></>
-  )
-}
+// const Redes = () => {
+//   return (
+//     <></>
+//   )
+// }
 
 const ListarDisciplinas = ({ disciplinas }) => {
   return (
@@ -76,7 +76,7 @@ const Perfil = ({ usuario, cursos, especialidades, horarios, agenda }) => {
   const media_tutor = tutor?.length === 0 ? 0 : tutor.map(item => item.nota_aluno).reduce((a, b) => a + b, 0) / tutor.length;
   const tabs = [
     { title: 'Conta', index: 0, content: <Conta usuario={usuario} curso={curso} /> },
-    { title: 'Redes Sociais', index: 1, content: <Redes /> },
+    // { title: 'Redes Sociais', index: 1, content: <Redes /> },
     { title: 'Agenda', index: 2, content: <Agenda usuario={usuario} diasUteis={horarios} agenda={agenda} /> },
     {
       title: 'Horarios Disponiveis',
