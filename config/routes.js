@@ -67,8 +67,12 @@ router.post('/api/dificuldade/adicionar'          , auth.authenticated, mainCont
 router.post('/api/dificuldade/remover'            , auth.authenticated, mainController.api_dificuldade_remover);
 router.get ('/api/tutores'                        , auth.authenticated, usuarioController.tutores);
 router.get ('/api/tutores/:disciplina'            , auth.authenticated, usuarioController.tutores);
+router.get ('/api/monitores'                      , auth.authenticated, usuarioController.monitores);
+router.get ('/api/monitores/:disciplina'          , auth.authenticated, usuarioController.monitores);
 router.get ('/api/tutores_disciplina'             , auth.authenticated, usuarioController.tutores_por_disciplina);
 router.get ('/api/tutores_disciplina/:disciplina' , auth.authenticated, usuarioController.tutores_por_disciplina);
+router.get ('/api/monitores_disciplina'           , auth.authenticated, usuarioController.monitores_por_disciplina);
+router.get ('/api/monitores_disciplina/:disciplina', auth.authenticated, usuarioController.monitores_por_disciplina);
 router.get ('/api/usuario'                        , auth.authenticated, usuarioController.usuario);
 router.get ('/api/usuario/:matricula'             , auth.authenticated, usuarioController.usuario);
 router.post('/api/atualizar_conta'                , auth.authenticated, usuarioController.atualizar_conta);

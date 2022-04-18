@@ -9,6 +9,7 @@ import { useRouter } from "next/router";
 import Router from "next/router";
 import Agenda from "../../components/agenda/index";
 import Avaliações from '../../components/d-board/lists/avaliacoes';
+import Horarios from "../../components/horarios/show";
 
 const Conta = ({ usuario, curso }) => {
   return (
@@ -77,10 +78,15 @@ const Perfil = ({ usuario, cursos, especialidades, horarios, agenda }) => {
     { title: 'Conta', index: 0, content: <Conta usuario={usuario} curso={curso} /> },
     { title: 'Redes Sociais', index: 1, content: <Redes /> },
     { title: 'Agenda', index: 2, content: <Agenda usuario={usuario} diasUteis={horarios} agenda={agenda} /> },
-    { title: 'Especialidades', index: 3, content: <ListarDisciplinas disciplinas={especialidades} /> },
+    {
+      title: 'Horarios Disponiveis',
+      index: 3,
+      content: <Horarios horarios={horarios} />
+    },
+    { title: 'Especialidades', index: 4, content: <ListarDisciplinas disciplinas={especialidades} /> },
     {
       title: 'Avaliações como Tutor',
-      index: 4,
+      index: 5,
       content: <Avaliações items={tutor.map((item) => {
         return {
           comentario: item.comentario_aluno,
@@ -93,7 +99,7 @@ const Perfil = ({ usuario, cursos, especialidades, horarios, agenda }) => {
     },
     {
       title: 'Avaliações como Aluno',
-      index: 5,
+      index: 6,
       content: <Avaliações items={aluno.map((item) => {
         return {
           comentario: item.comentario_tutor,
