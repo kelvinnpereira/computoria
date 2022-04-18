@@ -55,7 +55,7 @@ const Datatable = ({ columns, data }) => {
       columns,
       data,
       defaultColumn,
-      initialState: { pageIndex: 0, pageSize: 10 }
+      initialState: { pageIndex: 0, pageSize: 10 },
     },
     useFilters,
     useSortBy,
@@ -72,7 +72,7 @@ const Datatable = ({ columns, data }) => {
           {headerGroups.map((headerGroup) => (
             <tr {...headerGroup.getHeaderGroupProps()}>
               {headerGroup.headers.map((column) => (
-                <th {...column.getHeaderProps(column.getSortByToggleProps())}>
+                <th id={column.id} {...column.getHeaderProps(column.getSortByToggleProps())}>
                   <div className="flex flex-row items-center justify-start">
                     <span>{column.render("Header")}</span>
                     <span className="ml-auto">
