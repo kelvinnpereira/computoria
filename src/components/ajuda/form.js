@@ -16,7 +16,7 @@ const Form = ({ message = null, setSubmit, isLoading, tutor, especialidades, dia
   });
 
   const isBusinessDay = (date) => {
-    if (moment(date, "DD-MM-YYYY").toDate() <= new Date()) return false;
+    if (moment(date, "DD-MM-YYYY").isBefore(new Date(), "date")) return false;
     const day = moment(date, "DD-MM-YYYY").day();
     for (const item of diasUteis) {
       if (item.dia === day) {
