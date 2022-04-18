@@ -47,11 +47,11 @@ const Conta = ({ usuario, curso }) => {
   )
 }
 
-const Redes = () => {
-  return (
-    <></>
-  )
-}
+// const Redes = () => {
+//   return (
+//     <></>
+//   )
+// }
 
 const ListarDisciplinas = ({ disciplinas }) => {
   return (
@@ -85,11 +85,11 @@ const Perfil = ({ usuario, cursos, especialidades, dificuldades, horarios, agend
       content:
         <Conta usuario={usuario} curso={curso} />
     },
-    {
-      title: 'Redes Sociais',
-      index: index++,
-      content: <Redes />
-    },
+    // {
+    //   title: 'Redes Sociais',
+    //   index: index++,
+    //   content: <Redes />
+    // },
     {
       title: 'Agenda',
       index: index++,

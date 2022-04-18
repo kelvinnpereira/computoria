@@ -16,6 +16,7 @@ const Form = ({ message = null, setSubmit, isLoading, tutor, especialidades, dia
   });
 
   const isBusinessDay = (date) => {
+    if (moment(date, "DD-MM-YYYY").toDate() <= new Date()) return false;
     const day = moment(date, "DD-MM-YYYY").day();
     for (const item of diasUteis) {
       if (item.dia === day) {
@@ -75,6 +76,7 @@ const Form = ({ message = null, setSubmit, isLoading, tutor, especialidades, dia
   }
 
   const valid_hour = (current) => {
+    if (current <= new Date().toLocaleTimeString().slice(0, -3)) return false;
     return /^(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$/.test(current);
   }
 
