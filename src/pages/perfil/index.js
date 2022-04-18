@@ -8,6 +8,7 @@ import { get } from '../../lib/api';
 import Router from "next/router";
 import Agenda from "../../components/agenda/index";
 import Avaliações from '../../components/d-board/lists/avaliacoes';
+import Horarios from "../../components/horarios/show";
 
 const Conta = ({ usuario, curso }) => {
   return (
@@ -93,6 +94,11 @@ const Perfil = ({ usuario, cursos, especialidades, dificuldades, horarios, agend
       title: 'Agenda',
       index: index++,
       content: <Agenda usuario={usuario} diasUteis={horarios} agenda={agenda} />
+    },
+    {
+      title: 'Horarios Disponiveis',
+      index: index++,
+      content: <Horarios horarios={horarios} />
     },
     {
       title: 'Especialidades',

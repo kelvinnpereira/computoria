@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Datatable from '../datatable';
 
 function nomeFilter({
@@ -87,6 +87,12 @@ const ListarTutores = ({ tutores }) => {
       media: Number(item.media).toFixed(2),
     }
   });
+
+  useEffect(() => {
+    const media = document.getElementById('media');
+    media.click();
+    media.click();
+  }, []);
 
   return (
     <Datatable columns={columns} data={items} />

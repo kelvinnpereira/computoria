@@ -54,6 +54,57 @@ const tutores = async (req, res) => {
   }
 }
 
+const monitores = async (req, res) => {
+  if (req.route.methods.get) {
+    const disciplina = req.params?.disciplina;
+    await sequelize.query(`\
+      SELECT
+        c.nome AS curso, u.nome AS usuario, matricula, media
+      FROM
+        (SELECT 
+          DISTINCT(cpf) AS cpf 
+        FROM 
+          monitor 
+        WHERE
+          status = "aprovado"
+        ${disciplina ? ` AND sigla_disciplina = \'${disciplina}\'` : ''}) AS monitor_tb
+        INNER JOIN
+          usuario AS u
+        ON
+          monitor_tb.cpf = u.cpf
+        INNER JOIN
+          curso AS c
+        ON
+          sigla = sigla_curso
+        LEFT JOIN
+          (SELECT 
+            tutor, 
+            AVG(nota_aluno) AS media 
+          FROM 
+            ajuda
+          WHERE 
+            status = 'concluida' 
+          GROUP BY tutor) AS ajuda_table
+        ON
+          tutor = u.cpf
+      ;
+    `).then((monitores) => {
+      if (monitores?.at(0)?.length > 0) {
+        console.log('Listar monitores');
+        res.status(200).send({ monitores: monitores?.at(0) });
+      } else {
+        console.log('monitores não encontrados');
+        res.status(500).send({ monitores: [] });
+      }
+    }).catch((error) => {
+      console.log(error);
+      res.status(500).send({ error: error });
+    });
+  } else {
+    res.status(500).send({ error: 'error' });
+  }
+}
+
 const tutores_por_disciplina = async (req, res) => {
   if (req.route.methods.get) {
     const disciplina = req.params?.disciplina;
@@ -114,6 +165,77 @@ const tutores_por_disciplina = async (req, res) => {
       } else {
         console.log('Tutores não encontrados');
         res.status(500).send({ tutores: [] });
+      }
+    }).catch((error) => {
+      console.log(error);
+      res.status(500).send({ error: error });
+    });
+  } else {
+    res.status(500).send({ error: 'error' });
+  }
+}
+
+const monitores_por_disciplina = async (req, res) => {
+  if (req.route.methods.get) {
+    const disciplina = req.params?.disciplina;
+    await sequelize.query(`\
+    SELECT 
+      curso, 
+      usuario, 
+      matricula, 
+      categoria, 
+      disciplina, 
+      IFNULL(pontuacao, 0) AS pontuacao,
+      IFNULL(media, 0) AS media
+    FROM 
+      (SELECT
+        c.nome AS curso, 
+        u.nome AS usuario, 
+        matricula,
+        cat.nome AS categoria,
+        d.nome AS disciplina,
+        monitor.sigla_disciplina as monitor_sigla,
+        u.cpf AS cpf_user 
+      FROM
+        monitor, 
+        disciplina AS d, 
+        categoria AS cat,
+        usuario AS u,
+        curso AS c
+      WHERE
+        id_categoria = cat.id AND 
+        monitor.sigla_disciplina = d.sigla AND
+        monitor.cpf = u.cpf AND
+        c.sigla = sigla_curso AND
+        monitor.status = "aprovado"
+        ${disciplina ? `AND sigla_disciplina = \'${disciplina}\'` : ''}
+        ) AS user 
+    LEFT JOIN
+      (SELECT 
+        dificuldade.sigla_disciplina AS dif_sigla, 
+        COUNT(dificuldade.sigla_disciplina) AS pontuacao  
+      FROM dificuldade) AS dif 
+    ON 
+      dif_sigla = monitor_sigla
+    LEFT JOIN
+      (SELECT 
+        tutor, 
+        AVG(nota_aluno) AS media 
+      FROM 
+        ajuda 
+      WHERE 
+        status = 'concluida' 
+      GROUP BY tutor) AS ajuda_table
+    ON
+      tutor = cpf_user
+      ;
+    `).then((monitores) => {
+      if (monitores?.at(0)?.length > 0) {
+        console.log('Listar monitores');
+        res.status(200).send({ monitores: monitores?.at(0) });
+      } else {
+        console.log('monitores não encontrados');
+        res.status(500).send({ monitores: [] });
       }
     }).catch((error) => {
       console.log(error);
@@ -285,6 +407,8 @@ const denunciar = async (req, res) => {
 module.exports = {
   tutores,
   tutores_por_disciplina,
+  monitores,
+  monitores_por_disciplina,
   usuario,
   atualizar_conta,
   atualizar_email,

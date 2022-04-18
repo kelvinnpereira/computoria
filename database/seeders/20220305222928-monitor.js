@@ -6,6 +6,7 @@ module.exports = {
       {
         "sigla_disciplina": "ICC002",
         cpf: "55381028075",
+        status: "aprovado",
         created_at: new Date(new Date() + "+0"),
         updated_at: new Date(new Date() + "+0")
       },

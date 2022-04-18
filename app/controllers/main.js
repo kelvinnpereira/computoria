@@ -92,7 +92,7 @@ const api_especialidade = async (req, res) => {
                 res.status(500).send({ error: error });
             });
         } else {
-            res.status(500).send({error: 'usuario não econtrado'});
+            res.status(500).send({ error: 'usuario não econtrado' });
         }
     } else {
         res.status(500).send({ error: 'Not loged in or not a get request' });
@@ -182,7 +182,7 @@ const api_dificuldade = async (req, res) => {
                 res.status(200).send({ disciplinas: disciplinas });
             });
         } else {
-            res.status(500).send({error: 'usuariuo não encontrado'});
+            res.status(500).send({ error: 'usuario não encontrado' });
         }
     } else {
         res.status(500).send({ error: 'Not loged in or not a get request' });
@@ -440,9 +440,33 @@ const monitoria_listar_aprovados = async (req, res) => {
     }
 }
 
+const sigla = async (req, res) => {
+    if (req.route.methods.get && req.params?.sigla) {
+        await Disciplina.findOne({
+            where: {
+                sigla: req.params.sigla
+            }
+        }).then((disciplina) => {
+            if (disciplina) {
+                console.log('disciplina encontrada')
+                res.status(200).send({ disciplina: { sigla: disciplina.sigla, nome: disciplina.nome } });
+            } else {
+                console.log('disciplina não encontrada')
+                res.status(500).send({ disciplina: { sigla: disciplina.sigla, nome: disciplina.nome } });
+            }
+        }).catch((error) => {
+            console.log(error)
+            res.status(500).send({ error: error });
+        })
+    } else {
+        res.status(500).send({ error: 'error' });
+    }
+}
+
 module.exports = {
     cursos,
     disciplinas,
+    sigla,
     api_especialidade,
     api_especialidade_adicionar,
     api_especialidade_remover,
