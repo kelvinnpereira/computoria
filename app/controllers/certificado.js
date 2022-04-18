@@ -74,20 +74,25 @@ const solicitar = async (req, res) => {
 
 const exibir = async (req, res) => {
   console.log('exibir')
-  if(req.route.methods.get) {
-    const id = req.params?.id ? req.params?.id : req.id;
-
-    const certificado = await Certificado.findOne({
+  if(req.route.methods.get && req.params?.id) {
+    const usuario = await Usuario.findOne({ where: { matricula: req.matricula } });
+    await Certificado.findOne({
       where: {
-        id: id
+        id: req.params.id,
+        monitor: usuario.cpf,
       }
-    });
-
-    if(certificado) {
-      res.status(200).send({certificado: certificado});
-    }else {
-      res.status(500).send({erro: 'certificado não encontrado'});
-    }
+    }).then((certificado) => {
+      if(certificado) {
+        res.status(200).send({certificado: certificado});
+      }else {
+        res.status(500).send({error: 'certificado não encontrado'});
+      }
+    }).catch((error) => {
+      console.log(error)
+      res.status(500).send({error: 'certificado não encontrado'});
+    })
+  } else {
+    res.status(500).send({error: 'certificado não encontrado'});
   }
 }
 
