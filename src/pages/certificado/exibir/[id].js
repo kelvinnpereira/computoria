@@ -17,7 +17,7 @@ const Certificado = ({ usuario, cursos, certificado }) => {
             <div className="texto">
                 <p>
                     A equipe <b>COMPUTORIA</b>, certifica que <b>{nome}</b>, do curso <b>{curso.nome}</b>,
-                    matrícula {matricula}, utilizou os serviços de nossa plataforma para realizar atividades de monitoria_aceitar
+                    matrícula {matricula}, utilizou os serviços de nossa plataforma para realizar atividades de monitoria
                     e obteve boas avaliações dos usuários
                     auxiliados, com <b>carga horário total de 30 horas</b>.
                 </p>
