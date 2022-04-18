@@ -5,6 +5,15 @@ import ListarTutores from '../../components/tutor/listar';
 import { get } from '../../lib/api';
 
 const Tutores = ({ tutores }) => {
+  const map = new Map();
+  tutores = tutores.filter((item) => {
+    if (!map.has(item.usuario)) {
+      map.set(item.usuario, true);
+      return true;
+    } else {
+      return false;
+    }
+  });
   return (
     <>
       <Head>
@@ -25,10 +34,21 @@ export default Tutores;
 
 export const getServerSideProps = async (context) => {
   const { req, res } = context;
-  const response = await get(`/api/tutores/${context.params.disciplina}`, {
+  const response1 = await get(`/api/tutores/${context.params.disciplina}`, {
     headers: req.headers
   });
+  const response2 = await get(`/api/monitores/${context.params.disciplina}`, {
+    headers: req.headers
+  });
+  if (!response1.data?.tutores || !response2.data?.monitores) {
+    return {
+      redirect: {
+        permanent: false,
+        destination: "/500"
+      }
+    }
+  }
   return {
-    props: { tutores: response.data.tutores },
+    props: { tutores: response1.data.tutores.concat(response2.data.monitores) },
   }
 }
