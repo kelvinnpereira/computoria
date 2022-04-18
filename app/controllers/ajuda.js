@@ -63,6 +63,17 @@ const agenda = async (req, res) => {
       status: 'concluida'
     }, {
       where: {
+        status: 'agendada',
+        data_fim: {
+          [Op.lt]: new Date(),
+        }
+      }
+    });
+    await Ajuda.update({
+      status: 'cancelada'
+    }, {
+      where: {
+        status: 'solicitada',
         data_fim: {
           [Op.lt]: new Date(),
         }
