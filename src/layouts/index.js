@@ -35,7 +35,7 @@ const Layouts = ({children}) => {
       '/auth/login', 
       '/auth/signup', 
       '/auth/forgot',
-    ].includes(pathname)
+    ].includes(pathname)|| pathname.startsWith('/certificado/exibir/')
   ) {
     return <Empty>{children}</Empty>
   } else {

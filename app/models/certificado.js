@@ -8,16 +8,12 @@ module.exports = (sequelize, DataTypes) => {
     monitor: {
       type: DataTypes.STRING,
     },
-    sigla_disciplina: {
-      type: DataTypes.STRING,
-    },
   }, {
     underscored: true,
     freezeTableName: true,
   });
   certificado.associate = function (models) {
     certificado.belongsTo(models.usuario, { foreignKey: 'monitor' });
-    certificado.belongsTo(models.disciplina, { foreignKey: 'sigla_disciplina' });
   };
   return certificado;
 };

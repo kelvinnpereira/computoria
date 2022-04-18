@@ -359,3 +359,44 @@ textarea + .autocomplete-items {
 .tab-active .text-green-500 {
     color: rgb(76 220 172);
 }
+
+.cabecalho {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    margin-bottom: 40px;
+}
+
+.cabecalho-titulo {
+    margin-top: 20px;
+}
+
+.cabecalho-endereco {
+    font-size: 12px;
+}
+
+.cabecalho-logo {
+    margin-bottom: 5px;
+}
+
+.texto {
+    margin: 0 110px;
+
+    text-indent: 3ch;
+
+    text-align: justify;
+
+    font-size: 18px;
+}
+
+.assinaturas {
+    display: flex;
+
+    margin-top: 150px;
+    justify-content: space-around;
+
+    text-align: center;
+    font-size: 16px
+}
+
