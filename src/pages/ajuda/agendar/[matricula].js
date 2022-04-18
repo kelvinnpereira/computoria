@@ -16,6 +16,9 @@ const Agendar = ({ tutor, especialidades, horarios, agenda }) => {
 
   const onAgendar = (data) => {
     setModal(true);
+    setTimeout(() => {
+      Router.push('/home/usuario');
+    }, 2000);
   };
 
   const onError = (err) => {
