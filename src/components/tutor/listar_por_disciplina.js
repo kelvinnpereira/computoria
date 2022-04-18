@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Datatable from '../datatable';
 
 function disciplinaFilter({
@@ -151,6 +151,12 @@ const ListarTutores = ({ tutores }) => {
       pontuacao: item.pontuacao,
     }
   });
+
+  useEffect(() => {
+    const media = document.getElementById('media');
+    media.click();
+    media.click();
+  }, []);
 
   return (
     <Datatable columns={columns} data={items} />
