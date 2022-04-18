@@ -57,6 +57,7 @@ router.get ('/tutores_disciplina'            , auth.authenticated, nextControlle
 //main
 router.get ('/api/cursos'                         , mainController.cursos);
 router.get ('/api/disciplinas'                    , mainController.disciplinas);
+router.get ('/api/disciplina/:sigla'              , mainController.sigla);
 router.get ('/api/disciplinas/:curso'             , mainController.disciplinas);
 router.get ('/api/especialidade/listar'           , auth.authenticated, mainController.api_especialidade);
 router.get ('/api/especialidade/listar/:matricula', auth.authenticated, mainController.api_especialidade);
