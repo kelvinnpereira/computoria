@@ -113,6 +113,11 @@ router.post('/api/ajuda/popup'                       , auth.authenticated, ajuda
 router.get ('/api/certificado/horas'    , auth.authenticated, certificadoController.horas);
 router.get ('/api/certificado/listar'   , auth.authenticated, certificadoController.listar);
 router.post('/api/certificado/solicitar', auth.authenticated, certificadoController.solicitar);
+router.get ('/api/certificado/:id', auth.authenticated, certificadoController.exibir)
+
+//next /certificados
+router.get('/certificado/exibir/:id'           ,auth.authenticated, nextController.handler);
+router.get('/certificado/listar'     ,auth.authenticated, nextController.handler);
 
 //not found
 router.get ('*', nextController.handler);

@@ -98,19 +98,14 @@ const initialState = [
     title: "Certificados",
     items: [
       {
-        url: "/certificado/solicitar",
+        url: "/certificado/emitir",
         icon: <HiOutlineDocumentSearch size={20}/>,
-        title: "Solicitar Certificado",
+        title: "Emitir Certificado",
       },
       {
         url: "/certificado/listar",
         icon: <HiOutlineDocumentSearch size={20}/>,
         title: "Meus Certificados",
-      },
-      {
-        url: "/certificado/solicitacoes",
-        icon: <HiOutlineDocumentSearch size={20}/>,
-        title: "Solicitações de Certificados",
       },
     ]
   }
