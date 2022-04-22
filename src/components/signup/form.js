@@ -46,7 +46,7 @@ const Form = ({ message = null, setSignup, isLoading , cursos}) => {
                     value: 10,
                     message: 'Seu nome deve ter pelo menos 10 caracteres'
                   },
-                  validate: (value) => /^[a-zA-Z\s]*$/.test(value) || "Nome inválido"
+                  validate: (value) => (/^[a-zA-Z\u00C0-\u024F\u1E00-\u1EFF\s]*$/.test(value) && value.replaceAll(' ', '').length !== 0) || "Nome inválido"
                 })}
                 name="nome"
                 type="text"
