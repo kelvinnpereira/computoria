@@ -41,7 +41,12 @@ export const getServerSideProps = async (context) => {
   }
   return {
     props: {
-      tutores: response1.data.tutores.concat(response2.data.monitores)
+      tutores: response1.data.tutores.concat(response2.data.monitores.map((data) => {
+        return {
+          ...data,
+          usuario: `${data.usuario} (Monitor)`,
+        }
+      }))
     },
   }
 }
