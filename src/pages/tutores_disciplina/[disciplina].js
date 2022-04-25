@@ -5,15 +5,7 @@ import ListarTutores from '../../components/tutor/listar_por_disciplina';
 import { get } from '../../lib/api';
 
 const Tutores = ({ tutores, disciplina }) => {
-  const map = new Map();
-  tutores = tutores.filter((item) => {
-    if (!map.has(item.disciplina)) {
-      map.set(item.disciplina, true);
-      return true;
-    } else {
-      return false;
-    }
-  });
+
   return (
     <>
       <Head>
@@ -41,6 +33,7 @@ export const getServerSideProps = async (context) => {
     headers: req.headers
   });
   const response3 = await get(`/api/disciplina/${context.params.disciplina}`);
+  const response4 = await get('/api/usuario');
   if (!response1.data?.tutores || !response2.data?.monitores || !response3.data?.disciplina) {
     return {
       redirect: {
@@ -50,9 +43,9 @@ export const getServerSideProps = async (context) => {
     }
   }
   return {
-    props: { 
+    props: {
       tutores: response1.data.tutores.concat(response2.data.monitores),
-      disciplina: response3.data.disciplina
+      disciplina: response3.data.disciplina,
     },
   }
 }

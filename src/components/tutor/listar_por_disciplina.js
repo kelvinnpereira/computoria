@@ -135,7 +135,7 @@ const ListarTutores = ({ tutores }) => {
       filter: 'includes',
     },
   ];
-
+  
   const items = tutores?.map((item) => {
     return {
       disciplina: item.disciplina,
@@ -157,6 +157,7 @@ const ListarTutores = ({ tutores }) => {
     media.click();
     media.click();
   }, []);
+
 
   return (
     <Datatable columns={columns} data={items} />
