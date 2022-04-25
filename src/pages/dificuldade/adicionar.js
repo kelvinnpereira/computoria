@@ -73,6 +73,16 @@ export default AdicionarDificuldade;
 
 export const getServerSideProps = async (context) => {
   const response = await get('/api/cursos');
+  if (
+    !response.data?.cursos
+  ) {
+    return {
+      redirect: {
+        permanent: false,
+        destination: "/500"
+      }
+    }
+  }
   return {
     props: { cursos: response.data.cursos },
   }

@@ -183,6 +183,20 @@ export const getServerSideProps = async (context) => {
   const response5 = await get(`/api/ajuda/agenda/${context.params.matricula}`, {
     headers: req.headers
   });
+  if (
+    !response1.data?.usuario ||
+    !response2.data?.cursos ||
+    !response3.data?.disciplinas ||
+    !response4.data?.horarios ||
+    !response5.data?.agenda
+  ) {
+    return {
+      redirect: {
+        permanent: false,
+        destination: "/500"
+      }
+    }
+  }
   return {
     props: {
       usuario: response1.data.usuario,

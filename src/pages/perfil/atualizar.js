@@ -157,6 +157,18 @@ export const getServerSideProps = async (context) => {
   const response3 = await get('/api/disponibilidade/listar', {
     headers: req.headers
   });
+  if (
+    !response1.data?.usuario ||
+    !response2.data?.cursos ||
+    !response3.data?.horarios
+  ) {
+    return {
+      redirect: {
+        permanent: false,
+        destination: "/500"
+      }
+    }
+  }
   return {
     props: {
       usuario: response1.data.usuario,

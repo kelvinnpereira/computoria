@@ -74,6 +74,16 @@ export default RemoverDificuldade;
 export const getServerSideProps = async (context) => {
   const { req, res } = context;
   const response = await get('/api/dificuldade/listar', { headers: req.headers });
+  if (
+    !response.data?.disciplinas
+  ) {
+    return {
+      redirect: {
+        permanent: false,
+        destination: "/500"
+      }
+    }
+  }
   return {
     props: { disciplinas: response.data.disciplinas },
   }
