@@ -72,7 +72,7 @@ const Form = ({ message = null, setSubmit, isLoading, tutor, especialidades, dia
         const day = moment(document.getElementsByName('dia')[0].value, "DD-MM-YYYY").date();
         const item_day = new Date(item.data_inicio).getDate();
         const hora_inicio = document.getElementsByName('hora_inicio')[0].value;
-        if (item_day === day && (hora_inicio < start && hora >= start) ) {
+        if (item_day === day && (hora_inicio < start && hora >= start)) {
           return false;
         }
       }
@@ -81,7 +81,11 @@ const Form = ({ message = null, setSubmit, isLoading, tutor, especialidades, dia
   }
 
   const valid_hour = (current) => {
-    if (current <= new Date().toLocaleTimeString().slice(0, -3)) return false;
+    const dia = document.getElementsByName('dia')[0].value;
+    if (
+      moment(dia, "DD-MM-YYYY").isSame(new Date(), "date") &&
+      current <= new Date().toLocaleTimeString().slice(0, -3)
+    ) return false;
     return /^(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$/.test(current);
   }
 
