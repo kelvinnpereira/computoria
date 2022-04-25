@@ -9,6 +9,7 @@ const Form = ({ message = null, setAction, isLoading, cursos }) => {
   const [csrf, setCsrf] = useCsrf(null);
   const { handleSubmit, errors, register, watch } = useForm();
   const [disciplinas, setDisciplinas] = useState([]);
+  const [adicionar, setAdicionar] = useState(null);
 
   useEffect(() => {
     setCsrf();
@@ -17,19 +18,29 @@ const Form = ({ message = null, setAction, isLoading, cursos }) => {
   return (
     <>
       <div className="flex flex-col" style={{ width: "450px" }}>
-        {message && (
+        {(message || adicionar) && (
           <div className="w-full mb-4">
             <Alert
               color="bg-transparent border-red-500 text-red-500"
               borderLeft
               raised>
               {message}
+              {adicionar}
             </Alert>
           </div>
         )}
         <form
           onSubmit={handleSubmit((data) => {
-            setAction(data);
+            setAdicionar(null);
+            if (document.getElementById('disabled').selected) {
+              setAdicionar('Selecione um curso');
+              return false;
+            }
+            if (data?.disciplinas?.length > 0) {
+              setAction(data);
+            } else {
+              setAdicionar('Selecione pelo menos uma disciplina');
+            }
           })}
           className="form flex flex-wrap w-full">
           <div className="w-full">
@@ -50,7 +61,7 @@ const Form = ({ message = null, setAction, isLoading, cursos }) => {
                   }
                 }}
               >
-                <option disabled selected value>
+                <option id="disabled" disabled selected value>
                   -- Selecione um curso --
                 </option>
                 {cursos.map((option, i) => (
@@ -73,7 +84,7 @@ const Form = ({ message = null, setAction, isLoading, cursos }) => {
                     className="flex items-center justify-start space-x-2">
                     <input
                       ref={register({
-                        required: true
+                        required: false
                       })}
                       type="checkbox"
                       value={`${option.sigla}`}

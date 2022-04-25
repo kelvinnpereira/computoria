@@ -40,6 +40,16 @@ export const getServerSideProps = async (context) => {
   const response = await get(`/api/monitoria/listar`, {
     headers: req.headers
   });
+  if (
+    !response.data?.disciplinas 
+  ) {
+    return {
+      redirect: {
+        permanent: false,
+        destination: "/500"
+      }
+    }
+  }
   return {
     props: { disciplinas: response.data.disciplinas },
   }

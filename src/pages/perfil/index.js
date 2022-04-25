@@ -190,6 +190,21 @@ export const getServerSideProps = async (context) => {
   const response6 = await get('/api/ajuda/agenda', {
     headers: req.headers
   });
+  if (
+    !response1.data?.usuario ||
+    !response2.data?.cursos ||
+    !response3.data?.disciplinas ||
+    !response4.data?.disciplinas ||
+    !response5.data?.horarios ||
+    !response6.data?.agenda
+  ) {
+    return {
+      redirect: {
+        permanent: false,
+        destination: "/500"
+      }
+    }
+  }
   return {
     props: {
       usuario: response1.data.usuario,
