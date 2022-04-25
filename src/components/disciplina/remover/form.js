@@ -7,6 +7,7 @@ import { useCsrf } from "../../../hooks/auth";
 const Form = ({ message = null, setAction, isLoading, disciplinas }) => {
   const [csrf, setCsrf] = useCsrf(null);
   const { handleSubmit, errors, register } = useForm();
+  const [adicionar, setAdicionar] = useState(null);
 
   useEffect(() => {
     setCsrf();
@@ -15,19 +16,25 @@ const Form = ({ message = null, setAction, isLoading, disciplinas }) => {
   return (
     <>
       <div className="flex flex-col" style={{ width: "450px" }}>
-        {message && (
+      {(message || adicionar) && (
           <div className="w-full mb-4">
             <Alert
               color="bg-transparent border-red-500 text-red-500"
               borderLeft
               raised>
               {message}
+              {adicionar}
             </Alert>
           </div>
         )}
         <form
           onSubmit={handleSubmit((data) => {
-            setAction(data);
+            setAdicionar(null);
+            if (data?.disciplinas?.length > 0) {
+              setAction(data);
+            } else {
+              setAdicionar('Selecione pelo menos uma disciplina');
+            }
           })}
           className="form flex flex-wrap w-full">
           <div className="w-full">
@@ -40,7 +47,7 @@ const Form = ({ message = null, setAction, isLoading, disciplinas }) => {
                     className="flex items-center justify-start space-x-2">
                     <input
                       ref={register({ 
-                        required: true 
+                        required: false 
                       })}
                       type="checkbox"
                       value={`${option.sigla}`}

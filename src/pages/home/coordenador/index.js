@@ -111,6 +111,17 @@ export const getServerSideProps = async (context) => {
   const response2 = await get(`/api/monitoria/listar/aprovados`, {
     headers: req.headers,
   });
+  if (
+    !response1.data?.solicitacoes ||
+    !response2.data?.monitores
+  ) {
+    return {
+      redirect: {
+        permanent: false,
+        destination: "/500"
+      }
+    }
+  }
   return {
     props: {
       solicitacoes: response1.data.solicitacoes,

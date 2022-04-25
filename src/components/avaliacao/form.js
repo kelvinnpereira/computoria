@@ -1,12 +1,21 @@
 import Alert from "../alerts";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { FaSpinner } from "react-icons/fa";
 import { useCsrf } from "../../hooks/auth";
+import { FaRegStar, FaStar } from 'react-icons/fa';
 
 const Form = ({ message = null, setAction, isLoading, ajuda, usuario }) => {
   const [csrf, setCsrf] = useCsrf(null);
   const { handleSubmit, errors, register } = useForm();
+  const [avaliacaoMsg, setAvaliacaoMsg] = useState(null);
+  const [starsHtml, setStarsHtml] = useState(
+    <>
+      {[...Array(5)].map((item, i) =>
+        <FaRegStar data-type="regstar" className="star inline" id={`star${i + 1}`} size={48} onClick={setStars} />
+      )}
+    </>
+  );
 
   useEffect(() => {
     setCsrf();
@@ -15,26 +24,57 @@ const Form = ({ message = null, setAction, isLoading, ajuda, usuario }) => {
   const nome = () => usuario.matricula === ajuda.matricula_tutor ? ajuda.nome_aluno : ajuda.nome_tutor
   const matricula = () => usuario.matricula === ajuda.matricula_tutor ? ajuda.matricula_aluno : ajuda.matricula_tutor
 
+  function setStars(e) {
+    const elem = e.target.tagName === 'svg' ? e.target : e.target.parentElement;
+    const target = parseInt(elem.id.replace('star', ''));
+    setStarsHtml(
+      <>
+        {[...Array(5)].map((item, i) => {
+          if (target >= i + 1) {
+            return <FaStar data-type="fullstar" className="star inline" id={`star${i + 1}`} size={48} onClick={setStars} />;
+          } else {
+            return <FaRegStar data-type="regstar" className="star inline" id={`star${i + 1}`} size={48} onClick={setStars} />;
+          }
+        })}
+      </>
+    )
+  }
+
+  const getNota = () => {
+    const stars = document.getElementsByClassName('star');
+    let nota = 0;
+    for (const s of stars) {
+      s.dataset.type === 'fullstar' ? nota++ : 0;
+    }
+    return nota;
+  }
+
   return (
     <>
       <div className="flex flex-col" style={{ width: "550px" }}>
-        {message && (
+        {(message || avaliacaoMsg) && (
           <div className="w-full mb-4">
             <Alert
               color="bg-transparent border-red-500 text-red-500"
               borderLeft
               raised>
+              {avaliacaoMsg}
               {message}
             </Alert>
           </div>
         )}
         <form
           onSubmit={handleSubmit((data) => {
-            setAction({
-              ...data,
-              id: ajuda.id,
-              comentario: document.getElementsByName('comentario')[0]?.value,
-            });
+            const nota = getNota();
+            if (nota >= 1 && nota <= 5) {
+              setAction({
+                id: ajuda.id,
+                nota: nota,
+                comentario: document.getElementsByName('comentario')[0]?.value,
+              });
+            } else {
+              setAvaliacaoMsg('Avaliação não selecionada');
+            }
           })}
           className="form flex flex-wrap w-full">
           <div className="w-full">
@@ -67,65 +107,10 @@ const Form = ({ message = null, setAction, isLoading, ajuda, usuario }) => {
 
               <div className="form-label text-white">Avalie o andamento da aula:</div>
 
-              <div className="mr-6">
-                <input
-                  ref={register({
-                    required: 'Selecione uma Avaliação',
-                  })}
-                  type="radio"
-                  id="nota-1"
-                  name="nota"
-                  value="1" />
-                <label className="form-label text-white ml-3" for="nota-1">Muito ruim</label>
+              <div id="stars">
+                {starsHtml}
               </div>
 
-              <div className="mr-6">
-                <input
-                  ref={register({
-                    required: 'Selecione uma Avaliação',
-                  })}
-                  type="radio"
-                  id="nota-2"
-                  name="nota"
-                  value="2" />
-                <label className="form-label text-white ml-3" for="nota-2">Ruim</label>
-              </div>
-
-              <div className="mr-6">
-                <input
-                  ref={register({
-                    required: 'Selecione uma Avaliação',
-                  })}
-                  type="radio"
-                  id="nota-3"
-                  name="nota"
-                  value="3" />
-                <label className="form-label text-white ml-3" for="nota-3">Ok</label>
-              </div>
-
-              <div className="mr-6">
-                <input
-                  ref={register({
-                    required: 'Selecione uma Avaliação',
-                  })}
-                  type="radio"
-                  id="nota-4"
-                  name="nota"
-                  value="4" />
-                <label className="form-label text-white ml-3" for="nota-4">Boa</label>
-              </div>
-
-              <div className="mr-6">
-                <input
-                  ref={register({
-                    required: 'Selecione uma Avaliação',
-                  })}
-                  type="radio"
-                  id="nota-5"
-                  name="nota"
-                  value="5" />
-                <label className="form-label text-white ml-3" for="nota-5">Muito boa</label>
-              </div>
             </div>
 
             <div className="form-element">

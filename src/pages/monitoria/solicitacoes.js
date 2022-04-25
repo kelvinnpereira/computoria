@@ -40,6 +40,16 @@ export const getServerSideProps = async (context) => {
   const response = await get(`/api/monitoria/solicitacoes_usuario/`, {
     headers: req.headers
   });
+  if (
+    !response.data?.pendencias 
+  ) {
+    return {
+      redirect: {
+        permanent: false,
+        destination: "/500"
+      }
+    }
+  }
   return {
     props: { pendencias: response.data.pendencias },
   }

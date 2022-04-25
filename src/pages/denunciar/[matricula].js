@@ -80,6 +80,16 @@ export const getServerSideProps = async (context) => {
   const response = await get(`/api/usuario/${context.params.matricula}`, {
     headers: req.headers
   });
+  if (
+    !response.data?.usuario
+  ) {
+    return {
+      redirect: {
+        permanent: false,
+        destination: "/500"
+      }
+    }
+  }
   return {
     props: { usuario: response.data.usuario },
   }

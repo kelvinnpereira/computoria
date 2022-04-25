@@ -46,6 +46,16 @@ export default Listar;
 export const getServerSideProps = async (context) => {
   const { req, res } = context;
   const response1 = await get('/api/certificado/listar', { headers: req.headers });
+  if (
+    !response1.data?.certificados 
+  ) {
+    return {
+      redirect: {
+        permanent: false,
+        destination: "/500"
+      }
+    }
+  }
   return {
     props: { certificados: response1.data.certificados },
   }
