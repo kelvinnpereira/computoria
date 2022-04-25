@@ -5,15 +5,6 @@ import ListarTutores from '../../components/tutor/listar';
 import { get } from '../../lib/api';
 
 const Tutores = ({ tutores }) => {
-  const map = new Map();
-  tutores = tutores.filter((item) => {
-    if (!map.has(item.usuario)) {
-      map.set(item.usuario, true);
-      return true;
-    } else {
-      return false;
-    }
-  });
   return (
     <>
       <Head>

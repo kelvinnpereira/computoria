@@ -5,15 +5,6 @@ import ListarTutores from '../../components/tutor/listar_por_disciplina';
 import { get } from '../../lib/api';
 
 const Tutores = ({ tutores }) => {
-  const map = new Map();
-  tutores = tutores.filter((item) => {
-    if (!map.has(item.disciplina)) {
-      map.set(item.disciplina, true);
-      return true;
-    } else {
-      return false;
-    }
-  });
   return (
     <>
       <Head>
